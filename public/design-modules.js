@@ -4,7 +4,7 @@
 
 
 
-//Createing the Grid for main menu. 
+//Createing the Grid for the main menu. 
 
 //Grid variables
 let tilesArr= [];
@@ -37,10 +37,16 @@ function drawGrid(){
 
 //creating and drawing main interface.
 function createGame(){
+
+  InputName.remove();
+  InputPass.remove();
+  MyLoginBtn.remove();
   background(220);
   createGrid();
   drawGrid();
 }
+
+
 
 
 
@@ -52,9 +58,12 @@ let registerBtn;
 let loginBtn;
 let InputName;
 let InputPass;
+let InputEmail;
 let username;
 let password;
+let email;
 let playerId;
+let MyLoginBtn;
 
 
 function loginScreen(){
@@ -70,13 +79,21 @@ function loginScreen(){
   textAlign(CENTER, CENTER);
   textSize(30);
   text("Login or Register", rx, ry-rh/2.2)
-
-
+  
+  textAlign(CENTER),
+  textSize(15);
+  text("Welcome to Solar Alliances. Please login into your existing account.",rx, ry-rh/3 )
+  text("Or register as a new User, if you don't have an account",rx, ry-rh/4 )
   
 
   //Create Buttons
-  loginBtn = new Button(rx,ry,300,50,'Login',0,255,20);
-  registerBtn= new Button(rx,ry+100,300,50,'Register new Player',0,255,20)
+  loginBtn = new Button(rx,ry+100,300,50,'Login',0,255,20);
+  registerBtn= new Button(rx,ry+200,300,50,'Register new Player',0,255,20)
+  InputName = createInput('Name');
+  InputPass = createInput('Password');
+  InputEmail = createInput('Email');
+  MyLoginBtn = createButton('Login');
+
 
   //Draw Buttons
   rectMode(CENTER);
@@ -85,6 +102,30 @@ function loginScreen(){
   
 }
 
+
+//CHANGE LOCATION OF MODULE: Do the Login
+
+function doLogin(){
+
+username = InputName.value();
+password = InputPass.value();
+email = InputEmail.value();
+
+dataSent = {
+  "username": username,
+  "password": password,
+  "email": email
+}
+
+httpPost('/Login', 'json', dataSent, (dataReceived)=>{
+
+  playerId = dataReceived[0].Player_Id;
+  console.log('playerId '+ playerId);
+  createGame();
+})
+
+
+}
 
 
 

@@ -31,6 +31,55 @@ db.connect(function(err) {
 });
 
 
+//Gets and Posts start here
+
+
+// Login Post
+
+app.post('/Login', (req, res)=> {
+
+  let username = req.body.username;
+  let password = req.body.password;
+  let email = req.body.email;
+
+  let sql = `SELECT * FROM player WHERE Name=${username};`;
+
+  db.query(sql, (err, result)=> {
+    if (err) throw err;
+    
+
+    if (result.length<1){
+
+      let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${password}', '${email}');`;
+
+      db.query(sql, (err, result)=> {
+        if (err) throw err;
+
+        console.log('register player', result.affectedRows);
+
+        if (result.affectedRows == 1){
+          
+          let sql = `SELECT Player_Id FROM player WHERE Name='${username}';`
+
+          db.query(sql, (err, result)=> {
+            if (err) throw err;
+            console.log('result PlayerId'+result[0].Player_Id);
+            res.send(result);
+          })
+
+          
+        }
+      })
+     }  else res.send(result);
+
+     console.log('new playerId sent to client');
+  })
+});
+
+
+
+
+
 
 
 
