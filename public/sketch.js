@@ -3,12 +3,13 @@
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //createGame();
+  loginScreen();
 
   
 }
 
 function draw() {
-  loginScreen();
+  
   noLoop();
   
   
@@ -17,3 +18,8 @@ function draw() {
 
 
 
+function mousePressed(){
+  if (loginBtn.isClicked(mouseX, mouseY)){
+      console.log("click");
+  }
+}

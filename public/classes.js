@@ -72,7 +72,7 @@ class Button {
 
 
   isClicked(x,y){
-    if (x>this.posX && x<this.posX+this.side && y>this.posY && y<this.posY+this.side){
+    if (x>this.posX && x<this.posX+this.width && y>this.posY && y<this.posY+this.height){
       return true;
     }
     else return false;
@@ -85,9 +85,20 @@ class Button {
 
 //OnScreen Interface
 
-class OnScreenInterface {
+class OnScreenFrame {
 
-  constructor()
+  constructor(rx,ry,rw,rh){
+    this.rx=rx;
+    this.ry=ry;
+    this.rw=rw;
+    this.rh=rh;
+
+  }
+
+  drawScreen(){
+    rectMode(CENTER);
+    rect(this.rx,this.ry,this.rw,this.rh);
+  }
 
 
 }

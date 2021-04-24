@@ -47,6 +47,7 @@ function createGame(){
 //Creating Login Interface
 
 //Login Variables: 
+let loginFrame;
 let registerBtn;
 let loginBtn;
 let InputName;
@@ -63,12 +64,14 @@ function loginScreen(){
   rw= 600;
   rh= 500
   
-  //Frame of Interface
-  rectMode(CENTER);
-  rect(rx,ry,rw,rh);
-  textAlign(CENTER, TOP);
+  //Login Screen Frame, Title and Description
+  loginFrame = new OnScreenFrame(rx,ry,rw,rh)
+  loginFrame.drawScreen();
+  textAlign(CENTER, CENTER);
   textSize(30);
-  text("Login or Register", rx, ry*0.25)
+  text("Login or Register", rx, ry-rh/2.2)
+
+
   
 
   //Create Buttons
@@ -80,10 +83,6 @@ function loginScreen(){
   loginBtn.drawButton();
   registerBtn.drawButton();
   
-
-
-  
-
 }
 
 
