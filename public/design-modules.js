@@ -41,6 +41,7 @@ function createGame(){
   InputName.remove();
   InputPass.remove();
   MyLoginBtn.remove();
+
   background(220);
   createGrid();
   drawGrid();
@@ -101,6 +102,7 @@ function loginScreen(){
   registerBtn.drawButton();
   
 }
+
 
 
 //CHANGE LOCATION OF MODULE: Do the Login
