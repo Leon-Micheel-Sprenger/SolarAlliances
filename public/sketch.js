@@ -2,15 +2,15 @@
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  createGrid();
-  let x = windowWidth;
-  console.log( x);
+  //createGame();
+
   
 }
 
 function draw() {
-  background(220);
-  drawGrid();
+  loginScreen();
+  noLoop();
+  
   
 }
 

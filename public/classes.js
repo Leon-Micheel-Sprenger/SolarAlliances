@@ -1,3 +1,6 @@
+
+//Grid Tile
+
 class Tile {
   
   constructor(r, c, side, txt, clr) {
@@ -14,6 +17,7 @@ class Tile {
   
   drawCharacter() {
     fill(this.clr);
+    //noStroke();
     square(this.posX, this.posY, side);
     fill(0);
     textAlign(CENTER, CENTER);
@@ -37,4 +41,53 @@ class Tile {
     this.clr = clr;
   }
   
+}
+
+//Button class
+
+class Button {
+
+  constructor(x,y,width,height,txt,fillClr, txtClr, txtSize='20', corners=20){
+    this.posX= x;
+    this.posY= y;
+    this.width= width;
+    this.height= height;
+    this.txt= txt;
+    this.fillClr= fillClr;
+    this.txtClr= txtClr;
+    this.txtSize= txtSize;
+    this.corners= corners;
+  }
+
+
+  drawButton(){
+    fill(this.fillClr);
+    rect(this.posX, this.posY, this.width, this.height, this.corners);
+
+    textAlign(CENTER, CENTER);
+    textSize(this.txtSize);
+    fill(this.txtClr);
+    text(this.txt, this.posX, this.posY);
+  }
+
+
+  isClicked(x,y){
+    if (x>this.posX && x<this.posX+this.side && y>this.posY && y<this.posY+this.side){
+      return true;
+    }
+    else return false;
+  }
+
+
+}
+
+
+
+//OnScreen Interface
+
+class OnScreenInterface {
+
+  constructor()
+
+
 }
