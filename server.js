@@ -42,14 +42,14 @@ app.post('/Login', (req, res)=> {
   let password = req.body.password;
   let email = req.body.email;
 
-  let sql = `SELECT * FROM player WHERE Name=${username};`;
+  let sql = `SELECT * FROM player WHERE Name='${username}';`;
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
     
 
     if (result.length<1){
-
+      
       let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${password}', '${email}');`;
 
       db.query(sql, (err, result)=> {
@@ -63,7 +63,7 @@ app.post('/Login', (req, res)=> {
 
           db.query(sql, (err, result)=> {
             if (err) throw err;
-            console.log('result PlayerId'+result[0].Player_Id);
+            console.log('result PlayerId '+result[0].Player_Id);
             res.send(result);
           })
 

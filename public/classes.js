@@ -72,7 +72,7 @@ class Button {
 
 
   isClicked(x,y){
-    if (x>this.posX && x<this.posX+this.width && y>this.posY && y<this.posY+this.height){
+    if ((x>this.posX-this.width/2 && x<this.posX+this.width/2) && (y>this.posY-this.height/2 && y<this.posY+this.height/2)){
       return true;
     }
     else return false;
