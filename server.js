@@ -44,7 +44,7 @@ app.post('/Login', (req, res)=> {
 
   let sql = `SELECT * FROM player WHERE Name='${username}';`;
 
-  db.query(sql, (err, result)=> {
+  db.query(sql, (err, result)=> {     // add if statement for duplicate usernames!
     if (err) throw err;
     
 
@@ -70,7 +70,7 @@ app.post('/Login', (req, res)=> {
           
         }
       })
-     }  else res.send(result);
+     }  else res.send(result);  
 
      console.log('new playerId sent to client');
   })
