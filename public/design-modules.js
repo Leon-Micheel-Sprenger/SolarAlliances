@@ -49,20 +49,12 @@ function createGame(){
   
   background(220);
   
-//    // to be moved to another js file
-loadJSON('/getPlayerMoney/'+playerId, (dataReceived)=> {
-  moneyValue = dataReceived[0].Money;
-  console.log(dataReceived);
-  console.log('moneyValue Server '+ moneyValue)
-})
+
 
   console.log('money' + moneyValue);
   createResourceBar()
   //createGrid();
   //drawGrid();
-
-
-   
 
 
 }
@@ -148,10 +140,17 @@ function createResourceBar(){
   moneyIcon = new Icon('assets/money-icon.jpg', rx-150, ry-rh/3, 20, 32 );
   
 
-  console.log('moneyValue ' + moneyValue);
+
+  //Get Money from Database
+  // to be moved to another js file
+  loadJSON('/getPlayerMoney/'+playerId, (dataReceived)=> {
+    moneyValue = dataReceived[0].Money;
+    console.log(dataReceived);
+    console.log('moneyValue Server '+ moneyValue)
+  })
+
 
   //draw Money
-  
   fill(0);
   text(`${moneyValue}`, (rx-150)+30, ry+5);
   

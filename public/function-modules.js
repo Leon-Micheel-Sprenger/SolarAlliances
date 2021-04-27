@@ -33,15 +33,12 @@ function doLogin(){
   httpPost('/Login', 'json', dataSent, (dataReceived)=>{
     playerId = dataReceived[0].Player_Id;
     console.log('playerId '+ playerId);
+
     createGame();
 
-    // to be moved to another js file
-  loadJSON('/getPlayerMoney/'+playerId, (dataReceived)=> {
-    moneyValue = dataReceived[0].Money;
-    console.log(dataReceived);
-  })
+   
 
-  
+
   })
   }
 
