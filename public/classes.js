@@ -17,7 +17,7 @@ class Tile {
   
   drawCharacter() {
     fill(this.clr);
-    //noStroke();
+    noStroke();
     square(this.posX, this.posY, side);
     fill(0);
     textAlign(CENTER, CENTER);
@@ -102,3 +102,32 @@ class OnScreenFrame {
 
 
 }
+
+
+
+//Icon / Image Class 
+
+class Icon {
+
+  constructor(path, rx, ry, width, height){
+    this.rx = rx;
+    this.ry = ry;
+    this.width = width;
+    this.height = height;
+    this.path = path;
+
+    
+      loadImage(this.path, img => {
+        image(img, this.rx, this.ry, this.width, this.height)
+      })
+    
+  }
+
+  
+
+
+
+}
+
+
+

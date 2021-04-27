@@ -71,13 +71,26 @@ app.post('/Login', (req, res)=> {
         }
       })
      }  else res.send(result);  
-
+     
      console.log('new playerId sent to client');
   })
 });
 
 
+//Gets for Player Resources
+//money resources
 
+app.get('/getPlayerMoney/:playerId', (req, res)=> {
+  let playerId = req.params.playerId
+  
+  let sql = `SELECT Money FROM player_resources WHERE Player = ${playerId};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    console.log(result);
+    res.send(result);
+  })
+})
 
 
 

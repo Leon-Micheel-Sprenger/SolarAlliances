@@ -4,6 +4,8 @@
 
 
 
+
+
 //Creating the Grid for the main menu. 
 
 //Grid variables
@@ -46,8 +48,23 @@ function createGame(){
   InputEmail.remove();
   
   background(220);
-  createGrid();
-  drawGrid();
+  
+//    // to be moved to another js file
+loadJSON('/getPlayerMoney/'+playerId, (dataReceived)=> {
+  moneyValue = dataReceived[0].Money;
+  console.log(dataReceived);
+  console.log('moneyValue Server '+ moneyValue)
+})
+
+  console.log('money' + moneyValue);
+  createResourceBar()
+  //createGrid();
+  //drawGrid();
+
+
+   
+
+
 }
 
 
@@ -96,9 +113,6 @@ function loginScreen(){
   InputPass = createInput('Password').position(rx-100, ry-30);
   InputEmail = createInput('Email').position(rx-100, ry);
 
-  //InputName.position(50,50);
-
-
 
   //Draw Buttons
   rectMode(CENTER);
@@ -111,8 +125,37 @@ function loginScreen(){
 
 
 // Resource Bar
+//Variables:
+let barFrame;
+let moneyValue;
+let moneyIcon;
+let ore;
+let water;
 
 
+function createResourceBar(){
+  
+  rx=width-180;
+  ry=20;
+  rw=350;
+  rh= 50;
+
+  //create bar frame
+  barFrame= new OnScreenFrame(rx, ry, rw, rh);
+  barFrame.drawScreen();
+  
+  // create Icon
+  moneyIcon = new Icon('assets/money-icon.jpg', rx-150, ry-rh/3, 20, 32 );
+  
+
+  console.log('moneyValue ' + moneyValue);
+
+  //draw Money
+  
+  fill(0);
+  text(`${moneyValue}`, (rx-150)+30, ry+5);
+  
+}
 
 
 
