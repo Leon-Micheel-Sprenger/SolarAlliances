@@ -114,18 +114,13 @@ class Icon {
     this.ry = ry;
     this.width = width;
     this.height = height;
-    this.path = path;
-
+    this.path = path;  
     
-      loadImage(this.path, img => {
+    loadImage(this.path, img => {
         image(img, this.rx, this.ry, this.width, this.height)
       })
     
   }
-
-  
-
-
 
 }
 
