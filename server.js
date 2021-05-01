@@ -94,7 +94,7 @@ app.get('/getPlayerResources/:playerId', (req, res)=> {
 app.get('/getPlayerRank/:playerId', (req, res)=> {
  
   let playerId = req.params.playerId;
-  let sql = `SELECT Rank FROM player WHERE Player_Id = ${playerId};`;
+  let sql = `SELECT Rank, In_Game_Date FROM player WHERE Player_Id = ${playerId};`;
   
   db.query(sql, (err, result)=> {
     if (err) throw err;

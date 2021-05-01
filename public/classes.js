@@ -57,6 +57,7 @@ class Button {
     this.txtClr= txtClr;
     this.txtSize= txtSize;
     this.corners= corners;
+    this.enable = false;    //used to enable and disable buttons
   }
 
 

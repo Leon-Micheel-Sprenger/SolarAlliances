@@ -5,11 +5,7 @@
 
 
 
-
-
-
 //Creating the Grid for the main menu. 
-
 //Grid variables
 let tilesArr= [];
 let gridStartX=0;
@@ -17,10 +13,6 @@ let gridStartY=0;
 let side = 100;
 let gridX = window.innerWidth/side;    //length of the grid
 let gridY = window.innerHeight/side;   // height of the grid
-
-
-
-//Grid modules:
 
 function createGrid(){
   for (r=gridStartX; r<gridX+gridStartX;r++){
@@ -30,7 +22,6 @@ function createGrid(){
     } 
   } 
 }
-
 
 function drawGrid(){
   for (r=gridStartX; r<gridX+gridStartX;r++)
@@ -42,31 +33,10 @@ function drawGrid(){
 
 
 
-//Creating and drawing main interface.
-let gameStatus= false;
-
-function createGame(){
-
-  gameStatus = true;
-  InputName.remove();
-  InputPass.remove();
-  InputEmail.remove();
-  
-  background(220);
-  
-  createResourceBar()
-  //createGrid();
-  //drawGrid();
 
 
-}
-
-
-
-
-
+//______________________________________________
 //Creating Login Interface
-
 //Login Variables: 
 let loginFrame;
 let registerBtn;
@@ -111,21 +81,60 @@ function loginScreen(){
   //Draw Buttons
   rectMode(CENTER);
   loginBtn.drawButton();
-  
- 
 }
 
 
 
 
-// Resource Bar
+//__________________________________________________
+//Creating and drawing main Menu.
+//Variables:
+let gameStatus= false;
+
+function createGame(){
+
+  gameStatus = true;
+  InputName.remove();
+  InputPass.remove();
+  InputEmail.remove();
+  background(220);
+  
+  createResourceBar();
+  createButtons();
+  //createGrid();
+  //drawGrid();
+}
+
+
+
+//_________________________
+//Creating and Drawing Main Menu Buttons
+//Variables:
+let missionButton;
+let stationButton;
+let shipFleetButton;
+let marketplaceButton;
+
+
+function createButtons(){
+missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
+missionButton.drawButton();
+}
+
+
+
+
+
+//_____________________________________
+// Creating and drawing Resource Bar
 //Variables:
 let barFrame;
 let moneyIcon;
 let oreIcon;
 let waterIcon;
 let peopleIcon;
-let rankIcon
+let rankIcon;
+let gameDate;
 
 let money;
 let ore;
@@ -154,13 +163,14 @@ function createResourceBar(){
     waterIcon = new Icon('assets/money-icon.jpg', rx-rw/2+95, ry-rh/3, 20, 32 );
     oreIcon = new Icon('assets/money-icon.jpg', rx-rw/2+195, ry-rh/3, 20, 32 );
     peopleIcon = new Icon('assets/money-icon.jpg', rx-rw/2+295, ry-rh/3, 20, 32 );
-    rankIcon = new Icon('assets/money-icon.jpg', rx-rw/2+580, ry-rh/3, 20, 32 );
+    rankIcon = new Icon('assets/money-icon.jpg', rx-rw/2+495, ry-rh/3, 20, 32 );
 
 
     //Get Rank from player
     loadJSON('/getPlayerRank/'+playerId, (dataReceived)=> {
     rank = dataReceived[0].Rank;
-    console.log(rank);
+    gameDate = new Date(dataReceived[0].In_Game_Date).getFullYear();
+    console.log(gameDate);
     
   })
 
@@ -177,17 +187,12 @@ function createResourceBar(){
       console.log(dataReceived);
       loop();
     })  
-
-  
-    console.log('rank' +rank);
     
   }
  
 }
 
-
-
-//Draw Resources
+//Draw Resource-Values in Resourcebar
 function drawResourceValues(){
   if (gameStatus){
    //Resource bar Coordinates;
@@ -195,8 +200,6 @@ function drawResourceValues(){
     ry=20;
     rw=660;
     rh= 50;
- 
-
   push();
   fill(0);
   textSize(12);
@@ -204,10 +207,38 @@ function drawResourceValues(){
   text(`${water}/${max_water}`,(rx-rw/2+5)+140, ry+5);
   text(`${ore}/${max_ore}`,(rx-rw/2+5)+240, ry+5);
   text(`${people}/${max_people}`,(rx-rw/2+5)+340, ry+5);
-  text(`${rank}`,rx-rw/2+595, ry+5);
+  text(`${rank}`,rx-rw/2+520, ry+5);
+  text(`Year: ${gameDate}`,rx-rw/2+595, ry+5);
+
   pop();
 
   }
+}
+
+
+//________________________________
+// Creating and drawing Missions Interface 
+ //enables or disables interface
+let missionFrame;
+
+
+
+function createMissionInterface(){
+
+    rx= width*0.5;
+    ry= height*0.5+50;
+    rw= 600;
+    rh= 500;
+
+    //Frame and title;
+    missionFrame = new OnScreenFrame(rx, ry, rw, rh);
+    missionFrame.drawScreen();
+
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("Missions", rx, ry-rh/2.2)
+
 }
 
 

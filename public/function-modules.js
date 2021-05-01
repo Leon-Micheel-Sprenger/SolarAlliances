@@ -6,16 +6,28 @@
 
 function mousePressed(){
 
-//When Login Button is clicked
+//Login Button clicked
     if (loginBtn.isClicked(mouseX, mouseY)){
         doLogin();
     } 
+
+
+//Missions Button clicked
+    if (gameStatus){
+      if(missionButton.isClicked(mouseX, mouseY)){
+        createMissionInterface();
+        
+      }
+    }
+    
+
+
 } 
 
 
 
 
-
+//_________________________________________________
 // Do the Login
 
 function doLogin(){
@@ -33,9 +45,7 @@ function doLogin(){
   httpPost('/Login', 'json', dataSent, (dataReceived)=>{
     playerId = dataReceived[0].Player_Id;
     console.log('playerId '+ playerId);
-
     createGame();
-
   })
   }
 
