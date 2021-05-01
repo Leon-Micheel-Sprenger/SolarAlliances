@@ -36,9 +36,10 @@ function doLogin(){
 
     createGame();
 
-   
-
-
   })
   }
+
+
+  
+
 

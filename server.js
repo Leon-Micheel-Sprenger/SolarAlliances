@@ -77,13 +77,11 @@ app.post('/Login', (req, res)=> {
 });
 
 
-//Gets for Player Resources
-//money resources
-
-app.get('/getPlayerMoney/:playerId', (req, res)=> {
+//Get Player Resources
+app.get('/getPlayerResources/:playerId', (req, res)=> {
   let playerId = req.params.playerId
   
-  let sql = `SELECT Money FROM player_resources WHERE Player = ${playerId};`;
+  let sql = `SELECT Money, Water, Ore, People, Max_People, Max_Ore, Max_Water FROM player_resources WHERE Player = ${playerId};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
@@ -91,6 +89,20 @@ app.get('/getPlayerMoney/:playerId', (req, res)=> {
     res.send(result);
   })
 })
+
+//get player Rank
+app.get('/getPlayerRank/:playerId', (req, res)=> {
+ 
+  let playerId = req.params.playerId;
+  let sql = `SELECT Rank FROM player WHERE Player_Id = ${playerId};`;
+  
+  db.query(sql, (err, result)=> {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  })
+})
+
 
 
 

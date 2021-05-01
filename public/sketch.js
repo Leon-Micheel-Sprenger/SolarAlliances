@@ -1,5 +1,8 @@
 
+function preload(){
 
+
+}
 
 
 
@@ -15,7 +18,7 @@ function setup() {
 
 
 function draw() {
- 
+  drawResourceValues()
   noLoop();
   
   

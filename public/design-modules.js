@@ -6,6 +6,8 @@
 
 
 
+
+
 //Creating the Grid for the main menu. 
 
 //Grid variables
@@ -39,19 +41,19 @@ function drawGrid(){
 
 
 
+
 //Creating and drawing main interface.
+let gameStatus= false;
 
 function createGame(){
 
+  gameStatus = true;
   InputName.remove();
   InputPass.remove();
   InputEmail.remove();
   
   background(220);
   
-
-
-  console.log('money' + moneyValue);
   createResourceBar()
   //createGrid();
   //drawGrid();
@@ -119,42 +121,95 @@ function loginScreen(){
 // Resource Bar
 //Variables:
 let barFrame;
-let moneyValue;
 let moneyIcon;
+let oreIcon;
+let waterIcon;
+let peopleIcon;
+let rankIcon
+
+let money;
 let ore;
 let water;
+let people;
+let rank;
+
+let max_ore;
+let max_water;
+let max_people;
 
 
 function createResourceBar(){
+  if (gameStatus){
+    rx=width-650/2;
+    ry=20;
+    rw=660;
+    rh= 50;
   
-  rx=width-180;
-  ry=20;
-  rw=350;
-  rh= 50;
-
-  //create bar frame
-  barFrame= new OnScreenFrame(rx, ry, rw, rh);
-  barFrame.drawScreen();
-  
-  // create Icon
-  moneyIcon = new Icon('assets/money-icon.jpg', rx-150, ry-rh/3, 20, 32 );
-  
+    //create bar frame
+    barFrame= new OnScreenFrame(rx, ry, rw, rh);
+    barFrame.drawScreen();
+    
+    // create Icons
+    moneyIcon = new Icon('assets/money-icon.jpg', rx-rw/2+5, ry-rh/3, 20, 32 );
+    waterIcon = new Icon('assets/money-icon.jpg', rx-rw/2+95, ry-rh/3, 20, 32 );
+    oreIcon = new Icon('assets/money-icon.jpg', rx-rw/2+195, ry-rh/3, 20, 32 );
+    peopleIcon = new Icon('assets/money-icon.jpg', rx-rw/2+295, ry-rh/3, 20, 32 );
+    rankIcon = new Icon('assets/money-icon.jpg', rx-rw/2+580, ry-rh/3, 20, 32 );
 
 
-  //Get Money from Database
-  // to be moved to another js file
-  loadJSON('/getPlayerMoney/'+playerId, (dataReceived)=> {
-    moneyValue = dataReceived[0].Money;
-    console.log(dataReceived);
-    console.log('moneyValue Server '+ moneyValue)
+    //Get Rank from player
+    loadJSON('/getPlayerRank/'+playerId, (dataReceived)=> {
+    rank = dataReceived[0].Rank;
+    console.log(rank);
+    
   })
 
 
-  //draw Money
-  fill(0);
-  text(`${moneyValue}`, (rx-150)+30, ry+5);
+    //Get Resources from Database
+    loadJSON('/getPlayerResources/'+playerId, (dataReceived)=> {
+      money = dataReceived[0].Money;
+      ore = dataReceived[0].Ore;
+      water = dataReceived[0].Water;
+      people = dataReceived[0].People;
+      max_ore = dataReceived[0].Max_Ore;
+      max_water = dataReceived[0].Max_Water;
+      max_people = dataReceived[0].Max_People;
+      console.log(dataReceived);
+      loop();
+    })  
+
   
+    console.log('rank' +rank);
+    
+  }
+ 
 }
+
+
+
+//Draw Resources
+function drawResourceValues(){
+  if (gameStatus){
+   //Resource bar Coordinates;
+    rx=width-650/2;
+    ry=20;
+    rw=660;
+    rh= 50;
+ 
+
+  push();
+  fill(0);
+  textSize(12);
+  text(`${money}`,(rx-rw/2+5)+40, ry+5);
+  text(`${water}/${max_water}`,(rx-rw/2+5)+140, ry+5);
+  text(`${ore}/${max_ore}`,(rx-rw/2+5)+240, ry+5);
+  text(`${people}/${max_people}`,(rx-rw/2+5)+340, ry+5);
+  text(`${rank}`,rx-rw/2+595, ry+5);
+  pop();
+
+  }
+}
+
 
 
 
