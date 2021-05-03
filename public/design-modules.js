@@ -220,24 +220,33 @@ function drawResourceValues(){
 // Creating and drawing Missions Interface 
  //enables or disables interface
 let missionFrame;
+let singleMissionsBtn;
+let multiMissionsBtn;
 
 
 
 function createMissionInterface(){
 
     rx= width*0.5;
-    ry= height*0.5+50;
+    ry= height*0.5;
     rw= 600;
-    rh= 500;
+    rh= 650;
 
-    //Frame and title;
+    //Frame, title and buttons;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
     missionFrame.drawScreen();
+
+    singleMissionsBtn = new Button(rx-rx/2+220,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
+    singleMissionsBtn.drawButton();
+
+    multiMissionsBtn = new Button(rx+150,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
+    multiMissionsBtn.drawButton();
 
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Missions", rx, ry-rh/2.2)
+
 
 }
 
