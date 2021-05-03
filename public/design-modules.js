@@ -1,7 +1,7 @@
 
 // In here, we are storing all available front end components and designs of p5. 
 // To find other functions and executing commands, go to function-modules.js
-
+let cur_status;
 
 
 
@@ -54,7 +54,7 @@ let playerId;
 function loginScreen(){
 
   rx= width*0.5;
-  ry= height*0.5
+  ry= height*0.5;
   rw= 600;
   rh= 500;
   
@@ -63,9 +63,9 @@ function loginScreen(){
   loginFrame.drawScreen();
   textAlign(CENTER, CENTER);
   textSize(30);
-  text("Login or Register", rx, ry-rh/2.2)
+  text("Login or Register", rx, ry-rh/2.2);
   
-  textAlign(CENTER),
+  textAlign(CENTER);
   textSize(15);
   text("Welcome to Solar Alliances. Please login into your existing account.",rx, ry-rh/3 )
   text("Or register as a new User, if you don't have an account.",rx, ry-rh/4 )
@@ -223,9 +223,10 @@ let missionFrame;
 let singleMissionsBtn;
 let multiMissionsBtn;
 
+let singlemissionFrame;
 
-
-function createMissionInterface(){
+//Missions Interface
+ function createMissionInterface(){
 
     rx= width*0.5;
     ry= height*0.5;
@@ -245,16 +246,15 @@ function createMissionInterface(){
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(30);
-    text("Missions", rx, ry-rh/2.2)
+    text("Missions", rx, ry-rh/2.2);
 
 
+    //Mission boxes;
+    singlemissionFrame = new OnScreenFrame(rx, ry-150, rw-50, rh/7);
+    push()
+    fill(255);
+    stroke(5);
+    singlemissionFrame.drawScreen();
+    pop();
 }
-
-
-
-
-
-
-
-
 
