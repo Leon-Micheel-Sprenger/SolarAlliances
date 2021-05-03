@@ -18,7 +18,7 @@ function setup() {
 
 
 function draw() {
-  drawResourceValues()
+  drawResourceValues();
   noLoop();
   
   

@@ -165,28 +165,6 @@ function createResourceBar(){
     peopleIcon = new Icon('assets/money-icon.jpg', rx-rw/2+295, ry-rh/3, 20, 32 );
     rankIcon = new Icon('assets/money-icon.jpg', rx-rw/2+495, ry-rh/3, 20, 32 );
 
-
-    //Get Rank from player
-    loadJSON('/getPlayerRank/'+playerId, (dataReceived)=> {
-    rank = dataReceived[0].Rank;
-    gameDate = new Date(dataReceived[0].In_Game_Date).getFullYear();
-    console.log(gameDate);
-    
-  })
-
-
-    //Get Resources from Database
-    loadJSON('/getPlayerResources/'+playerId, (dataReceived)=> {
-      money = dataReceived[0].Money;
-      ore = dataReceived[0].Ore;
-      water = dataReceived[0].Water;
-      people = dataReceived[0].People;
-      max_ore = dataReceived[0].Max_Ore;
-      max_water = dataReceived[0].Max_Water;
-      max_people = dataReceived[0].Max_People;
-      console.log(dataReceived);
-      loop();
-    })  
     
   }
  
