@@ -40,6 +40,7 @@ function drawGrid(){
 //Login Variables: 
 let loginFrame;
 let registerBtn;
+let submitRegisterBtn;
 let loginBtn;
 let InputName;
 let InputPass;
@@ -48,7 +49,6 @@ let username;
 let password;
 let email;
 let playerId;
-
 
 
 function loginScreen(){
@@ -73,15 +73,33 @@ function loginScreen(){
 
   //Create Buttons
   loginBtn = new Button(rx,ry+100,300,50,'Login / Register',0,255,20);
-  InputName = createInput('Name').position(rx-100, ry-60);
-  InputPass = createInput('Password').position(rx-100, ry-30);
-  InputEmail = createInput('Email').position(rx-100, ry);
+  registerBtn = new Button(rx,ry+200,120,30,'Register as new Player',255,0,10);
+  
 
+  InputName = createInput('Username').position(rx-100, ry-60);
+  InputPass = createInput('Password').position(rx-100, ry-30);
+  
+
+  if(cur_status==='status_register'){
+
+    InputEmail = createInput('Email').position(rx-100, ry);
+    InputPass = createInput('Repeat Password').position(rx-100, ry+30);
+    submitRegisterBtn = new Button(rx,ry+200,300,50,'Register',0,255,20);
+    submitRegisterBtn.drawButton();
+    console.log(cur_status);
+
+  }
 
   //Draw Buttons
   rectMode(CENTER);
   loginBtn.drawButton();
+  registerBtn.drawButton();
 }
+
+
+//_________________________________________________
+//Creating and drawing Register Screen
+//Variables
 
 
 
@@ -96,7 +114,6 @@ function createGame(){
   gameStatus = true;
   InputName.remove();
   InputPass.remove();
-  InputEmail.remove();
   background(220);
   
   createResourceBar();
@@ -155,6 +172,7 @@ function createResourceBar(){
     rh= 50;
   
     //create bar frame
+    fill(255);
     barFrame= new OnScreenFrame(rx, ry, rw, rh);
     barFrame.drawScreen();
     
@@ -165,7 +183,6 @@ function createResourceBar(){
     peopleIcon = new Icon('assets/money-icon.jpg', rx-rw/2+295, ry-rh/3, 20, 32 );
     rankIcon = new Icon('assets/money-icon.jpg', rx-rw/2+495, ry-rh/3, 20, 32 );
 
-    
   }
  
 }

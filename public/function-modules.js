@@ -7,9 +7,16 @@
 function mousePressed(){
 
 //Login Button clicked
+  
     if (loginBtn.isClicked(mouseX, mouseY)){
         doLogin();
     } 
+
+    // if(registerBtn.isClicked(mouseX, mouseY)){
+    //   cur_status = 'status_register';
+    //   loop();
+    // }
+
 
 
 //Missions Button clicked
@@ -25,6 +32,13 @@ function mousePressed(){
 } 
 
 
+//_________________________________________________
+//Do Register
+
+function doRegister(){
+
+}
+
 
 
 //_________________________________________________
@@ -34,12 +48,10 @@ function doLogin(){
 
   username = InputName.value();
   password = InputPass.value();
-  email = InputEmail.value();
   
   dataSent = {
     "username": username,
-    "password": password,
-    "email": email
+    "password": password
   }
   
   //Get player Id
@@ -88,7 +100,7 @@ function doLogin(){
   })
 
   createGame();
-  
+
   }
 
 

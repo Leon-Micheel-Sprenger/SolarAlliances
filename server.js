@@ -40,16 +40,20 @@ app.post('/Login', (req, res)=> {
 
   let username = req.body.username;
   let password = req.body.password;
-  let email = req.body.email;
+ 
 
-  let sql = `SELECT * FROM player WHERE Name='${username}';`;
+  let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${password}';`;
 
   db.query(sql, (err, result)=> {     // add if statement for duplicate usernames!
     if (err) throw err;
     
 
-    if (result.length<1){
+    if (result.length<1){    //if user exists
       
+
+      //alert message: this user doesnt exist --> please register.
+
+
       let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${password}', '${email}');`;
 
       db.query(sql, (err, result)=> {
@@ -65,9 +69,7 @@ app.post('/Login', (req, res)=> {
             if (err) throw err;
             console.log('result PlayerId '+result[0].Player_Id);
             res.send(result);
-          })
-
-          
+          }) 
         }
       })
      }  else res.send(result);  
@@ -75,6 +77,14 @@ app.post('/Login', (req, res)=> {
      console.log('new playerId sent to client');
   })
 });
+
+
+
+//Register (also populate default resources.
+// app.post('/Register', (req, res)=> {
+
+// })
+
 
 
 //Get Player Resources
@@ -85,10 +95,12 @@ app.get('/getPlayerResources/:playerId', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
+
     console.log(result);
     res.send(result);
   })
 })
+
 
 
 //get player Rank
