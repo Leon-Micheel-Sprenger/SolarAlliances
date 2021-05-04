@@ -57,7 +57,7 @@ class Button {
     this.txtClr= txtClr;
     this.txtSize= txtSize;
     this.corners= corners;
-    this.enable = false;    //used to enable and disable buttons
+    this.enable = true;    //used to enable and disable buttons
   }
 
 
@@ -73,10 +73,27 @@ class Button {
 
 
   isClicked(x,y){
-    if ((x>this.posX-this.width/2 && x<this.posX+this.width/2) && (y>this.posY-this.height/2 && y<this.posY+this.height/2)){
-      return true;
+    if(this.enable===true){
+      if ((x>this.posX-this.width/2 && x<this.posX+this.width/2) && (y>this.posY-this.height/2 && y<this.posY+this.height/2)){
+        return true;
+      }
     }
-    else return false;
+    else {
+      if (this.enable === false){
+        console.log('Button disabled');
+      }
+      return false;
+    }
+  }
+
+  disable(){
+    this.enable = false;
+    this.txt = '';
+    this.fillClr = 255;
+  }
+
+  enableButton(){
+    this.enable = true;
   }
 
 

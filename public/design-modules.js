@@ -1,7 +1,7 @@
 
 // In here, we are storing all available front end components and designs of p5. 
 // To find other functions and executing commands, go to function-modules.js
-let cur_status;
+let cur_status = 'status_login';
 
 
 
@@ -40,31 +40,29 @@ function drawGrid(){
 //Login Variables: 
 let loginFrame;
 let registerBtn;
-let submitRegisterBtn;
 let loginBtn;
 let InputName;
 let InputPass;
-let InputEmail;
-let username;
-let password;
-let email;
-let playerId;
+
+
 
 
 function loginScreen(){
-
+  
   rx= width*0.5;
   ry= height*0.5;
   rw= 600;
   rh= 500;
   
   //Login Screen Frame, Title and Description
+
+  if(cur_status=== 'status_login'){
+
   loginFrame = new OnScreenFrame(rx,ry,rw,rh)
   loginFrame.drawScreen();
   textAlign(CENTER, CENTER);
   textSize(30);
   text("Login or Register", rx, ry-rh/2.2);
-  
   textAlign(CENTER);
   textSize(15);
   text("Welcome to Solar Alliances. Please login into your existing account.",rx, ry-rh/3 )
@@ -72,34 +70,54 @@ function loginScreen(){
   
 
   //Create Buttons
-  loginBtn = new Button(rx,ry+100,300,50,'Login / Register',0,255,20);
-  registerBtn = new Button(rx,ry+200,120,30,'Register as new Player',255,0,10);
+  loginBtn = new Button(rx,ry+80,300,50,'Login',0,255,20);
+  registerBtn = new Button(rx,ry+130,120,30,'Register as new Player',255,0,10);
   
 
-  InputName = createInput('Username').position(rx-100, ry-60);
-  InputPass = createInput('Password').position(rx-100, ry-30);
+  InputName = createInput('Name').position(rx-100, ry-60);
+  InputPass = createInput('Password').position(rx-100, ry);
   
+   //Draw Buttons
+   rectMode(CENTER);
+   loginBtn.drawButton();
+   registerBtn.drawButton();
 
-  if(cur_status==='status_register'){
-
-    InputEmail = createInput('Email').position(rx-100, ry);
-    InputPass = createInput('Repeat Password').position(rx-100, ry+30);
-    submitRegisterBtn = new Button(rx,ry+200,300,50,'Register',0,255,20);
-    submitRegisterBtn.drawButton();
-    console.log(cur_status);
-
-  }
-
-  //Draw Buttons
-  rectMode(CENTER);
-  loginBtn.drawButton();
-  registerBtn.drawButton();
+  } 
+ 
 }
 
 
 //_________________________________________________
 //Creating and drawing Register Screen
 //Variables
+let InputPassTwo;
+let InputEmail;
+let registerFrame;
+let submitRegisterBtn;
+
+function registerScreen(){
+  
+  if(cur_status==='status_register'){
+    	
+    rx= width*0.5;
+    ry= height*0.5;
+    rw= 600;
+    rh= 500;   
+
+    InputPassTwo = createInput('Repeat Password').position(rx-100, ry+30);
+    InputEmail = createInput('Email').position(rx-100, ry-30);
+    
+
+    //disable Loginbutton and Register player button
+    loginBtn.disable();
+    registerBtn.disable();
+    
+    submitRegisterBtn = new Button(rx,ry+200,300,50,'Register',0,255,20);
+    submitRegisterBtn.drawButton();
+    console.log(cur_status);
+  }
+}
+
 
 
 

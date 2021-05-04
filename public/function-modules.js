@@ -8,14 +8,29 @@ function mousePressed(){
 
 //Login Button clicked
   
-    if (loginBtn.isClicked(mouseX, mouseY)){
+    if (loginBtn.isClicked(mouseX, mouseY) && cur_status==='status_login'){
         doLogin();
     } 
 
-    // if(registerBtn.isClicked(mouseX, mouseY)){
-    //   cur_status = 'status_register';
-    //   loop();
-    // }
+    if(registerBtn.isClicked(mouseX, mouseY)){
+      cur_status = 'status_register';
+      registerScreen();
+      loop();
+    
+    }
+
+    if(cur_status === 'status_register'){
+      if (submitRegisterBtn.isClicked(mouseX, mouseY)){
+        doRegister();
+        if (playerId){
+          cur_status === 'status_login';
+          reactivateLogin();
+          
+
+        }
+      }
+    }
+    
 
 
 
@@ -34,9 +49,55 @@ function mousePressed(){
 
 //_________________________________________________
 //Do Register
+let username;
+let password;
+let email;
+let playerId;
+
 
 function doRegister(){
+if (cur_status==='status_register'){
 
+    username = InputName.value();
+    email = InputEmail.value();
+
+  
+    //check if passwords are equal and all fields are filled. 
+  if (email !== '' && username !== ''){
+
+  if (InputPass.value() === InputPassTwo.value()){
+      password = InputPass.value();
+
+      dataSent = {
+       "username": username,
+       "password": password,
+       "email": email
+    }
+
+    //create player
+    httpPost('/Register', 'json', dataSent, (dataReceived)=> {
+  
+      if (dataReceived[0].Name === username){
+        alert('The username is already taken');
+
+      } else {
+  
+        playerId = dataReceived[0].Player_Id;
+        console.log('New Player registered with player Id: '+ playerId);
+
+      }
+    })
+  }
+  else {
+    alert('Passwords dont match');
+  } 
+}
+  else {
+    alert('Please fill out all required fields');
+  }
+
+
+}
 }
 
 
@@ -46,6 +107,8 @@ function doRegister(){
 
 function doLogin(){
 
+if (cur_status=== 'status_login'){
+
   username = InputName.value();
   password = InputPass.value();
   
@@ -54,10 +117,15 @@ function doLogin(){
     "password": password
   }
   
-  //Get player Id
+  //Login player and get Player ID
   httpPost('/Login', 'json', dataSent, (dataReceived)=>{
-    playerId = dataReceived[0].Player_Id;
-    console.log('playerId '+ playerId);
+    
+    if (dataReceived.length<1){
+      alert('Password or username is wrong');
+    } else {
+      playerId = dataReceived[0].Player_Id;
+      console.log('playerId '+ playerId);
+    
     
 
     //Get Rank from player
@@ -97,10 +165,14 @@ function doLogin(){
 
 
 
+
+    createGame();
+  }
   })
 
-  createGame();
+ 
 
+   }
   }
 
 

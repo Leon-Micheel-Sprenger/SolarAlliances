@@ -34,6 +34,55 @@ db.connect(function(err) {
 //Gets and Posts start here
 
 
+
+//Register Post !!1(also populate default resources.)!!!
+
+app.post('/Register', (req, res)=> {
+
+  let username = req.body.username;
+  let password = req.body.password;
+  let email = req.body.email;
+
+
+  let sql = `SELECT * FROM player WHERE  Name = '${username}';`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    
+    if (result.length > 0) {
+      res.send(result);
+    }
+    else {
+
+      let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${password}', '${email}');`;
+
+     db.query(sql, (err, result)=> {
+     if (err) throw err;
+
+    if (result.affectedRows == 1){
+      
+      let sql = `SELECT Player_Id FROM player WHERE Name='${username}';`
+       
+      db.query(sql, (err, result)=> {
+        if (err) throw err;
+        res.send(result);
+
+        let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player) VALUES ('1000', '1000', '1000', '100', '100', '1000', '1000', '${result[0].Player_Id}' ) ; `
+
+        db.query(sql, (err, result)=> {
+          if (err) throw err;
+          console.log(result);
+        })
+      })
+    }
+  })
+    }
+  })
+})
+
+
+
+
 // Login Post
 
 app.post('/Login', (req, res)=> {
@@ -48,31 +97,12 @@ app.post('/Login', (req, res)=> {
     if (err) throw err;
     
 
-    if (result.length<1){    //if user exists
+    if (result.length<1){    //if user exists not
       
-
+      res.send(result);
       //alert message: this user doesnt exist --> please register.
 
-
-      let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${password}', '${email}');`;
-
-      db.query(sql, (err, result)=> {
-        if (err) throw err;
-
-        console.log('register player', result.affectedRows);
-
-        if (result.affectedRows == 1){
-          
-          let sql = `SELECT Player_Id FROM player WHERE Name='${username}';`
-
-          db.query(sql, (err, result)=> {
-            if (err) throw err;
-            console.log('result PlayerId '+result[0].Player_Id);
-            res.send(result);
-          }) 
-        }
-      })
-     }  else res.send(result);  
+        } else res.send(result);  
      
      console.log('new playerId sent to client');
   })
@@ -80,10 +110,8 @@ app.post('/Login', (req, res)=> {
 
 
 
-//Register (also populate default resources.
-// app.post('/Register', (req, res)=> {
 
-// })
+
 
 
 

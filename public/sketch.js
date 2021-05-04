@@ -10,7 +10,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   loginScreen();
   
-  
 
   
 }
@@ -19,8 +18,10 @@ function setup() {
 
 function draw() {
   drawResourceValues();
- 
+  
+  
   noLoop();
+  console.log(cur_status);
   
   
 }
