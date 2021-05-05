@@ -157,7 +157,10 @@ if (cur_status=== 'status_login'){
 
     //station upgrades
 
-    //SingleplayerMissions
+    //SingleplayerMissions of the player: 
+    loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
+      //assign all variables of the mission. 
+    })
 
     //Multiplayer Missions
 
