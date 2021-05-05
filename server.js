@@ -19,7 +19,7 @@ const db = mysql.createConnection({
     user     : 'root',
     password : 'root',
     database : 'solaralliances',
-    port: '8889'
+    port: '3306'
 });
 
 db.connect(function(err) {
@@ -172,6 +172,33 @@ app.get('/getPlayerShips/:playerId', (req, res)=> {
     res.send(result);
   })
 })
+
+
+
+//Get Solo Player Missions
+app.get('/getPlayerMissions/:playerId', (req, res)=> {
+  let playerId = req.params.playerId;
+
+  let sql= `SELECT Mission1 FROM player_missions WHERE Player_Id = ${playerId};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    console.log(result);
+
+    if(result.length>0){
+
+      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1};`
+
+      db.query(sql, (err, result)=> {
+        if(err) throw err;
+        res.send(result);
+      })
+    }
+  })
+})
+
+
+
 
 
 

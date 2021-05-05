@@ -153,7 +153,7 @@ class Icon {
 
 class SoloMissionBox {
 
-  constructor(rx, ry, rw, rh, missionName='Cargo Transport',missionStory, missionTime,InputResource1=-20,Resource1IconPath='assets/money-icon.jpg', InputResource2=-30,Resource2IconPath='assets/money-icon.jpg', InputShip, Reward1, Reward2, missionRank='1'){
+  constructor(rx, ry, rw, rh, Name='Cargo Transport',Story, Time, InputMoney, InputPeople, InputOre, InputWater, InputShips, RewardMoney, RewardPeople, RewardOre, RewardWater , Rank='1'){
     this.rx=rx;
     this.ry=ry;
     this.rw=rw;
@@ -161,21 +161,131 @@ class SoloMissionBox {
    
     
     //Mission Input
-    this.name = missionName;
-    this.rank= missionRank;
-    this.InputResource1= InputResource1;
-    this.InputResource2 = InputResource2;
-    this.InputShip = InputShip;
-    this.Resource1IconPath=Resource1IconPath;
-    this.Resource2IconPath=Resource2IconPath;
-    this.time = missionTime;
-    this.story = missionStory;
+    this.name = Name;
+    this.time = Time;
+    this.InputMoney = InputMoney;
+    this.InputPeople = InputPeople;
+    this.InputOre = InputOre;
+    this.InputWater = InputWater;
+    this.InputShips = InputShips;
+    this.RewardMoney = RewardMoney;
+    this.RewardPeople = RewardPeople;
+    this.RewardOre = RewardOre;
+    this.RewardWater = RewardWater;
+    this.Rank = Rank;
+    
+
+    //Input resources
+    this.InputResource1;
+    this.InputResource2;
+    //input resource icons
+    this.inputResource1IconPath =  'assets/money-icon.jpg';
+    this.inputResource2IconPath =  'assets/money-icon.jpg';
+    
+    //Reward resources
+    this.RewardResource1 = +20;
+    this.RewardResource2 = +30;
+    //reward resource icons
+    this.rewardResource1IconPath;
+    this.rewardResource2IconPath;
 
   }
 
 
 
   drawBox(){
+
+    //check, which resources are there for input and Reward of the mission and change resource values and icon paths accordingly. 
+    let InputArr = [this.InputMoney,this.InputPeople, this.InputOre, this.InputWater];
+    let RewardArr = [this.RewardMoney, this.RewardPeople, this.RewardOre, this.RewardWater];
+
+    //Assign the two Input Resources:
+    for (let i=0; i<InputArr.length; i++){
+      if(InputArr[i]){
+          if(this.InputResource1){
+            this.InputResource2 = InputArr[i];
+
+            switch (i){
+              case 0: 
+                this.inputResource2IconPath = moneyIconPath;
+                break;
+              case 1:
+                this.inputResource2IconPath = peopleIconPath;
+                break;
+              case 2:
+                this.inputResource2IconPath = oreIconPath;
+                break;
+              case 3:
+                this.inputResource2IconPath = waterIconPath;
+                break;
+            }
+
+          } else {
+            this.InputResource1 = InputArr[i];
+
+            switch (i){
+              case 0: 
+                this.inputResource1IconPath = moneyIconPath;
+                break;
+              case 1:
+                this.inputResource1IconPath = peopleIconPath;
+                break;
+              case 2:
+                this.inputResource1IconPath = oreIconPath;
+                break;
+              case 3:
+                this.inputResource1IconPath = waterIconPath;
+                break;
+            }
+
+          }
+          
+      }
+    }
+
+    //Assin the two Reward Resources:
+    for (let i=0; i<RewardArr.length; i++){
+      if(RewardArr[i]){
+          if(this.RewardResource1){
+            this.RewardResource2 = RewardArr[i];
+
+            switch (i){
+              case 0: 
+               this.rewardResource2IconPath = moneyIconPath;
+                break;
+              case 1:
+                this.rewardResource2IconPath = peopleIconPath;
+                break;
+              case 2:
+                this.rewardResource2IconPath = oreIconPath;
+                break;
+              case 3:
+                this.rewardResource2IconPath = waterIconPath;
+                break;
+            }
+
+          } else {
+            this.InputResource1 = InputArr[i];
+
+            switch (i){
+              case 0: 
+                this.rewardResource1IconPath = moneyIconPath;
+                break;
+              case 1:
+                this.rewardResource1IconPath = peopleIconPath;
+                break;
+              case 2:
+                this.rewardResource1IconPath = oreIconPath;
+                break;
+              case 3:
+                this.rewardResource1IconPath = waterIconPath;
+                break;
+            }
+          }
+      }
+    }
+
+
 
     //Draw Frame of Box
     rectMode(CENTER);
@@ -189,7 +299,7 @@ class SoloMissionBox {
     rect(this.rx-this.rw/2+30, this.ry, 40, 60);
     textAlign(CENTER, CENTER);
     fill(255);
-    text(this.rank, this.rx-this.rw/2+30, this.ry);
+    text(this.Rank, this.rx-this.rw/2+30, this.ry);
     
     //Mission Name
     fill(0);
@@ -197,24 +307,27 @@ class SoloMissionBox {
     text(this.name,this.rx-rw/4, this.ry );
 
 
-    //Input Resource 1
-    loadImage(this.Resource1IconPath, img => {
+    //Input Resource 1 with icon
+    loadImage(this.inputResource1IconPath, img => {
       image(img, this.rx, this.ry-30, 12, 25)
     })
     push();
     fill('red');
-    text(this.InputResource1,this.rx+30, this.ry-25/2);
+    text('-'+this.InputResource1,this.rx+30, this.ry-25/2);
     pop();
 
 
-    //Input Resource 2
-    loadImage(this.Resource2IconPath, img => {
+    //Input Resource 2 with icon
+    loadImage(this.inputResource2IconPath, img => {
       image(img, this.rx, this.ry+10, 12, 25)
     })
     push();
     fill('red');
-    text(this.InputResource2,this.rx+30, this.ry+10+25/2);
+    text('-'+this.InputResource2,this.rx+30, this.ry+10+25/2);
     pop();
+
+    //InputShip
+    
   
 
     pop();

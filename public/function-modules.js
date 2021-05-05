@@ -160,6 +160,19 @@ if (cur_status=== 'status_login'){
     //SingleplayerMissions of the player: 
     loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
       //assign all variables of the mission. 
+      singlemissionName = dataReceived[0].Name;
+      singlemissionStory = dataReceived[0].Story;
+      singlemissionTime = dataReceived[0].Time;
+      singlemissionInputMoney = dataReceived[0].Input_Money;
+      singlemissionInputPeople = dataReceived[0].Input_People;
+      singlemissionInputOre = dataReceived[0].Input_Ore;
+      singlemissionInputWater = dataReceived[0].Input_Water;
+      singlemissionInputShips = dataReceived[0].Ships;
+      singlemissionRewardMoney = dataReceived[0].Reward_Money;
+      singlemissionRewardPeople = dataReceived[0].Reward_People;
+      singlemissionRewardOre = dataReceived[0].Reward_Ore;
+      singlemissionRewardWater = dataReceived[0].Reward_Water;
+      singlemissionRank = dataReceived[0].Rank;
     })
 
     //Multiplayer Missions

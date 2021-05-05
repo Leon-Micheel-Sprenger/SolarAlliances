@@ -250,11 +250,29 @@ let multiMissionsBtn;
 let runningMissionsBtn;
 let missionRespawnTimer;
 
+
+//Mission Frame Variables:
 let singlemissionFrame1;
 let singlemissionFrame2;
 let singlemissionFrame3;
 let singlemissionFrame4;
 let singlemissionFrame5;
+
+//Mission1 Variables; 
+let singlemissionName;
+let singlemissionStory;
+let singlemissionTime;
+let singlemissionInputMoney;
+let singlemissionInputPeople;
+let singlemissionInputOre;
+let singlemissionInputWater;
+let singlemissionInputShips;
+let singlemissionRewardMoney;
+let singlemissionRewardPeople;
+let singlemissionRewardOre;
+let singlemissionRewardWater;
+let singlemissionRank;
+
 
 //Missions Interface
  function createMissionInterface(){
@@ -283,22 +301,26 @@ let singlemissionFrame5;
     text("Missions", rx, ry-rh/2.2);
 
 
-    //Mission boxes;
-    singlemissionFrame1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7);
-    singlemissionFrame2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7);
-    singlemissionFrame3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7);
-    singlemissionFrame4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7);
-    singlemissionFrame5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7);
+
+
+    //___________________________________________________________________
+    //Mission boxes and Input;
+    singlemissionFrame1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    // singlemissionFrame2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7);
+    // singlemissionFrame3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7);
+    // singlemissionFrame4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7);
+    // singlemissionFrame5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7);
 
     push()
     fill(255);
     stroke(5);
     singlemissionFrame1.drawBox();
-    singlemissionFrame2.drawBox();
-    singlemissionFrame3.drawBox();
-    singlemissionFrame4.drawBox();
-    singlemissionFrame5.drawBox();
+    // singlemissionFrame2.drawBox();
+    // singlemissionFrame3.drawBox();
+    // singlemissionFrame4.drawBox();
+    // singlemissionFrame5.drawBox();
     pop();
+    
 }
 
 
