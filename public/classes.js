@@ -153,7 +153,7 @@ class Icon {
 
 class SoloMissionBox {
 
-  constructor(rx, ry, rw, rh, missionName='Cargo Transport', missionRank='1',InputResource1=-20, InputResource2=-30, InputShip){
+  constructor(rx, ry, rw, rh, missionName='Cargo Transport', missionRank='1',InputResource1=-20,Resource1IconPath='assets/money-icon.jpg', InputResource2=-30,Resource2IconPath='assets/money-icon.jpg', InputShip){
     this.rx=rx;
     this.ry=ry;
     this.rw=rw;
@@ -166,6 +166,8 @@ class SoloMissionBox {
     this.InputResource1= InputResource1;
     this.InputResource2 = InputResource2;
     this.InputShip = InputShip;
+    this.Resource1IconPath=Resource1IconPath;
+    this.Resource2IconPath=Resource2IconPath;
   }
 
 
@@ -193,7 +195,7 @@ class SoloMissionBox {
 
 
     //Input Resource 1
-    loadImage('assets/money-icon.jpg', img => {
+    loadImage(this.Resource1IconPath, img => {
       image(img, this.rx, this.ry-30, 12, 25)
     })
     push();
@@ -203,7 +205,7 @@ class SoloMissionBox {
 
 
     //Input Resource 2
-    loadImage('assets/money-icon.jpg', img => {
+    loadImage(this.Resource2IconPath, img => {
       image(img, this.rx, this.ry+10, 12, 25)
     })
     push();
