@@ -30,11 +30,18 @@ db.connect(function(err) {
   console.log('connected as id ' + db.threadId);
 });
 
-
+//______________________________________________________________
+//______________________________________________________________
 //Gets and Posts start here
 
 
 
+
+
+
+
+
+//_______________________________________________________________
 //Register Post !!1(also populate default resources.)!!!
 
 app.post('/Register', (req, res)=> {
@@ -82,7 +89,7 @@ app.post('/Register', (req, res)=> {
 
 
 
-
+//___________________________________________________________
 // Login Post
 
 app.post('/Login', (req, res)=> {
@@ -114,7 +121,7 @@ app.post('/Login', (req, res)=> {
 
 
 
-
+//______________________________________________________________
 //Get Player Resources
 app.get('/getPlayerResources/:playerId', (req, res)=> {
   let playerId = req.params.playerId
