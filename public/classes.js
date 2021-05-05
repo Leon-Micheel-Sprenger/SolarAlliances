@@ -1,6 +1,12 @@
 
 //Grid Tile
 
+//const { text } = require("body-parser");
+
+//const { text } = require("body-parser");
+
+
+
 class Tile {
   
   constructor(r, c, side, txt, clr) {
@@ -141,6 +147,79 @@ class Icon {
   }
 
 }
+
+
+//Solo Mission Class:
+
+class SoloMissionBox {
+
+  constructor(rx, ry, rw, rh, missionName='Cargo Transport', missionRank='1',InputResource1=-20, InputResource2=-30, InputShip){
+    this.rx=rx;
+    this.ry=ry;
+    this.rw=rw;
+    this.rh=rh;
+   
+    
+    //Mission Input
+    this.name = missionName;
+    this.rank= missionRank;
+    this.InputResource1= InputResource1;
+    this.InputResource2 = InputResource2;
+    this.InputShip = InputShip;
+  }
+
+
+
+  drawBox(){
+
+    //Draw Frame of Box
+    rectMode(CENTER);
+    rect(this.rx,this.ry,this.rw,this.rh);
+
+    // Mission Info and Inputs
+    push();
+
+    //Rank
+    fill(0);
+    rect(this.rx-this.rw/2+30, this.ry, 40, 60);
+    textAlign(CENTER, CENTER);
+    fill(255);
+    text(this.rank, this.rx-this.rw/2+30, this.ry);
+    
+    //Mission Name
+    fill(0);
+    textSize(15);
+    text(this.name,this.rx-rw/4, this.ry );
+
+
+    //Input Resource 1
+    loadImage('assets/money-icon.jpg', img => {
+      image(img, this.rx, this.ry-30, 12, 25)
+    })
+    push();
+    fill('red');
+    text(this.InputResource1,this.rx+30, this.ry-25/2);
+    pop();
+
+
+    //Input Resource 2
+    loadImage('assets/money-icon.jpg', img => {
+      image(img, this.rx, this.ry+10, 12, 25)
+    })
+    push();
+    fill('red');
+    text(this.InputResource2,this.rx+30, this.ry+10+25/2);
+    pop();
+  
+
+    pop();
+  }
+
+}
+
+
+
+
 
 
 

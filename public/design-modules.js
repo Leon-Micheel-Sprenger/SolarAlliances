@@ -1,7 +1,7 @@
 
 // In here, we are storing all available front end components and designs of p5. 
 // To find other functions and executing commands, go to function-modules.js
-let cur_status = 'status_login';
+let cur_status = 'status_login'; //status_login, status_register, status_play
 
 
 
@@ -130,14 +130,14 @@ let gameStatus= false;
 function createGame(){
 
   gameStatus = true;
+  cur_status = 'status_play';
   InputName.remove();
   InputPass.remove();
   background(220);
   
   createResourceBar();
   createButtons();
-  //createGrid();
-  //drawGrid();
+  
 }
 
 
@@ -171,6 +171,12 @@ let peopleIcon;
 let rankIcon;
 let gameDate;
 
+let moneyIconPath = 'assets/money-icon.jpg';
+let oreIconPath = 'assets/money-icon.jpg';
+let waterIconPath = 'assets/money-icon.jpg';
+let peopleIconPath = 'assets/money-icon.jpg';
+let rankIconPath = 'assets/money-icon.jpg';
+
 let money;
 let ore;
 let water;
@@ -195,11 +201,11 @@ function createResourceBar(){
     barFrame.drawScreen();
     
     // create Icons
-    moneyIcon = new Icon('assets/money-icon.jpg', rx-rw/2+5, ry-rh/3, 20, 32 );
-    waterIcon = new Icon('assets/money-icon.jpg', rx-rw/2+95, ry-rh/3, 20, 32 );
-    oreIcon = new Icon('assets/money-icon.jpg', rx-rw/2+195, ry-rh/3, 20, 32 );
-    peopleIcon = new Icon('assets/money-icon.jpg', rx-rw/2+295, ry-rh/3, 20, 32 );
-    rankIcon = new Icon('assets/money-icon.jpg', rx-rw/2+495, ry-rh/3, 20, 32 );
+    moneyIcon = new Icon(moneyIconPath, rx-rw/2+5, ry-rh/3, 20, 32 );
+    waterIcon = new Icon(waterIconPath, rx-rw/2+95, ry-rh/3, 20, 32 );
+    oreIcon = new Icon(oreIconPath, rx-rw/2+195, ry-rh/3, 20, 32 );
+    peopleIcon = new Icon(peopleIconPath, rx-rw/2+295, ry-rh/3, 20, 32 );
+    rankIcon = new Icon(rankIconPath, rx-rw/2+495, ry-rh/3, 20, 32 );
 
   }
  
@@ -208,12 +214,15 @@ function createResourceBar(){
 //Draw Resource-Values in Resourcebar
 function drawResourceValues(){
   if (gameStatus){
+
    //Resource bar Coordinates;
     rx=width-650/2;
     ry=20;
     rw=660;
     rh= 50;
+
   push();
+
   fill(0);
   textSize(12);
   text(`${money}`,(rx-rw/2+5)+40, ry+5);
@@ -229,22 +238,31 @@ function drawResourceValues(){
 }
 
 
+
+
+
 //________________________________
 // Creating and drawing Missions Interface 
  //enables or disables interface
 let missionFrame;
 let singleMissionsBtn;
 let multiMissionsBtn;
+let runningMissionsBtn;
+let missionRespawnTimer;
 
-let singlemissionFrame;
+let singlemissionFrame1;
+let singlemissionFrame2;
+let singlemissionFrame3;
+let singlemissionFrame4;
+let singlemissionFrame5;
 
 //Missions Interface
  function createMissionInterface(){
 
     rx= width*0.5;
     ry= height*0.5;
-    rw= 600;
-    rh= 650;
+    rw= 700;
+    rh= 750;
 
     //Frame, title and buttons;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
@@ -256,6 +274,9 @@ let singlemissionFrame;
     multiMissionsBtn = new Button(rx+150,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
     multiMissionsBtn.drawButton();
 
+    runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
+    runningMissionsBtn.drawButton();
+
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(30);
@@ -263,11 +284,33 @@ let singlemissionFrame;
 
 
     //Mission boxes;
-    singlemissionFrame = new OnScreenFrame(rx, ry-150, rw-50, rh/7);
+    singlemissionFrame1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7);
+    singlemissionFrame2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7);
+    singlemissionFrame3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7);
+    singlemissionFrame4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7);
+    singlemissionFrame5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7);
+
     push()
     fill(255);
     stroke(5);
-    singlemissionFrame.drawScreen();
+    singlemissionFrame1.drawBox();
+    singlemissionFrame2.drawBox();
+    singlemissionFrame3.drawBox();
+    singlemissionFrame4.drawBox();
+    singlemissionFrame5.drawBox();
     pop();
 }
+
+
+
+
+
+//_____________________________________________________
+//Populating Missions in Missions Interface:
+//Variables:
+
+
+
+
+
 
