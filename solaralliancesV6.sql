@@ -2,8 +2,8 @@
 -- version 4.9.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: May 03, 2021 at 03:32 PM
+-- Host: localhost:3306
+-- Generation Time: May 05, 2021 at 06:44 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -101,9 +101,33 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`Player_Id`, `Name`, `Email`, `Password`, `Rank`, `Faction`, `In_Game_Date`) VALUES
-(7, 'Leon', 'Email', '123', 1, 2, '2350-04-15'),
 (8, 'Name', 'Email', 'Password', 1, 2, '2350-04-15'),
-(9, 'Joao', 'Email', '1234', 1, 2, '2350-04-15');
+(40, 'Leon', '', 'Password', 1, 2, '2350-04-15'),
+(41, 'some', '', 'Password', 1, 2, '2350-04-15'),
+(42, 'Lotti', 'Email', 'Password', 1, 2, '2350-04-15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `player_missions`
+--
+
+CREATE TABLE `player_missions` (
+  `Player_Mission_Id` int(11) NOT NULL,
+  `Player_Id` int(11) NOT NULL,
+  `Mission1` int(11) NOT NULL,
+  `Mission2` int(11) NOT NULL,
+  `Mission3` int(11) NOT NULL,
+  `Mission4` int(11) NOT NULL,
+  `Mission5` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `player_missions`
+--
+
+INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`) VALUES
+(1, 8, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -128,7 +152,10 @@ CREATE TABLE `player_resources` (
 --
 
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player`) VALUES
-(1, 999, 1000, 1000, 100, 100, 1000, 1000, 8);
+(1, 999, 1000, 1000, 100, 100, 1000, 1000, 8),
+(2, 1000, 1000, 1000, 100, 100, 1000, 1000, 41),
+(3, 1000, 1000, 1000, 100, 100, 1000, 1000, 41),
+(4, 1000, 1000, 1000, 100, 100, 1000, 1000, 42);
 
 -- --------------------------------------------------------
 
@@ -293,6 +320,18 @@ ALTER TABLE `player`
   ADD KEY `Faction_2` (`Faction`);
 
 --
+-- Indexes for table `player_missions`
+--
+ALTER TABLE `player_missions`
+  ADD PRIMARY KEY (`Player_Mission_Id`),
+  ADD KEY `Mission1` (`Mission1`),
+  ADD KEY `Mission2` (`Mission2`),
+  ADD KEY `Mission3` (`Mission3`),
+  ADD KEY `Mission4` (`Mission4`),
+  ADD KEY `Mission5` (`Mission5`),
+  ADD KEY `Player_Id` (`Player_Id`);
+
+--
 -- Indexes for table `player_resources`
 --
 ALTER TABLE `player_resources`
@@ -368,13 +407,19 @@ ALTER TABLE `multiplayer_missions`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `player_missions`
+--
+ALTER TABLE `player_missions`
+  MODIFY `Player_Mission_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `player_resources`
 --
 ALTER TABLE `player_resources`
-  MODIFY `PResource_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `PResource_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `player_upgrades`
@@ -421,6 +466,17 @@ ALTER TABLE `computer_trading`
 --
 ALTER TABLE `player`
   ADD CONSTRAINT `player_ibfk_1` FOREIGN KEY (`Faction`) REFERENCES `factions` (`Factions_Id`);
+
+--
+-- Constraints for table `player_missions`
+--
+ALTER TABLE `player_missions`
+  ADD CONSTRAINT `player_missions_ibfk_1` FOREIGN KEY (`Mission1`) REFERENCES `solo_missions` (`Solo_Missions_Id`),
+  ADD CONSTRAINT `player_missions_ibfk_2` FOREIGN KEY (`Mission2`) REFERENCES `solo_missions` (`Solo_Missions_Id`),
+  ADD CONSTRAINT `player_missions_ibfk_3` FOREIGN KEY (`Mission3`) REFERENCES `solo_missions` (`Solo_Missions_Id`),
+  ADD CONSTRAINT `player_missions_ibfk_4` FOREIGN KEY (`Mission4`) REFERENCES `solo_missions` (`Solo_Missions_Id`),
+  ADD CONSTRAINT `player_missions_ibfk_5` FOREIGN KEY (`Mission5`) REFERENCES `solo_missions` (`Solo_Missions_Id`),
+  ADD CONSTRAINT `player_missions_ibfk_6` FOREIGN KEY (`Player_Id`) REFERENCES `player` (`Player_Id`);
 
 --
 -- Constraints for table `player_resources`
