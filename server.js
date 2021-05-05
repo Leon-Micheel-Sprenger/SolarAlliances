@@ -19,7 +19,7 @@ const db = mysql.createConnection({
     user     : 'root',
     password : 'root',
     database : 'solaralliances',
-    port: '3306'
+    port: '8889'
 });
 
 db.connect(function(err) {
@@ -69,9 +69,16 @@ app.post('/Register', (req, res)=> {
 
         let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player) VALUES ('1000', '1000', '1000', '100', '100', '1000', '1000', '${result[0].Player_Id}' ) ; `
 
-        db.query(sql, (err, result)=> {
-          if (err) throw err;
-          console.log(result);
+          db.query(sql, (err, result)=> {
+            if (err) throw err;
+            res.send(result);
+
+            let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, PlayerId, SpaceshipsId) VALUES ('0', '0', '100', '0', '${result[0].Player_Id}', '5') ;`
+            
+            db.query(sql, (err, result)=> {
+              if (err) throw err;
+              console.log(result);
+          })
         })
       })
     }
@@ -145,7 +152,19 @@ app.get('/getPlayerRank/:playerId', (req, res)=> {
 })
 
 
+//Get Player Ships
+app.get('/getPlayerShips/:playerId', (req, res)=> {
+  let playerId = req.params.playerId
+  
+  let sql = `SELECT SpaceshipsID FROM ship_fleet WHERE Player = ${playerId};`;
 
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    console.log(result);
+    res.send(result);
+  })
+})
 
 
 
