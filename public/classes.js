@@ -207,8 +207,8 @@ class SoloMissionBox {
     let InputArr = [this.InputMoney,this.InputPeople, this.InputOre, this.InputWater];
     let RewardArr = [this.RewardMoney, this.RewardPeople, this.RewardOre, this.RewardWater];
 
-    console.log(RewardArr);
-    //Assign the two Input Resources:
+    
+    //Assign the two Input Resources and their Icons:
     for (let i=0; i<InputArr.length; i++){
       if(InputArr[i]){
           if(this.InputResource1){
@@ -278,7 +278,7 @@ class SoloMissionBox {
 
 
 
-    //Assign the two Reward Resources:
+    //Assign the two Reward Resources and Icons:
     for (let i=0; i<RewardArr.length; i++){
       if(RewardArr[i]){
           if(this.RewardResource1){
@@ -326,7 +326,7 @@ class SoloMissionBox {
 
 
 
-    //Draw Frame of Box
+    //Draw Frame of Mission Box
     rectMode(CENTER);
     rect(this.rx,this.ry,this.rw,this.rh);
 
@@ -369,7 +369,6 @@ class SoloMissionBox {
     }
    
 
-
     //InputShip Icon and Time deployed
     loadImage(this.inputShipIconPath, img => {
       image(img, this.rx+90, this.ry-30, 22, 42)
@@ -389,6 +388,7 @@ class SoloMissionBox {
     text('+'+this.RewardResource1,this.rx+this.rw/2-60, this.ry-25);
     pop();
 
+
     //Reward Resource 2
     if (this.RewardResource2){
       loadImage(this.rewardResource2IconPath, img => {
@@ -400,8 +400,6 @@ class SoloMissionBox {
       pop();
     }
     
-
-
 
     //Accept Button
     this.acceptButton = new Button(this.rx+this.rw/2-50,this.ry+30,75,30,'Accept',255,0,20);

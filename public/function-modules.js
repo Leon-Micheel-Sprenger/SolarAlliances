@@ -161,7 +161,7 @@ if (cur_status=== 'status_login'){
 
     //station upgrades
 
-    
+
     //SingleplayerMissions of the player: 
     loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
       //assign all variables of the mission. 
@@ -172,7 +172,7 @@ if (cur_status=== 'status_login'){
       singlemissionInputPeople = dataReceived[0].Input_People;
       singlemissionInputOre = dataReceived[0].Input_Ore;
       singlemissionInputWater = dataReceived[0].Input_Water;
-      singlemissionInputShips = dataReceived[0].Ships;
+      singlemissionInputShips = dataReceived[0].Ships_Id;
       singlemissionRewardMoney = dataReceived[0].Reward_Money;
       singlemissionRewardPeople = dataReceived[0].Reward_People;
       singlemissionRewardOre = dataReceived[0].Reward_Ore;

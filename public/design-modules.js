@@ -227,6 +227,7 @@ function createResourceBar(){
  
 }
 
+
 //Draw Resource-Values in Resourcebar
 function drawResourceValues(){
   if (gameStatus){
@@ -265,6 +266,7 @@ let singleMissionsBtn;
 let multiMissionsBtn;
 let runningMissionsBtn;
 let missionRespawnTimer;
+let missionExitBtn;
 
 
 //Mission Frame Variables:
@@ -299,7 +301,7 @@ let singlemissionAcceptBtn;
     rw= 700;
     rh= 750;
 
-    //Frame, title and buttons;
+    //Frame, title and buttons of Mission Interface;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
     missionFrame.drawScreen();
 
@@ -316,6 +318,8 @@ let singlemissionAcceptBtn;
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Missions", rx, ry-rh/2.2);
+
+    
 
 
 
@@ -345,8 +349,7 @@ let singlemissionAcceptBtn;
 
 
 //_____________________________________________________
-//Populating Missions in Missions Interface:
-//Variables:
+//Accepting a Solo Mission!
 
 
 

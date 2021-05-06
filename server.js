@@ -73,18 +73,38 @@ app.post('/Register', (req, res)=> {
       db.query(sql, (err, result)=> {
         if (err) throw err;
         res.send(result);
+        let playerId = result[0].Player_Id;
 
-        let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player) VALUES ('1000', '1000', '1000', '100', '100', '1000', '1000', '${result[0].Player_Id}' ) ; `
+        let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player_Id) VALUES ('1000', '1000', '1000', '100', '100', '1000', '1000', '${result[0].Player_Id}' ) ; `
 
           db.query(sql, (err, result)=> {
             if (err) throw err;
-            res.send(result);
+           
 
-            let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, PlayerId, SpaceshipsId) VALUES ('0', '0', '100', '0', '${result[0].Player_Id}', '5') ;`
+            let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${playerId}', '5') ;`
             
             db.query(sql, (err, result)=> {
               if (err) throw err;
               console.log(result);
+
+              let sql = `SELECT Solo_Missions_Id FROM solo_missions WHERE Rank=1 ORDER BY RAND() LIMIT 5;`;
+
+              db.query(sql, (err, result) => {
+                if (err) throw err;
+                console.log(result);
+
+                let Mission1 = result[0].Solo_Missions_Id;
+                // let Mission2 = result[1].Solo_Missions_Id;
+                // let Mission3 = result[2].Solo_Missions_Id;
+                // let Mission4 = result[3].Solo_Missions_Id;
+                // let Mission5 = result[4].Solo_Missions_Id;
+
+                let sql = `INSERT INTO player_missions (Player_Id, Mission1) VALUES('${playerId}', '${Mission1}';)`;
+
+                
+
+              })
+
           })
         })
       })
@@ -133,7 +153,7 @@ app.post('/Login', (req, res)=> {
 app.get('/getPlayerResources/:playerId', (req, res)=> {
   let playerId = req.params.playerId
   
-  let sql = `SELECT Money, Water, Ore, People, Max_People, Max_Ore, Max_Water FROM player_resources WHERE Player = ${playerId};`;
+  let sql = `SELECT Money, Water, Ore, People, Max_People, Max_Ore, Max_Water FROM player_resources WHERE Player_Id = ${playerId};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
@@ -163,7 +183,7 @@ app.get('/getPlayerRank/:playerId', (req, res)=> {
 app.get('/getPlayerShips/:playerId', (req, res)=> {
   let playerId = req.params.playerId
   
-  let sql = `SELECT SpaceshipsID FROM ship_fleet WHERE Player = ${playerId};`;
+  let sql = `SELECT Spaceships_Id FROM ship_fleet WHERE Player_Id = ${playerId};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
