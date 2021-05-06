@@ -18,6 +18,7 @@ function setup() {
 
 function draw() {
   drawResourceValues();
+  draw_Shipfleet();
   
   
   noLoop();
