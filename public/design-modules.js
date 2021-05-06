@@ -133,6 +133,9 @@ function registerScreen(){
     //disable Loginbutton and Register player button
     loginBtn.disable();
     registerBtn.disable();
+    fill(255);
+    noStroke();
+    rect(rx, ry+100, 310, 100);
     
     submitRegisterBtn = new Button(rx,ry+200,300,50,'Register',0,255,20);
     submitRegisterBtn.drawButton();
