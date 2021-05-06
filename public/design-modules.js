@@ -5,6 +5,28 @@ let cur_status = 'status_login'; //status_login, status_register, status_play
 
 
 
+
+//Global Variables:
+
+//Resource Icon paths
+let moneyIconPath = 'assets/money-icon.jpg';
+let oreIconPath = 'assets/money-icon.jpg';
+let waterIconPath = 'assets/money-icon.jpg';
+let peopleIconPath = 'assets/money-icon.jpg';
+let rankIconPath = 'assets/money-icon.jpg';
+let emptyIconPath = 'assets/money-icon.jpg';
+
+//Ship Icon Paths
+let transportShipIconPath =  'assets/money-icon.jpg';
+let miningShipIconPath =  'assets/money-icon.jpg';
+let warShipIconPath =  'assets/money-icon.jpg';
+let explorationShipIconPath =  'assets/money-icon.jpg';
+
+
+
+
+
+//_____________________________________________________________________
 //Creating the Grid for the main menu. 
 //Grid variables
 let tilesArr= [];
@@ -171,12 +193,6 @@ let peopleIcon;
 let rankIcon;
 let gameDate;
 
-let moneyIconPath = 'assets/money-icon.jpg';
-let oreIconPath = 'assets/money-icon.jpg';
-let waterIconPath = 'assets/money-icon.jpg';
-let peopleIconPath = 'assets/money-icon.jpg';
-let rankIconPath = 'assets/money-icon.jpg';
-
 let money;
 let ore;
 let water;
@@ -252,11 +268,11 @@ let missionRespawnTimer;
 
 
 //Mission Frame Variables:
-let singlemissionFrame1;
-let singlemissionFrame2;
-let singlemissionFrame3;
-let singlemissionFrame4;
-let singlemissionFrame5;
+let singlemission1;
+let singlemission2;
+let singlemission3;
+let singlemission4;
+let singlemission5;
 
 //Mission1 Variables; 
 let singlemissionName;
@@ -272,6 +288,7 @@ let singlemissionRewardPeople;
 let singlemissionRewardOre;
 let singlemissionRewardWater;
 let singlemissionRank;
+let singlemissionAcceptBtn;
 
 
 //Missions Interface
@@ -304,21 +321,21 @@ let singlemissionRank;
 
 
     //___________________________________________________________________
-    //Mission boxes and Input;
-    singlemissionFrame1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    // singlemissionFrame2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7);
-    // singlemissionFrame3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7);
-    // singlemissionFrame4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7);
-    // singlemissionFrame5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7);
+    //Mission boxes and Input; (all of the same mission at this point)
+    singlemission1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
 
     push()
     fill(255);
     stroke(5);
-    singlemissionFrame1.drawBox();
-    // singlemissionFrame2.drawBox();
-    // singlemissionFrame3.drawBox();
-    // singlemissionFrame4.drawBox();
-    // singlemissionFrame5.drawBox();
+    singlemission1.drawBox();
+    singlemission2.drawBox();
+    singlemission3.drawBox();
+    singlemission4.drawBox();
+    singlemission5.drawBox();
     pop();
     
 }

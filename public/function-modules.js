@@ -1,13 +1,11 @@
 //In here, you will find all function components, that are executing commands, pushing and pulling data to the server and more.
 
 
-
+//_______________________________________________________
 // Mouse Pressed Function starts here
-
 function mousePressed(){
 
 //Login Button clicked
-  
     if (loginBtn.isClicked(mouseX, mouseY) && cur_status==='status_login'){
         doLogin();
     } 
@@ -26,25 +24,31 @@ function mousePressed(){
           cur_status === 'status_login';
           reactivateLogin();
           
-
         }
       }
     }
     
 
 
-
 //Missions Button clicked
     if (gameStatus){
       if(missionButton.isClicked(mouseX, mouseY)){
         createMissionInterface();
-        
       }
     }
+
+//Mission Accept Button clicked
+    if (cur_status === 'status_play'){
+      if(singlemission1.acceptButton.isClicked(mouseX, mouseY)){
+        console.log('click');
+      }
+    }
+   
     
 
-
 } 
+//_____________________________________________________
+//END OF MOUSEPRESSED
 
 
 //_________________________________________________
@@ -157,6 +161,7 @@ if (cur_status=== 'status_login'){
 
     //station upgrades
 
+    
     //SingleplayerMissions of the player: 
     loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
       //assign all variables of the mission. 
