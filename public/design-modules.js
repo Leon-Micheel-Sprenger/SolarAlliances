@@ -271,13 +271,20 @@ let runningMissionsBtn;
 let missionRespawnTimer;
 let missionExitBtn;
 
+let positionSlot1;
+let positi
+
 
 //Mission Frame Variables:
+
+
 let singlemission1;
 let singlemission2;
 let singlemission3;
 let singlemission4;
 let singlemission5;
+
+let singleMissionsArr = [];
 
 //Mission1 Variables; 
 let singlemissionName;
@@ -329,12 +336,18 @@ let singlemissionAcceptBtn;
 
     //___________________________________________________________________
     //Mission boxes and Input; (all of the same mission at this point)
+
+    //create new missions in singleMissionsArr
+ 
+
     singlemission1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
     singlemission2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
     singlemission3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
     singlemission4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
     singlemission5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
 
+    singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
+   
     push()
     fill(255);
     stroke(5);
@@ -354,6 +367,22 @@ let singlemissionAcceptBtn;
 //_____________________________________________________
 //Accepting a Solo Mission!
 
+function acceptSoloMission(missionNumber){
+  
+  //Deduct resources of the mission from player resources
+  //block ship for use for the amount of time the mission takes! (change status)
+  //update player resources and ship on database
+
+  
+  //remove accepted mission and put it into accepted missions
+  //send update to database
+  
+
+
+
+
+  
+}
 
 
 

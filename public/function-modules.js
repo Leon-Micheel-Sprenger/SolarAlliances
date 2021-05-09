@@ -39,9 +39,14 @@ function mousePressed(){
 
 //Mission Accept Button clicked
     if (cur_status === 'status_play'){
-      if(singlemission1.acceptButton.isClicked(mouseX, mouseY)){
-        console.log('click');
+      for (let i=0; i<5; i++){
+        
+        if(singleMissionsArr[i].acceptButton.isClicked(mouseX, mouseY)){
+          console.log('click');
+          acceptSoloMission(i);
+        }
       }
+      
     }
    
     
