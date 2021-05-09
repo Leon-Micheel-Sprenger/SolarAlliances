@@ -158,7 +158,7 @@ if (cur_status=== 'status_login'){
     // add all the loadJSON paths below: 
 
     //ships
-
+//hello this is my merge conflict text
     //station upgrades
 
 
