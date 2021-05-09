@@ -2,8 +2,8 @@
 -- version 4.9.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: May 06, 2021 at 03:18 PM
+-- Host: localhost:3306
+-- Generation Time: May 09, 2021 at 05:29 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -101,11 +101,7 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`Player_Id`, `Name`, `Email`, `Password`, `Rank`, `Faction_Id`, `In_Game_Date`) VALUES
-(8, 'Name', 'Email', 'Password', 1, 2, '2350-04-15'),
-(40, 'Leon', '', 'Password', 1, 2, '2350-04-15'),
-(41, 'some', '', 'Password', 1, 2, '2350-04-15'),
-(42, 'Lotti', 'Email', 'Password', 1, 2, '2350-04-15'),
-(43, 'Alex', 'Email', '456', 1, 2, '2350-04-15');
+(50, 'Name', 'Email', 'Password', 1, 2, '2350-04-15');
 
 -- --------------------------------------------------------
 
@@ -128,7 +124,7 @@ CREATE TABLE `player_missions` (
 --
 
 INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`) VALUES
-(1, 8, 1, 1, 1, 1, 1);
+(3, 50, 1, 4, 2, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -153,11 +149,7 @@ CREATE TABLE `player_resources` (
 --
 
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
-(1, 999, 1000, 1000, 100, 100, 1000, 1000, 8),
-(2, 1000, 1000, 1000, 100, 100, 1000, 1000, 41),
-(3, 1000, 1000, 1000, 100, 100, 1000, 1000, 41),
-(4, 1000, 1000, 1000, 100, 100, 1000, 1000, 42),
-(5, 1000, 1000, 1000, 100, 100, 1000, 1000, 43);
+(12, 1000, 1000, 1000, 100, 100, 1000, 1000, 50);
 
 -- --------------------------------------------------------
 
@@ -187,6 +179,13 @@ CREATE TABLE `ship_fleet` (
   `Spaceships_Id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `ship_fleet`
+--
+
+INSERT INTO `ship_fleet` (`Ship_Fleet_ID`, `Ship_on_Mission`, `Ship_UnderRepair`, `Ship_Health`, `Ship_UnderConstruction`, `Player_Id`, `Spaceships_Id`) VALUES
+(6, 0, 0, 100, 0, 50, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -215,7 +214,11 @@ CREATE TABLE `solo_missions` (
 --
 
 INSERT INTO `solo_missions` (`Solo_Missions_Id`, `Name`, `Story`, `Time`, `Input_Money`, `Input_People`, `Input_Ore`, `Input_Water`, `Ships_Id`, `Reward_Money`, `Reward_People`, `Reward_Ore`, `Reward_Water`, `Rank`) VALUES
-(1, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1);
+(1, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(2, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(3, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(4, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(5, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -409,19 +412,19 @@ ALTER TABLE `multiplayer_missions`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `player_missions`
 --
 ALTER TABLE `player_missions`
-  MODIFY `Player_Mission_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Player_Mission_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `player_resources`
 --
 ALTER TABLE `player_resources`
-  MODIFY `PResource_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `PResource_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `player_upgrades`
@@ -433,13 +436,13 @@ ALTER TABLE `player_upgrades`
 -- AUTO_INCREMENT for table `ship_fleet`
 --
 ALTER TABLE `ship_fleet`
-  MODIFY `Ship_Fleet_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Ship_Fleet_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `solo_missions`
 --
 ALTER TABLE `solo_missions`
-  MODIFY `Solo_Missions_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Solo_Missions_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `spaceships`
