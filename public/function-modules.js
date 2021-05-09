@@ -10,6 +10,7 @@ function mousePressed(){
         doLogin();
     } 
 
+    //Register new player button clicked
     if(registerBtn.isClicked(mouseX, mouseY)){
       cur_status = 'status_register';
       registerScreen();
@@ -17,6 +18,7 @@ function mousePressed(){
     
     }
 
+    //Register Button clicked
     if(cur_status === 'status_register'){
       if (submitRegisterBtn.isClicked(mouseX, mouseY)){
         doRegister();
@@ -29,7 +31,6 @@ function mousePressed(){
     }
     
 
-
 //Missions Button clicked
     if (gameStatus){
       if(missionButton.isClicked(mouseX, mouseY)){
@@ -40,13 +41,18 @@ function mousePressed(){
 //Mission Accept Button clicked
     if (cur_status === 'status_play'){
       for (let i=0; i<5; i++){
-        
         if(singleMissionsArr[i].acceptButton.isClicked(mouseX, mouseY)){
-          console.log('click');
           acceptSoloMission(i);
         }
       }
-      
+    }
+
+//Mission Exit Button clicked
+    if(cur_status === 'status_play'){
+      if (missionExitBtn.isClicked(mouseX, mouseY)){
+        createGame();
+        loop();
+      }
     }
    
     

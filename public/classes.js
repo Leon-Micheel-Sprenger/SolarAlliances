@@ -107,6 +107,46 @@ class Button {
 
 
 
+//Exit Button class 
+
+class ExitButton {
+
+  constructor(rx, ry, rw, rh){
+    this.rx=rx;
+    this.ry=ry;
+    this.rw=rw;
+    this.rh=rh;
+    this.enable=true;
+  }
+
+
+  drawExitButton() {
+    loadImage(exitButtonIconPath, img => {
+      image(img, this.rx, this.ry, this.rw, this.rh)
+    })
+  }
+
+  isClicked(x,y){
+    if(this.enable===true){
+      if ((x>this.rx && x<this.rx+this.rw) && (y>this.ry && y<this.ry+this.rh)){
+        return true;
+      }
+    }
+    else {
+      if (this.enable === false){
+        console.log('Button disabled');
+      }
+      return false;
+    }
+  }
+
+}
+
+
+
+
+
+
 //OnScreen Interface
 
 class OnScreenFrame {
@@ -145,6 +185,8 @@ class Icon {
       })
     
   }
+
+  
 
 }
 
@@ -198,7 +240,7 @@ class SoloMissionBox {
     this.rewardResource2IconPath= emptyIconPath;
 
 
-    //Accept Button
+    //AcceptButton
     this.acceptButton;
 
   }

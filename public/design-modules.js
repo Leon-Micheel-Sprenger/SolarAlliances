@@ -22,6 +22,8 @@ let miningShipIconPath =  'assets/money-icon.jpg';
 let warShipIconPath =  'assets/money-icon.jpg';
 let explorationShipIconPath =  'assets/money-icon.jpg';
 
+//Other paths
+let exitButtonIconPath = 'assets/exit-icon.jpg';
 
 
 
@@ -271,8 +273,7 @@ let runningMissionsBtn;
 let missionRespawnTimer;
 let missionExitBtn;
 
-let positionSlot1;
-let positi
+
 
 
 //Mission Frame Variables:
@@ -324,6 +325,9 @@ let singlemissionAcceptBtn;
     runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
     runningMissionsBtn.drawButton();
 
+    missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
+    missionExitBtn.drawExitButton();
+
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(30);
@@ -370,7 +374,7 @@ let singlemissionAcceptBtn;
 function acceptSoloMission(missionNumber){
   
   //Deduct resources of the mission from player resources
-  //block ship for use for the amount of time the mission takes! (change status)
+  //block ship for use for the amount of time the mission takes! (change status of ship)
   //update player resources and ship on database
 
   
