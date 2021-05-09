@@ -94,14 +94,17 @@ app.post('/Register', (req, res)=> {
                 console.log(result);
 
                 let Mission1 = result[0].Solo_Missions_Id;
-                // let Mission2 = result[1].Solo_Missions_Id;
-                // let Mission3 = result[2].Solo_Missions_Id;
-                // let Mission4 = result[3].Solo_Missions_Id;
-                // let Mission5 = result[4].Solo_Missions_Id;
+                let Mission2 = result[1].Solo_Missions_Id;
+                let Mission3 = result[2].Solo_Missions_Id;
+                let Mission4 = result[3].Solo_Missions_Id;
+                let Mission5 = result[4].Solo_Missions_Id;
 
-                let sql = `INSERT INTO player_missions (Player_Id, Mission1) VALUES('${playerId}', '${Mission1}';)`;
+                let sql = `INSERT INTO player_missions (Player_Id, Mission1, Mission2, Mission3, Mission4, Mission5) VALUES('${playerId}', '${Mission1}', '${Mission2}', '${Mission3}', '${Mission4}', '${Mission5}');`;
 
-                
+                db.query(sql, (err, result)=> {
+                  if (err) throw err;
+                  
+                })
 
               })
 
