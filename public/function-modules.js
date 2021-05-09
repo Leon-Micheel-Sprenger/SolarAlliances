@@ -158,7 +158,14 @@ if (cur_status=== 'status_login'){
     // add all the loadJSON paths below: 
 
     //ships
-//hello this is my merge conflict text
+
+    loadJSON('/getPlayerShips/'+playerId, (dataReceived)=> {
+      shipId = dataReceived[0].Spaceships_Id;
+      console.log(dataReceived);
+      loop(); 
+    }) 
+
+
     //station upgrades
 
 
@@ -188,6 +195,7 @@ if (cur_status=== 'status_login'){
 
 
     createGame();
+    create_gride();
   }
   })
 
