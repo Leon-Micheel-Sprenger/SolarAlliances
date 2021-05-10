@@ -329,15 +329,18 @@ let singlemissionAcceptBtn;
 
     missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
     missionExitBtn.drawExitButton();
-
-    missionRespawnTime = 
-
+ 
+    push();
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Missions", rx, ry-rh/2.2);
     textSize(15);
     text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
+    fill('purple');
+    textStyle(BOLD);
+    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
+    pop();
     
 
 

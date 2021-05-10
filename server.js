@@ -222,6 +222,26 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
 })
 
 
+
+
+
+//get soloMission respawn timer
+app.get('/getRespawnTimer/:playerId/', (req, res)=> {
+  let playerId = req.params.playerId;
+
+  let sql = `SELECT RespawnMissionTime FROM player_missions WHERE Player_Id = ${playerId};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+    
+  })
+})
+
+
+
+
+
 //Update player resources after accepted solo mission
 app.post('/updatePlayerResources', (req, res)=> {
   

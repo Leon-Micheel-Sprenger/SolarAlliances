@@ -194,6 +194,11 @@ if (cur_status=== 'status_login'){
       
     })
 
+    //Load Mission Respawn timer
+    loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
+      missionRespawnTime = dataReceived[0].RespawnMissionTime;
+    })
+
     //Load Multiplayer Missions
 
 
