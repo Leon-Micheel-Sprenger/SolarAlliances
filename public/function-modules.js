@@ -235,10 +235,7 @@ function acceptSoloMission(missionNumber){
   ore -= acceptedMission.InputOre;
   water -= acceptedMission.InputWater;
 
-  //block ship for use of the player for time of mission (change status on DB): 
-
-
-  //Update Database!
+  //Update resources on DB!
   dataSent = {
     "Player_Id": playerId,
     "Money": money,
@@ -247,16 +244,32 @@ function acceptSoloMission(missionNumber){
     "People": people
   }
   
-  httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
-    
-  } )
+  httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {} )
 
 
+
+
+  //block ship for use of the player for time of mission (change status on DB): 
 
 
   
-  //remove accepted mission and put it into accepted missions
+
+ //put accepted mission into accepted_missions (get accepted missions somewhere from db and grey them out!)
   //send update to database
+  
+  //Disable button of accepted mission and make it grey:
+  acceptedMission.acceptButton.disable();
+  push();
+  fill('rgba(148,148,148, 0.7)');
+  rectMode(CENTER);
+  rect(acceptedMission.rx, acceptedMission.ry, acceptedMission.rw, acceptedMission.rh);
+  pop();
+
+
+ 
+
+
+
   
   
 }

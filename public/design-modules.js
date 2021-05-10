@@ -1,9 +1,7 @@
 
-// In here, we are storing all available front end components and designs of p5. 
-// To find other functions and executing commands, go to function-modules.js
+// In here, we are storing all available front-end components and designs of p5. 
+// To find backend functions and executing commands, go to function-modules.js
 let cur_status = 'status_login'; //status_login, status_register, status_play
-
-
 
 
 //Global Variables:
@@ -29,7 +27,7 @@ let exitButtonIconPath = 'assets/exit-icon.jpg';
 
 
 //_____________________________________________________________________
-//Creating the Grid for the main menu. 
+//Creating the Grid for the main menu. (not used, just for reference) 
 //Grid variables
 let tilesArr= [];
 let gridStartX=0;
