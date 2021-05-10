@@ -207,6 +207,7 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
   db.query(sql, (err, result)=> {
     if(err) throw err;
     console.log(result);
+    //let RespawnMissionTime = result[0].RespawnMissionTime;
 
     if(result.length>0){
 
@@ -218,6 +219,25 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
       })
     }
   })
+})
+
+
+//Update player resources after accepted solo mission
+app.post('/updatePlayerResources', (req, res)=> {
+  
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+  let Water = req.body.Water;
+  let Ore = req.body.Ore;
+  let People = req.body.People;
+
+  let sql = `UPDATE player_resources SET Money=${Money}, Water=${Water}, Ore=${Ore}, People=${People} WHERE Player_Id=${Player_Id}; `;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+  })
+
 })
 
 

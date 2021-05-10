@@ -233,6 +233,8 @@ function createResourceBar(){
 }
 
 
+
+
 //Draw Resource-Values in Resourcebar
 function drawResourceValues(){
   if (gameStatus){
@@ -253,7 +255,7 @@ function drawResourceValues(){
   text(`${people}/${max_people}`,(rx-rw/2+5)+340, ry+5);
   text(`${rank}`,rx-rw/2+520, ry+5);
   text(`Year: ${gameDate}`,rx-rw/2+595, ry+5);
-
+    
   pop();
 
   }
@@ -270,7 +272,7 @@ let missionFrame;
 let singleMissionsBtn;
 let multiMissionsBtn;
 let runningMissionsBtn;
-let missionRespawnTimer;
+let missionRespawnTime;
 let missionExitBtn;
 
 
@@ -328,11 +330,14 @@ let singlemissionAcceptBtn;
     missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
     missionExitBtn.drawExitButton();
 
+    missionRespawnTime = 
+
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Missions", rx, ry-rh/2.2);
-
+    textSize(15);
+    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
     
 
 
@@ -368,25 +373,7 @@ let singlemissionAcceptBtn;
 
 
 
-//_____________________________________________________
-//Accepting a Solo Mission!
 
-function acceptSoloMission(missionNumber){
-  
-  //Deduct resources of the mission from player resources
-  //block ship for use for the amount of time the mission takes! (change status of ship)
-  //update player resources and ship on database
-
-  
-  //remove accepted mission and put it into accepted missions
-  //send update to database
-  
-
-
-
-
-  
-}
 
 
 

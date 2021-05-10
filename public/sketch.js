@@ -18,8 +18,6 @@ function setup() {
 
 function draw() {
   drawResourceValues();
-  
-  
   noLoop();
   console.log(cur_status);
   

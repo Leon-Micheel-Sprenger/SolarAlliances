@@ -38,16 +38,18 @@ function mousePressed(){
       }
     }
 
-//Mission Accept Button clicked
+//Solo Mission Accept Button clicked
     if (cur_status === 'status_play'){
       for (let i=0; i<5; i++){
         if(singleMissionsArr[i].acceptButton.isClicked(mouseX, mouseY)){
           acceptSoloMission(i);
+          createResourceBar();
+          loop();
         }
       }
     }
 
-//Mission Exit Button clicked
+//Solo Mission Exit Button clicked
     if(cur_status === 'status_play'){
       if (missionExitBtn.isClicked(mouseX, mouseY)){
         createGame();
@@ -169,7 +171,7 @@ if (cur_status=== 'status_login'){
     // add all the loadJSON paths below: 
 
     //ships
-//hello this is my merge conflict text
+
     //station upgrades
 
 
@@ -189,9 +191,10 @@ if (cur_status=== 'status_login'){
       singlemissionRewardOre = dataReceived[0].Reward_Ore;
       singlemissionRewardWater = dataReceived[0].Reward_Water;
       singlemissionRank = dataReceived[0].Rank;
+      
     })
 
-    //Multiplayer Missions
+    //Load Multiplayer Missions
 
 
 
@@ -207,6 +210,51 @@ if (cur_status=== 'status_login'){
    }
   }
 
+
+
+
+
+
+
+
+//_____________________________________________________
+//Accepting a Solo Mission!
+
+function acceptSoloMission(missionNumber){
+  
+  let acceptedMission = singleMissionsArr[missionNumber];
+
+  //Deduct resources of the mission from the player resources:
+  money -= acceptedMission.InputMoney;
+  people -= acceptedMission.InputPeople;
+  ore -= acceptedMission.InputOre;
+  water -= acceptedMission.InputWater;
+
+  //block ship for use of the player for time of mission (change status on DB): 
+
+
+  //Update Database!
+  dataSent = {
+    "Player_Id": playerId,
+    "Money": money,
+    "Water": water,
+    "Ore": ore,
+    "People": people
+  }
+  
+  httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
+    
+  } )
+
+
+
+
+  
+  //remove accepted mission and put it into accepted missions
+  //send update to database
+  
+  
+}
 
   
 
