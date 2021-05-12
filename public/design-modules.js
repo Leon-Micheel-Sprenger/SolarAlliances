@@ -285,6 +285,7 @@ let singlemission5;
 
 let singleMissionsArr = [];
 
+let runningSoloMissions = [];
 
 //Mission1 Variables; 
 let singlemissionId;
@@ -413,19 +414,31 @@ let singlemission5AcceptBtn;
 
 
     //___________________________________________________________________
-    //Mission boxes and Input; (all of the same mission at this point)
-
-    //create new missions in singleMissionsArr
+    //Mission boxes and Input;
  
 
-    singlemission1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7,singlemissionId, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7,singlemission2Id, singlemission2Name, singlemission2Story, singlemission2Time, singlemission2InputMoney, singlemission2InputPeople, singlemission2InputOre, singlemission2InputWater, singlemission2InputShips, singlemission2RewardMoney, singlemission2RewardPeople, singlemission2RewardOre, singlemission2RewardWater, singlemission2Rank);
+    singlemission3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7,singlemission3Id, singlemission3Name, singlemission3Story, singlemission3Time, singlemission3InputMoney, singlemission3InputPeople, singlemission3InputOre, singlemission3InputWater, singlemission3InputShips, singlemission3RewardMoney, singlemission3RewardPeople, singlemission3RewardOre, singlemission3RewardWater, singlemission3Rank);
+    singlemission4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7,singlemission4Id, singlemission4Name, singlemission4Story, singlemission4Time, singlemission4InputMoney, singlemission4InputPeople, singlemission4InputOre, singlemission4InputWater, singlemission4InputShips, singlemission4RewardMoney, singlemission4RewardPeople, singlemission4RewardOre, singlemission4RewardWater, singlemission4Rank);
+    singlemission5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7,singlemission5Id, singlemission5Name, singlemission5Story, singlemission5Time, singlemission5InputMoney, singlemission5InputPeople, singlemission5InputOre, singlemission5InputWater, singlemission5InputShips, singlemission5RewardMoney, singlemission5RewardPeople, singlemission5RewardOre, singlemission5RewardWater, singlemission5Rank);
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
-   
+
+    console.log(runningSoloMissions);
+
+
+    //Disable accepted missions
+  	 for (let i=0; i<singleMissionsArr.length; i++){
+       for (let j=0; j<runningSoloMissions.length; j++){
+        if(singleMissionsArr[i].missionId === runningSoloMissions[j]){
+
+          singleMissionsArr[i].acceptedMission();
+        }
+      }
+     }
+
+
     push()
     fill(255);
     stroke(5);
@@ -435,6 +448,9 @@ let singlemission5AcceptBtn;
     singlemission4.drawBox();
     singlemission5.drawBox();
     pop();
+
+
+    
     
 }
 

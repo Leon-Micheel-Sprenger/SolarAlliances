@@ -130,14 +130,14 @@ app.post('/Login', (req, res)=> {
 
   let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${password}';`;
 
-  db.query(sql, (err, result)=> {     // add if statement for duplicate usernames!
+  db.query(sql, (err, result)=> {     
     if (err) throw err;
     
 
     if (result.length<1){    //if user exists not
       
       res.send(result);
-      //alert message: this user doesnt exist --> please register.
+      
 
         } else res.send(result);  
      
@@ -206,9 +206,7 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
-    console.log(result);
-
-
+    
     if(result.length>0){
 
       let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1} OR Solo_Missions_Id = ${result[0].Mission2} OR Solo_Missions_Id = ${result[0].Mission3} OR Solo_Missions_Id = ${result[0].Mission4} OR Solo_Missions_Id = ${result[0].Mission5};`
@@ -223,10 +221,8 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
 
 
 
-
-
 //get soloMission respawn timer
-app.get('/getRespawnTimer/:playerId/', (req, res)=> {
+app.get('/getRespawnTimer/:playerId', (req, res)=> {
   let playerId = req.params.playerId;
 
   let sql = `SELECT RespawnMissionTime FROM player_missions WHERE Player_Id = ${playerId};`;
@@ -237,6 +233,19 @@ app.get('/getRespawnTimer/:playerId/', (req, res)=> {
     
   })
 })
+
+
+//get Running Missions from DB
+app.get('/getRunningMissions/:playerId', (req, res)=> {
+  let playerId = req.params.playerId;
+
+  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id=${playerId};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+  })
+});
 
 
 
@@ -263,7 +272,17 @@ app.post('/updatePlayerResources', (req, res)=> {
 
 //Update Accepted Missions of Player, when Mission was accepted
 app.post('/updateAcceptedMissions', (req, res)=> {
+  
+  let Player_Id = req.body.Player_Id;
+  let Mission_Id = req.body.Mission_Id;
 
+  let sql = `INSERT INTO accepted_solomissions (Player_Id, Solo_Mission_Id) VALUES (${Player_Id}, ${Mission_Id});`
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+    console.log(result);
+  })
 })
 
 
