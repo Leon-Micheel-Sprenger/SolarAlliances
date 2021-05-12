@@ -202,16 +202,16 @@ app.get('/getPlayerShips/:playerId', (req, res)=> {
 app.get('/getPlayerMissions/:playerId', (req, res)=> {
   let playerId = req.params.playerId;
 
-  let sql= `SELECT Mission1 FROM player_missions WHERE Player_Id = ${playerId};`;
+  let sql= `SELECT Mission1, Mission2, Mission3, Mission4, Mission5 FROM player_missions WHERE Player_Id = ${playerId};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
     console.log(result);
-    //let RespawnMissionTime = result[0].RespawnMissionTime;
+
 
     if(result.length>0){
 
-      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1};`
+      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1} OR Solo_Missions_Id = ${result[0].Mission2} OR Solo_Missions_Id = ${result[0].Mission3} OR Solo_Missions_Id = ${result[0].Mission4} OR Solo_Missions_Id = ${result[0].Mission5};`
 
       db.query(sql, (err, result)=> {
         if(err) throw err;
@@ -260,6 +260,11 @@ app.post('/updatePlayerResources', (req, res)=> {
 
 })
 
+
+//Update Accepted Missions of Player, when Mission was accepted
+app.post('/updateAcceptedMissions', (req, res)=> {
+
+})
 
 
 

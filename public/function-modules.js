@@ -177,7 +177,7 @@ if (cur_status=== 'status_login'){
 
     //SingleplayerMissions of the player: 
     loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
-      //assign all variables of the mission. 
+      //assign all variables of the mission1. 
       singlemissionName = dataReceived[0].Name;
       singlemissionStory = dataReceived[0].Story;
       singlemissionTime = dataReceived[0].Time;
@@ -191,6 +191,8 @@ if (cur_status=== 'status_login'){
       singlemissionRewardOre = dataReceived[0].Reward_Ore;
       singlemissionRewardWater = dataReceived[0].Reward_Water;
       singlemissionRank = dataReceived[0].Rank;
+
+      //assign all other missions below here with respective index
       
     })
 
@@ -256,6 +258,10 @@ function acceptSoloMission(missionNumber){
 
  //put accepted mission into accepted_missions (get accepted missions somewhere from db and grey them out!)
   //send update to database
+
+
+
+
   
   //Disable button of accepted mission and make it grey:
   acceptedMission.acceptButton.disable();
