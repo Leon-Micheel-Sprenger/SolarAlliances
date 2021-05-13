@@ -30,14 +30,41 @@ db.connect(function(err) {
   console.log('connected as id ' + db.threadId);
 });
 
+
 //______________________________________________________________
+
+
+//______________________________________________________________
+//Other server logic
+
+
+
+//_______________________________________________________________
+//update Solo missions every 5 minutes
+
+
+// setInterval(function(){
+//   let playerId;
+//    //
+//   //update one of the missions, that is NOT in accepted missions!
+  
+//   app.post('/sendPlayerId', (req, res)=> {
+
+//     playerId = req.body.playerId;
+    
+//     let sql = `SELECT `
+//   })
+
+//   console.log(playerId);
+// }, 60000)
+
+
+
+
+
+
 //______________________________________________________________
 //Gets and Posts start here
-
-
-
-
-
 
 
 
@@ -235,6 +262,9 @@ app.get('/getRespawnTimer/:playerId', (req, res)=> {
 })
 
 
+
+
+
 //get Running Missions from DB
 app.get('/getRunningMissions/:playerId', (req, res)=> {
   let playerId = req.params.playerId;
@@ -281,7 +311,7 @@ app.post('/updateAcceptedMissions', (req, res)=> {
   db.query(sql, (err, result)=> {
     if(err) throw err;
     res.send(result);
-    console.log(result);
+         
   })
 })
 

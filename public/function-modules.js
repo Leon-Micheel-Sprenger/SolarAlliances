@@ -53,6 +53,7 @@ function mousePressed(){
 //Solo Mission Exit Button clicked
     if(cur_status === 'status_play'){
       if (missionExitBtn.isClicked(mouseX, mouseY)){
+        missionMenuEnable = false;
         createGame();
         loop();
       }
@@ -263,6 +264,7 @@ if (cur_status=== 'status_login'){
     //Load Mission Respawn timer
     loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
       missionRespawnTime = dataReceived[0].RespawnMissionTime;
+    
     })
 
 
@@ -292,16 +294,14 @@ if (cur_status=== 'status_login'){
 
 
 
-
-
-
-
 //_____________________________________________________
 //Accepting a Solo Mission!
 
 function acceptSoloMission(missionNumber){
   
   let acceptedMission = singleMissionsArr[missionNumber];
+
+  
 
   //Deduct resources of the mission from the player resources:
   money -= acceptedMission.InputMoney;
@@ -321,8 +321,8 @@ function acceptSoloMission(missionNumber){
   
   httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {} )
 
-
- //put accepted mission into accepted_missions 
+  //remove mission from playerMissions and put it into acceptedmission (running missions)  
+  //singleMissionsArr.splice(missionNumber,1);
   httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {})
 
 
@@ -351,3 +351,10 @@ function acceptSoloMission(missionNumber){
   
 
 
+// //Sending the playerId to the server
+// function sendPlayerId_toServer(){
+//   dataSent = {
+//     "playerId": playerId
+//   }
+//   httpPost('/sendPlayerId', 'json',dataSent, (dataReceived)=> {})
+// }

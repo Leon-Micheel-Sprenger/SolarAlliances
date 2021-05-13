@@ -1,5 +1,7 @@
 
 // In here, we are storing all available front-end components and designs of p5. 
+
+
 // To find backend functions and executing commands, go to function-modules.js
 let cur_status = 'status_login'; //status_login, status_register, status_play
 
@@ -162,6 +164,8 @@ function createGame(){
   
   createResourceBar();
   createButtons();
+
+  //sendPlayerId_toServer();
   
 }
 
@@ -273,6 +277,8 @@ let runningMissionsBtn;
 let missionRespawnTime;
 let missionExitBtn;
 
+let missionMenuEnable = false;
+
 
 
 
@@ -283,9 +289,11 @@ let singlemission3;
 let singlemission4;
 let singlemission5;
 
-let singleMissionsArr = [];
+let singleMissionsArr = []; //all displayed Missions
 
-let runningSoloMissions = [];
+let opensingleMissionsArr = []; //all open solo missions (reference by index of singleMissionsArr)
+
+let runningSoloMissions = []; // all running missions (reference by MissionId)
 
 //Mission1 Variables; 
 let singlemissionId;
@@ -373,8 +381,10 @@ let singlemission5Rank;
 let singlemission5AcceptBtn;
 
 
-//Missions Interface
+//Create AND draw Missions Interface
  function createMissionInterface(){
+
+  missionMenuEnable = true;
 
     rx= width*0.5;
     ry= height*0.5;
@@ -425,20 +435,33 @@ let singlemission5AcceptBtn;
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
+    
+
     console.log(runningSoloMissions);
 
 
-    //Disable accepted missions
+    //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr
   	 for (let i=0; i<singleMissionsArr.length; i++){
        for (let j=0; j<runningSoloMissions.length; j++){
         if(singleMissionsArr[i].missionId === runningSoloMissions[j]){
-
           singleMissionsArr[i].acceptedMission();
-        }
+          runningSoloMissions[j] = i;
+        } 
       }
      }
 
+     //assign openMissions array
+     let dummyArray = [0,1,2,3,4];
 
+     opensingleMissionsArr = dummyArray.filter(function(el){ return !runningSoloMissions.includes(el);});
+
+
+     console.log('MissionsArr '+ singleMissionsArr);
+     console.log('open Missions Index '+ opensingleMissionsArr);
+     console.log('runningSoloMissions Index '+ runningSoloMissions);
+
+
+     
     push()
     fill(255);
     stroke(5);
@@ -449,10 +472,19 @@ let singlemission5AcceptBtn;
     singlemission5.drawBox();
     pop();
 
+  
+    
 
-    
-    
+  
+
+  
+
+
 }
+
+
+
+
 
 
 
