@@ -44,19 +44,35 @@ db.connect(function(err) {
 
 
 // setInterval(function(){
-//   let playerId;
-//    //
-//   //update one of the missions, that is NOT in accepted missions!
+
+//   //get mission ids from player_missions:
+
+//   let sql = `SELECT * FROM player_missions;`;
   
-//   app.post('/sendPlayerId', (req, res)=> {
+//   db.query(sql, (err, result)=> {
+//     if (err) throw err;
+//     //here you could use a for loop to make it for all players at the same time
+//     let Missions = [result[0].Mission1, result[0].Mission2, result[0].Mission3, result[0].Mission4, result[0].Mission5 ];
+//     let playerId = result[0].Player_Id;
 
-//     playerId = req.body.playerId;
+//     let sql = `SELECT Solo_Missions_Id FROM solo_missions WHERE Rank=1 ORDER BY RAND() LIMIT 1`;
     
-//     let sql = `SELECT `
-//   })
+//     db.query(sql, (err, result)=> {
+//       if (err) throw err;
+//       let newMissionId = result[0].Solo_Missions_Id;
 
-//   console.log(playerId);
-// }, 60000)
+//       let sql = `UPDATE player_missions SET Mission1=${newMissionId}, Mission2=${Missions[0]}, Mission3=${Missions[1]}, Mission4=${Missions[2]}, Mission5=${Missions[3]} WHERE Player_Id=${playerId};`;
+
+//       db.query(sql, (err, result)=> {
+//         if (err) throw err;
+//         console.log(result);
+//       })
+
+//     })
+  
+//   })
+  
+// }, 5000);
 
 
 
@@ -188,7 +204,6 @@ app.get('/getPlayerResources/:playerId', (req, res)=> {
   db.query(sql, (err, result)=> {
     if(err) throw err;
 
-    console.log(result);
     res.send(result);
   })
 })
@@ -203,7 +218,6 @@ app.get('/getPlayerRank/:playerId', (req, res)=> {
   
   db.query(sql, (err, result)=> {
     if (err) throw err;
-    console.log(result);
     res.send(result);
   })
 })
@@ -233,7 +247,7 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
-    
+    console.log(result);
     if(result.length>0){
 
       let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1} OR Solo_Missions_Id = ${result[0].Mission2} OR Solo_Missions_Id = ${result[0].Mission3} OR Solo_Missions_Id = ${result[0].Mission4} OR Solo_Missions_Id = ${result[0].Mission5};`
@@ -241,6 +255,7 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
       db.query(sql, (err, result)=> {
         if(err) throw err;
         res.send(result);
+        console.log(result);
       })
     }
   })
