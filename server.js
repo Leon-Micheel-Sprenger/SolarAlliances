@@ -32,47 +32,45 @@ db.connect(function(err) {
 
 
 //______________________________________________________________
-
-
 //______________________________________________________________
 //Other server logic
 
 
 
 //_______________________________________________________________
-//update Solo missions every 5 minutes
+//update Solo missions every 10 minutes
 
 
-// setInterval(function(){
+setInterval(function(){
 
-//   //get mission ids from player_missions:
+  //get mission ids from player_missions:
 
-//   let sql = `SELECT * FROM player_missions;`;
+  let sql = `SELECT * FROM player_missions;`;
   
-//   db.query(sql, (err, result)=> {
-//     if (err) throw err;
-//     //here you could use a for loop to make it for all players at the same time
-//     let Missions = [result[0].Mission1, result[0].Mission2, result[0].Mission3, result[0].Mission4, result[0].Mission5 ];
-//     let playerId = result[0].Player_Id;
+  db.query(sql, (err, result)=> {
+    if (err) throw err;
+    //here you could use a for loop to make it for all players at the same time
+    let Missions = [result[0].Mission1, result[0].Mission2, result[0].Mission3, result[0].Mission4, result[0].Mission5 ];
+    let playerId = result[0].Player_Id;
 
-//     let sql = `SELECT Solo_Missions_Id FROM solo_missions WHERE Rank=1 ORDER BY RAND() LIMIT 1`;
+    let sql = `SELECT Solo_Missions_Id FROM solo_missions WHERE Rank=1 AND NOT Solo_Missions_Id IN (${Missions[0]}, ${Missions[1]}, ${Missions[2]}, ${Missions[3]}) ORDER BY RAND() LIMIT 1`;
     
-//     db.query(sql, (err, result)=> {
-//       if (err) throw err;
-//       let newMissionId = result[0].Solo_Missions_Id;
+    db.query(sql, (err, result)=> {
+      if (err) throw err;
+      let newMissionId = result[0].Solo_Missions_Id;
 
-//       let sql = `UPDATE player_missions SET Mission1=${newMissionId}, Mission2=${Missions[0]}, Mission3=${Missions[1]}, Mission4=${Missions[2]}, Mission5=${Missions[3]} WHERE Player_Id=${playerId};`;
+      let sql = `UPDATE player_missions SET Mission1=${newMissionId}, Mission2=${Missions[0]}, Mission3=${Missions[1]}, Mission4=${Missions[2]}, Mission5=${Missions[3]} WHERE Player_Id=${playerId};`;
 
-//       db.query(sql, (err, result)=> {
-//         if (err) throw err;
-//         console.log(result);
-//       })
+      db.query(sql, (err, result)=> {
+        if (err) throw err;
+        console.log(result);
+      })
 
-//     })
+    })
   
-//   })
+  })
   
-// }, 5000);
+}, 100000);
 
 
 
@@ -130,7 +128,7 @@ app.post('/Register', (req, res)=> {
               if (err) throw err;
               console.log(result);
 
-              let sql = `SELECT Solo_Missions_Id FROM solo_missions WHERE Rank=1 ORDER BY RAND() LIMIT 5;`;
+              let sql = `SELECT DISTINCT Solo_Missions_Id FROM solo_missions WHERE Rank=1 ORDER BY RAND() LIMIT 5;`;
 
               db.query(sql, (err, result) => {
                 if (err) throw err;
@@ -250,7 +248,18 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
     console.log(result);
     if(result.length>0){
 
-      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1} OR Solo_Missions_Id = ${result[0].Mission2} OR Solo_Missions_Id = ${result[0].Mission3} OR Solo_Missions_Id = ${result[0].Mission4} OR Solo_Missions_Id = ${result[0].Mission5};`
+      let Missions = [result[0].Mission1, result[0].Mission2, result[0].Mission3, result[0].Mission4, result[0].Mission5]
+      console.log('Missions'+Missions);
+
+      //let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1} OR Solo_Missions_Id = ${result[0].Mission2} OR Solo_Missions_Id = ${result[0].Mission3} OR Solo_Missions_Id = ${result[0].Mission4} OR Solo_Missions_Id = ${result[0].Mission5};`
+      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${Missions[0]} OR Solo_Missions_Id = ${Missions[1]} OR Solo_Missions_Id = ${Missions[2]} OR Solo_Missions_Id = ${Missions[3]} OR Solo_Missions_Id = ${Missions[4]}
+                 ORDER BY CASE WHEN Solo_Missions_Id = ${Missions[0]} THEN '1' 
+                               WHEN Solo_Missions_Id = ${Missions[1]} THEN '2'
+                               WHEN Solo_Missions_Id = ${Missions[2]} THEN '3'
+                               WHEN Solo_Missions_Id = ${Missions[3]} THEN '4'
+                               WHEN Solo_Missions_Id = ${Missions[4]} THEN '5'
+                               ELSE NAME END ASC`;
+
 
       db.query(sql, (err, result)=> {
         if(err) throw err;
