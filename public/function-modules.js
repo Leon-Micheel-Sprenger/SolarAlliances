@@ -36,6 +36,7 @@ function mousePressed(){
     if (gameStatus){
       if(missionButton.isClicked(mouseX, mouseY)){
         createMissionInterface();
+        drawSoloMissions();
       }
     }
 
@@ -307,12 +308,11 @@ function acceptSoloMission(missionNumber){
   
   httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {} )
 
-  //remove mission from playerMissions and put it into acceptedmission (running missions)  
-  //singleMissionsArr.splice(missionNumber,1);
+  //put mission in accepted missions on db
   httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {})
 
 
-
+  
 
 
 
@@ -339,6 +339,6 @@ function acceptSoloMission(missionNumber){
 //Ping function for the solo Missions
 
 function soloMissionPing(){
-  
+
 }
 

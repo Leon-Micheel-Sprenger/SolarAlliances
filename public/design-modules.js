@@ -165,10 +165,10 @@ function createGame(){
   InputPass.remove();
   background(220);
   
+
   createResourceBar();
   createButtons();
 
-  //sendPlayerId_toServer();
 
   //Load Mission Respawn timer
   loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
@@ -409,6 +409,8 @@ let singlemission5AcceptBtn;
 //Create AND draw Missions Interface
  function createMissionInterface(){
 
+  
+
   missionMenuEnable = true;
 
     rx= width*0.5;
@@ -418,35 +420,15 @@ let singlemission5AcceptBtn;
 
     //Frame, title and buttons of Mission Interface;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
-    missionFrame.drawScreen();
 
     singleMissionsBtn = new Button(rx-rx/2+220,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
-    singleMissionsBtn.drawButton();
 
     multiMissionsBtn = new Button(rx+150,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
-    multiMissionsBtn.drawButton();
-
-    runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
-    runningMissionsBtn.drawButton();
-
-    missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
-    missionExitBtn.drawExitButton();
- 
-    push();
-    fill(0);
-    textAlign(CENTER, CENTER);
-    textSize(30);
-    text("Missions", rx, ry-rh/2.2);
-    textSize(15);
-    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
-    fill('purple');
-    textStyle(BOLD);
-    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
-    pop();
     
-
-
-
+    runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
+    
+    missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
+    
 
     //___________________________________________________________________
     //Mission boxes and Input;
@@ -460,12 +442,7 @@ let singlemission5AcceptBtn;
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-    for (let i=0; i< singleMissionsArr.length; i++){
-      console.log(singleMissionsArr[i].missionId);
-    }
-
-
-
+    
 
     //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr
   	 for (let i=0; i<singleMissionsArr.length; i++){
@@ -477,8 +454,6 @@ let singlemission5AcceptBtn;
       }
      }
 
-     
-
 
      //assign openMissions array
      let dummyArray = [0,1,2,3,4];
@@ -486,12 +461,46 @@ let singlemission5AcceptBtn;
      opensingleMissionsArr = dummyArray.filter(function(el){ return !runningSoloMissions.includes(el);});
 
 
-  
+     //print arrays
      console.log('open Missions Index '+ opensingleMissionsArr);
      console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
+     console.log('running missions unindexed'+runningSoloMissions);
+}
 
 
-     
+
+
+//Draw Missions Interface
+
+function drawSoloMissions(){
+
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+
+  missionFrame.drawScreen();
+  singleMissionsBtn.drawButton();
+  multiMissionsBtn.drawButton();
+  runningMissionsBtn.drawButton();
+  missionExitBtn.drawExitButton();
+
+
+  push();
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("Missions", rx, ry-rh/2.2);
+    textSize(15);
+    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
+    fill('purple');
+    textStyle(BOLD);
+    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
+    pop();
+
+
     push()
     fill(255);
     stroke(5);
@@ -502,14 +511,18 @@ let singlemission5AcceptBtn;
     singlemission5.drawBox();
     pop();
 
-  
-  
-  
-
 
 }
 
 
+
+//________________________________________________________
+//Create and Draw Running Missions Interface
+
+
+function createRunningMissionInterface(){
+
+}
 
 
 
