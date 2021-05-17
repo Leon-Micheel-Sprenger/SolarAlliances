@@ -261,21 +261,7 @@ if (cur_status=== 'status_login'){
       
     })
 
-    //Load Mission Respawn timer
-    loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
-      missionRespawnTime = dataReceived[0].RespawnMissionTime;
     
-    })
-
-
-    //Load Accepted Missions and put them in Running Missions array
-    loadJSON('/getRunningMissions/'+playerId, (dataReceived)=> {
-      for(let i=0; i<dataReceived.length; i++){
-        runningSoloMissions.push(dataReceived[i].Solo_Mission_Id);
-        
-      }
-      
-    })
 
     //Load Multiplayer Missions
 
@@ -350,13 +336,9 @@ function acceptSoloMission(missionNumber){
 
   
 
+//Ping function for the solo Missions
 
-// //Sending the playerId to the server
-// function sendPlayerId_toServer(){
-//   dataSent = {
-//     "playerId": playerId
-//   }
-//   httpPost('/sendPlayerId', 'json',dataSent, (dataReceived)=> {})
-// }
-
+function soloMissionPing(){
+  
+}
 

@@ -149,6 +149,9 @@ function registerScreen(){
 
 
 
+
+
+
 //__________________________________________________
 //Creating and drawing main Menu.
 //Variables:
@@ -166,8 +169,28 @@ function createGame(){
   createButtons();
 
   //sendPlayerId_toServer();
+
+  //Load Mission Respawn timer
+  loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
+    missionRespawnTime = dataReceived[0].RespawnMissionTime;
+  
+  })
+
+
+  //Load Accepted Missions and put them in Running Missions array
+  loadJSON('/getRunningMissions/'+playerId, (dataReceived)=> {
+    for(let i=0; i<dataReceived.length; i++){
+      runningSoloMissions.push(dataReceived[i].Solo_Mission_Id);
+      
+    }
+    
+  })
   
 }
+
+
+
+
 
 
 
@@ -294,6 +317,8 @@ let singleMissionsArr = []; //all displayed Missions
 let opensingleMissionsArr = []; //all open solo missions (reference by index of singleMissionsArr)
 
 let runningSoloMissions = []; // all running missions (reference by MissionId)
+
+let runningSoloMissionsIndex = [];
 
 //Mission1 Variables; 
 let singlemissionId;
@@ -435,9 +460,11 @@ let singlemission5AcceptBtn;
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-    
+    for (let i=0; i< singleMissionsArr.length; i++){
+      console.log(singleMissionsArr[i].missionId);
+    }
 
-    console.log(runningSoloMissions);
+
 
 
     //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr
@@ -445,10 +472,13 @@ let singlemission5AcceptBtn;
        for (let j=0; j<runningSoloMissions.length; j++){
         if(singleMissionsArr[i].missionId === runningSoloMissions[j]){
           singleMissionsArr[i].acceptedMission();
-          runningSoloMissions[j] = i;
+          runningSoloMissionsIndex.push(i); 
         } 
       }
      }
+
+     
+
 
      //assign openMissions array
      let dummyArray = [0,1,2,3,4];
@@ -456,9 +486,9 @@ let singlemission5AcceptBtn;
      opensingleMissionsArr = dummyArray.filter(function(el){ return !runningSoloMissions.includes(el);});
 
 
-     console.log('MissionsArr '+ singleMissionsArr);
+  
      console.log('open Missions Index '+ opensingleMissionsArr);
-     console.log('runningSoloMissions Index '+ runningSoloMissions);
+     console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
 
 
      
@@ -473,10 +503,7 @@ let singlemission5AcceptBtn;
     pop();
 
   
-    
-
   
-
   
 
 

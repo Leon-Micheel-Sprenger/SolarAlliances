@@ -38,9 +38,7 @@ db.connect(function(err) {
 
 
 //_______________________________________________________________
-//update Solo missions every 10 minutes
-
-
+//update Solo missions every 5 minutes (a new Mission is coming on top and all others are shifted down)
 setInterval(function(){
 
   //get mission ids from player_missions:
@@ -70,7 +68,7 @@ setInterval(function(){
   
   })
   
-}, 100000);
+}, 5000);
 
 
 
