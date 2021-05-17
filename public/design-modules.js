@@ -468,27 +468,27 @@ function shiponsqr(){
   }
 }
 
-let shipclr=[];
-
 //give the shipId a color
 function changesquareclr(){
   if (shipId == 3){
-    shipclr[0]=color(255, 0, 0);
+    color(255, 0, 0);
   }else if (shipId == 4){
-    shipclr[1]=color(0, 255, 0);
+    color(0, 255, 0);
   }else if (shipId == 5){
-    shipclr[2]=color(0, 0, 255);
+    color(0, 0, 255);
   }else if (shipId == 6){
-    shipclr[3]=color(20, 30, 40);
+    color(20, 30, 40);
   }else{
-    tilesArr[r][c].clr=color(0, 0, 0);
+    color(0, 0, 0);
   }
 }
 
-function tryitsnotworking(){
-  if (tilesArr[0][0]==shipId[0]){
-    tilesArr[r][c].clr=shipclr[2]
-  }
+function shipsongrid(){
+  shipId[0]=tilesArr[0][0];
+  shipId[1]=tilesArr[1][0];
+  shipId[2]=tilesArr[2][0];
+  shipId[3]=tilesArr[3][0];
+  shipId[4]=tilesArr[4][0];
 }
 
 let shipfleetFrame;
