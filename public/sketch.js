@@ -9,7 +9,8 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
   loginScreen();
-  
+  createGrid();
+
 
   
 }
@@ -18,6 +19,7 @@ function setup() {
 
 function draw() {
   drawResourceValues();
+  drawGrid();
   
   
   noLoop();

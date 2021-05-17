@@ -39,7 +39,7 @@ function mousePressed(){
     }
 
 //Mission Accept Button clicked
-    if (cur_status === 'status_play'){
+    /*if (cur_status === 'status_play'){
       for (let i=0; i<5; i++){
         if(singleMissionsArr[i].acceptButton.isClicked(mouseX, mouseY)){
           acceptSoloMission(i);
@@ -53,9 +53,37 @@ function mousePressed(){
         createGame();
         loop();
       }
-    }
+    }*/
    
-    
+//Ship Fleet Button clicked
+    if (gameStatus){
+      if(shipFleetButton.isClicked(mouseX, mouseY)){
+        createShipFleetInterface();
+      }
+    }  
+
+//Ship Fleet Exit Button clicked
+    if(cur_status === 'status_play'){
+      if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
+        createGame();
+        loop();
+      }
+    }
+
+//Station Upgrades Button clicked
+    if (gameStatus){
+      if(stationButton.isClicked(mouseX, mouseY)){
+        createStationUpgradesInterface();
+      }
+    }
+
+//Station Upgrades Exit Button clicked
+    if(cur_status === 'status_play'){
+      if (stationExitBtn.isClicked(mouseX, mouseY)){
+        createGame();
+        loop();
+      }
+    }
 
 } 
 //_____________________________________________________
@@ -169,7 +197,12 @@ if (cur_status=== 'status_login'){
     // add all the loadJSON paths below: 
 
     //ships
-//hello this is my merge conflict text
+    loadJSON('/getPlayerShips/'+playerId, (dataReceived)=> {
+      shipId = dataReceived[0].Spaceships_Id;
+      console.log(dataReceived);
+      loop(); 
+    }) 
+    
     //station upgrades
 
 

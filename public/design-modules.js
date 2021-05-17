@@ -31,7 +31,7 @@ let exitButtonIconPath = 'assets/exit-icon.jpg';
 //_____________________________________________________________________
 //Creating the Grid for the main menu. 
 //Grid variables
-let tilesArr= [];
+/*let tilesArr= [];
 let gridStartX=0;
 let gridStartY=0;
 let side = 100;
@@ -52,7 +52,7 @@ function drawGrid(){
     for(c=gridStartY; c<gridY+gridStartY; c++){
       tilesArr[r][c].drawCharacter();
   }
-}
+}*/
 
 
 
@@ -164,6 +164,8 @@ function createGame(){
   
   createResourceBar();
   createButtons();
+  //createGrid();
+  //drawGrid();
   
 }
 
@@ -179,8 +181,16 @@ let marketplaceButton;
 
 
 function createButtons(){
-missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
-missionButton.drawButton();
+  missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
+  missionButton.drawButton();
+
+  //btn for the ship yard
+  shipFleetButton = new Button(width-1250,850,200,50,'Ship Fleet',0,255,20);
+  shipFleetButton.drawButton();
+
+  //btn for the station upgrades
+  stationButton = new Button(width-1550,850,200,50,'Station Upgrades',0,255,20);
+  stationButton.drawButton();
 }
 
 
@@ -387,8 +397,153 @@ function acceptSoloMission(missionNumber){
 
   
 }
+//_________________________________________________________________________________________________
+//ship fleet grid
+let tilesArr= [];
+let gridStartX= 7.6;
+let gridStartY= 9.5;
+let side = 100;
+let gridX = 5;    //length of the grid
+let gridY = 1;   // height of the grid
+
+/*function createGrid(){
+  for (let r=gridStartX; r<gridX+gridStartX; r++){
+    tilesArr[r]=[];
+    if(r==0){
+      gridStartX=100;
+    }else{
+      gridStartX=gridStartX+side;
+    }
+    for(let c=gridStartY; c<gridY+gridStartY; c++){
+      if(c==0){
+        gridStartY=600;
+      }else{
+        gridStartY=gridStartY+side;
+      }
+      tilesArr[r][c] = new Tile(r, c, side, 255);    //to let tile numbers appear, insert into txt: ${r},${c} 
+    } 
+  } 
+}*/
 
 
+let shipId=[];
 
+function createGrid(){
+  for (r=gridStartX; r<gridX+gridStartX;r++){
+    tilesArr[r]= [];
+    for(c=gridStartY; c<gridY+gridStartY; c++){
+      tilesArr[r][c] = new Tile (r, c, side, txt='');    //to let tile numbers appear, insert into txt: ${r},${c} 
+    } 
+  } 
+}
 
+function drawGrid(){
+  for (let r=gridStartX; r<gridX+gridStartX; r++)
+    for(let c=gridStartY; c<gridY+gridStartY; c++){
+      tilesArr[r][c].draw_tile();
+  }
+}
 
+function shiponsqr(){ 
+  if(shipId.length == 1){
+    tilesArr[0][0].clr=color(0, 0, 255);
+  /*}else if(shipId.length == 2){
+    tilesArr[0][0].clr=color(0, 0, 255);
+    tilesArr[1][0]=changesquareclr();
+  }else if(shipId.length == 3){
+    tilesArr[0][0].clr=color(0, 0, 255);
+    tilesArr[1][0]=changesquareclr();
+    tilesArr[2][0]=changesquareclr();
+  }else if(shipId.length == 4){
+    tilesArr[0][0].clr=color(0, 0, 255);
+    tilesArr[1][0]=changesquareclr();
+    tilesArr[2][0]=changesquareclr();
+    tilesArr[3][0]=changesquareclr();
+  }else if(shipId.length == 5){
+    tilesArr[0][0].clr=color(0, 0, 255);
+    tilesArr[1][0]=changesquareclr();
+    tilesArr[2][0]=changesquareclr();
+    tilesArr[3][0]=changesquareclr();
+    tilesArr[4][0]=changesquareclr();*/
+  }
+}
+
+let shipclr=[];
+
+//give the shipId a color
+function changesquareclr(){
+  if (shipId == 3){
+    shipclr[0]=color(255, 0, 0);
+  }else if (shipId == 4){
+    shipclr[1]=color(0, 255, 0);
+  }else if (shipId == 5){
+    shipclr[2]=color(0, 0, 255);
+  }else if (shipId == 6){
+    shipclr[3]=color(20, 30, 40);
+  }else{
+    tilesArr[r][c].clr=color(0, 0, 0);
+  }
+}
+
+function tryitsnotworking(){
+  if (tilesArr[0][0]==shipId[0]){
+    tilesArr[r][c].clr=shipclr[2]
+  }
+}
+
+let shipfleetFrame;
+let shipfleetExitBtn;
+let buildWarshipBtn;
+let buildTransportshipBtn;
+let buildMiningtshipBtn;
+let buildExplorationshipBtn;
+
+function createShipFleetInterface(){
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+  shipfleetFrame = new OnScreenFrame(rx, ry, rw, rh);
+  shipfleetFrame.drawScreen();
+
+  shipfleetExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
+  shipfleetExitBtn.drawExitButton();
+
+  buildWarshipBtn = new Button(rx-rx/2+270,ry+(rh/2-110),250,50,'Build War Ship',0,255,20)
+  buildWarshipBtn.drawButton();
+
+  buildTransportshipBtn = new Button(rx+200,ry+(rh/2-110),250,50,'Build Transport Ship',0,255,20)
+  buildTransportshipBtn.drawButton();
+
+  buildMiningtshipBtn = new Button(rx+200,ry+(rh/2-50),250,50,'Build Mining Ship',0,255,20);
+  buildMiningtshipBtn.drawButton();
+
+  buildExplorationshipBtn = new Button(rx-rx/2+270,ry+(rh/2-50),250,50,'Build Exploration Ship',0,255,20);
+  buildExplorationshipBtn.drawButton();
+
+  //createGrid();
+  //drawGrid();
+}
+
+function createships(){
+  //create ships
+  //reduce layer resources
+  //update player resources database
+}
+
+let stationFrame;
+let stationExitBtn;
+
+function createStationUpgradesInterface(){
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+  stationFrame = new OnScreenFrame(rx, ry, rw, rh);
+  stationFrame.drawScreen();
+
+  stationExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
+  stationExitBtn.drawExitButton();
+}

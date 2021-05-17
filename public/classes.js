@@ -9,34 +9,34 @@
 
 class Tile {
   
-  constructor(r, c, side, txt, clr) {
+  constructor(r, c, side, txt) {
     this.r = r; 
     this.c = c;
-    this.side = side;
+    this.sd = side;
     
     this.posX = r*side;
     this.posY = c*side; 
     this.txt = txt;
-    this.clr=clr;
+    this.clr=color(255,255,255);
     
   }
   
-  drawCharacter() {
+  draw_tile() {
     fill(this.clr);
-    noStroke();
-    square(this.posX, this.posY, side);
+    //noStroke();
+    square(this.posX, this.posY, this.sd);
     fill(0);
     textAlign(CENTER, CENTER);
     text(this.txt, this.posX+this.side/2, this.posY+this.side/2);
     
   }
   
-  isInside(x,y){
+  /*isInside(x,y){
     if (x>this.posX && x<this.posX+this.side && y>this.posY && y<this.posY+this.side){
       return true;
     }
     else return false;
-  }
+  }*/
   
   
   setTxt(txt) {
