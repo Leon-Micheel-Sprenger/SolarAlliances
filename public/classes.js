@@ -199,7 +199,7 @@ class Icon {
 
 class SoloMissionBox {
 
-  constructor(rx, ry, rw, rh, Name='Cargo Transport',Story, Time, InputMoney, InputPeople, InputOre, InputWater, InputShip, RewardMoney, RewardPeople, RewardOre, RewardWater , Rank='1'){
+  constructor(rx, ry, rw, rh,missionId, Name='Cargo Transport',Story, Time, InputMoney, InputPeople, InputOre, InputWater, InputShip, RewardMoney, RewardPeople, RewardOre, RewardWater , Rank='1'){
     this.rx=rx;
     this.ry=ry;
     this.rw=rw;
@@ -207,6 +207,7 @@ class SoloMissionBox {
    
     
     //Mission Input
+    this.missionId = missionId;
     this.name = Name;
     this.Story = Story;
     this.time = Time;
@@ -220,6 +221,7 @@ class SoloMissionBox {
     this.RewardOre = RewardOre;
     this.RewardWater = RewardWater;
     this.Rank = Rank;
+    
     
 
     //Input resources
@@ -243,6 +245,7 @@ class SoloMissionBox {
     //AcceptButton
     this.acceptButton;
 
+    this.accepted = false;
   }
 
 
@@ -450,12 +453,27 @@ class SoloMissionBox {
     //Accept Button
     this.acceptButton = new Button(this.rx+this.rw/2-50,this.ry+30,75,30,'Accept',255,0,20);
     this.acceptButton.drawButton();
-  
+    
+
+    //Accepted Mission changes (grey and accept button disabled)
+    if(this.accepted === true){
+      this.acceptButton.disable();
+      push();
+      fill('rgba(148,148,148, 0.7)');
+      rectMode(CENTER);
+      rect(this.rx, this.ry, this.rw, this.rh);
+      pop();
+    }
 
     pop();
   }
 
+  acceptedMission(){
+    this.accepted = true;
+  }
+
 }
+
 
 
 

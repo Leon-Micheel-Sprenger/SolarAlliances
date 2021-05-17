@@ -30,14 +30,41 @@ db.connect(function(err) {
   console.log('connected as id ' + db.threadId);
 });
 
+
 //______________________________________________________________
+
+
+//______________________________________________________________
+//Other server logic
+
+
+
+//_______________________________________________________________
+//update Solo missions every 5 minutes
+
+
+// setInterval(function(){
+//   let playerId;
+//    //
+//   //update one of the missions, that is NOT in accepted missions!
+  
+//   app.post('/sendPlayerId', (req, res)=> {
+
+//     playerId = req.body.playerId;
+    
+//     let sql = `SELECT `
+//   })
+
+//   console.log(playerId);
+// }, 60000)
+
+
+
+
+
+
 //______________________________________________________________
 //Gets and Posts start here
-
-
-
-
-
 
 
 
@@ -130,14 +157,14 @@ app.post('/Login', (req, res)=> {
 
   let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${password}';`;
 
-  db.query(sql, (err, result)=> {     // add if statement for duplicate usernames!
+  db.query(sql, (err, result)=> {     
     if (err) throw err;
     
 
     if (result.length<1){    //if user exists not
       
       res.send(result);
-      //alert message: this user doesnt exist --> please register.
+      
 
         } else res.send(result);  
      
@@ -202,15 +229,14 @@ app.get('/getPlayerShips/:playerId', (req, res)=> {
 app.get('/getPlayerMissions/:playerId', (req, res)=> {
   let playerId = req.params.playerId;
 
-  let sql= `SELECT Mission1 FROM player_missions WHERE Player_Id = ${playerId};`;
+  let sql= `SELECT Mission1, Mission2, Mission3, Mission4, Mission5 FROM player_missions WHERE Player_Id = ${playerId};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
-    console.log(result);
-
+    
     if(result.length>0){
 
-      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1};`
+      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1} OR Solo_Missions_Id = ${result[0].Mission2} OR Solo_Missions_Id = ${result[0].Mission3} OR Solo_Missions_Id = ${result[0].Mission4} OR Solo_Missions_Id = ${result[0].Mission5};`
 
       db.query(sql, (err, result)=> {
         if(err) throw err;
@@ -220,6 +246,74 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
   })
 })
 
+
+
+//get soloMission respawn timer
+app.get('/getRespawnTimer/:playerId', (req, res)=> {
+  let playerId = req.params.playerId;
+
+  let sql = `SELECT RespawnMissionTime FROM player_missions WHERE Player_Id = ${playerId};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+    
+  })
+})
+
+
+
+
+
+//get Running Missions from DB
+app.get('/getRunningMissions/:playerId', (req, res)=> {
+  let playerId = req.params.playerId;
+
+  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id=${playerId};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+  })
+});
+
+
+
+
+
+//Update player resources after accepted solo mission
+app.post('/updatePlayerResources', (req, res)=> {
+  
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+  let Water = req.body.Water;
+  let Ore = req.body.Ore;
+  let People = req.body.People;
+
+  let sql = `UPDATE player_resources SET Money=${Money}, Water=${Water}, Ore=${Ore}, People=${People} WHERE Player_Id=${Player_Id}; `;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+  })
+
+})
+
+
+//Update Accepted Missions of Player, when Mission was accepted
+app.post('/updateAcceptedMissions', (req, res)=> {
+  
+  let Player_Id = req.body.Player_Id;
+  let Mission_Id = req.body.Mission_Id;
+
+  let sql = `INSERT INTO accepted_solomissions (Player_Id, Solo_Mission_Id) VALUES (${Player_Id}, ${Mission_Id});`
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    res.send(result);
+         
+  })
+})
 
 
 

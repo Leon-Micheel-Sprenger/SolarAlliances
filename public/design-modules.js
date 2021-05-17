@@ -1,9 +1,9 @@
 
-// In here, we are storing all available front end components and designs of p5. 
-// To find other functions and executing commands, go to function-modules.js
+// In here, we are storing all available front-end components and designs of p5. 
+
+
+// To find backend functions and executing commands, go to function-modules.js
 let cur_status = 'status_login'; //status_login, status_register, status_play
-
-
 
 
 //Global Variables:
@@ -29,7 +29,7 @@ let exitButtonIconPath = 'assets/exit-icon.jpg';
 
 
 //_____________________________________________________________________
-//Creating the Grid for the main menu. 
+//Creating the Grid for the main menu. (not used, just for reference) 
 //Grid variables
 /*let tilesArr= [];
 let gridStartX=0;
@@ -166,6 +166,7 @@ function createGame(){
   createButtons();
   //createGrid();
   //drawGrid();
+  //sendPlayerId_toServer();
   
 }
 
@@ -243,6 +244,8 @@ function createResourceBar(){
 }
 
 
+
+
 //Draw Resource-Values in Resourcebar
 function drawResourceValues(){
   if (gameStatus){
@@ -263,7 +266,7 @@ function drawResourceValues(){
   text(`${people}/${max_people}`,(rx-rw/2+5)+340, ry+5);
   text(`${rank}`,rx-rw/2+520, ry+5);
   text(`Year: ${gameDate}`,rx-rw/2+595, ry+5);
-
+    
   pop();
 
   }
@@ -280,24 +283,29 @@ let missionFrame;
 let singleMissionsBtn;
 let multiMissionsBtn;
 let runningMissionsBtn;
-let missionRespawnTimer;
+let missionRespawnTime;
 let missionExitBtn;
 
+let missionMenuEnable = false;
 
 
 
-//Mission Frame Variables:
 
-
+//Mission Frame and global Variables;
 let singlemission1;
 let singlemission2;
 let singlemission3;
 let singlemission4;
 let singlemission5;
 
-let singleMissionsArr = [];
+let singleMissionsArr = []; //all displayed Missions
+
+let opensingleMissionsArr = []; //all open solo missions (reference by index of singleMissionsArr)
+
+let runningSoloMissions = []; // all running missions (reference by MissionId)
 
 //Mission1 Variables; 
+let singlemissionId;
 let singlemissionName;
 let singlemissionStory;
 let singlemissionTime;
@@ -313,9 +321,79 @@ let singlemissionRewardWater;
 let singlemissionRank;
 let singlemissionAcceptBtn;
 
+//Mission2 Variables;
+let singlemission2Id;
+let singlemission2Name;
+let singlemission2Story;
+let singlemission2Time;
+let singlemission2InputMoney;
+let singlemission2InputPeople;
+let singlemission2InputOre;
+let singlemission2InputWater;
+let singlemission2InputShips;
+let singlemission2RewardMoney;
+let singlemission2RewardPeople;
+let singlemission2RewardOre;
+let singlemission2RewardWater;
+let singlemission2Rank;
+let singlemission2AcceptBtn;
 
-//Missions Interface
+//Mission3 Variables;
+let singlemission3Id;
+let singlemission3Name;
+let singlemission3Story;
+let singlemission3Time;
+let singlemission3InputMoney;
+let singlemission3InputPeople;
+let singlemission3InputOre;
+let singlemission3InputWater;
+let singlemission3InputShips;
+let singlemission3RewardMoney;
+let singlemission3RewardPeople;
+let singlemission3RewardOre;
+let singlemission3RewardWater;
+let singlemission3Rank;
+let singlemission3AcceptBtn;
+
+//Mission4 Variables;
+let singlemission4Id;
+let singlemission4Name;
+let singlemission4Story;
+let singlemission4Time;
+let singlemission4InputMoney;
+let singlemission4InputPeople;
+let singlemission4InputOre;
+let singlemission4InputWater;
+let singlemission4InputShips;
+let singlemission4RewardMoney;
+let singlemission4RewardPeople;
+let singlemission4RewardOre;
+let singlemission4RewardWater;
+let singlemission4Rank;
+let singlemission4AcceptBtn;
+
+//Mission5 Variables;
+let singlemission5Id;
+let singlemission5Name;
+let singlemission5Story;
+let singlemission5Time;
+let singlemission5InputMoney;
+let singlemission5InputPeople;
+let singlemission5InputOre;
+let singlemission5InputWater;
+let singlemission5InputShips;
+let singlemission5RewardMoney;
+let singlemission5RewardPeople;
+let singlemission5RewardOre;
+let singlemission5RewardWater;
+let singlemission5Rank;
+let singlemission5AcceptBtn;
+
+
+//Create AND draw Missions Interface
  function createMissionInterface(){
+
+  missionMenuEnable = true;
 
     rx= width*0.5;
     ry= height*0.5;
@@ -337,31 +415,62 @@ let singlemissionAcceptBtn;
 
     missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
     missionExitBtn.drawExitButton();
-
+ 
+    push();
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Missions", rx, ry-rh/2.2);
-
+    textSize(15);
+    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
+    fill('purple');
+    textStyle(BOLD);
+    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
+    pop();
     
 
 
 
 
     //___________________________________________________________________
-    //Mission boxes and Input; (all of the same mission at this point)
-
-    //create new missions in singleMissionsArr
+    //Mission boxes and Input;
  
 
-    singlemission1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
-    singlemission5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission1 = new SoloMissionBox(rx, ry-(rh/4), rw-50, rh/7,singlemissionId, singlemissionName, singlemissionStory, singlemissionTime, singlemissionInputMoney, singlemissionInputPeople, singlemissionInputOre, singlemissionInputWater, singlemissionInputShips, singlemissionRewardMoney, singlemissionRewardPeople, singlemissionRewardOre, singlemissionRewardWater, singlemissionRank);
+    singlemission2 = new SoloMissionBox(rx, ry-(rh/4-100), rw-50, rh/7,singlemission2Id, singlemission2Name, singlemission2Story, singlemission2Time, singlemission2InputMoney, singlemission2InputPeople, singlemission2InputOre, singlemission2InputWater, singlemission2InputShips, singlemission2RewardMoney, singlemission2RewardPeople, singlemission2RewardOre, singlemission2RewardWater, singlemission2Rank);
+    singlemission3 = new SoloMissionBox(rx, ry-(rh/4-200), rw-50, rh/7,singlemission3Id, singlemission3Name, singlemission3Story, singlemission3Time, singlemission3InputMoney, singlemission3InputPeople, singlemission3InputOre, singlemission3InputWater, singlemission3InputShips, singlemission3RewardMoney, singlemission3RewardPeople, singlemission3RewardOre, singlemission3RewardWater, singlemission3Rank);
+    singlemission4 = new SoloMissionBox(rx, ry-(rh/4-300), rw-50, rh/7,singlemission4Id, singlemission4Name, singlemission4Story, singlemission4Time, singlemission4InputMoney, singlemission4InputPeople, singlemission4InputOre, singlemission4InputWater, singlemission4InputShips, singlemission4RewardMoney, singlemission4RewardPeople, singlemission4RewardOre, singlemission4RewardWater, singlemission4Rank);
+    singlemission5 = new SoloMissionBox(rx, ry-(rh/4-400), rw-50, rh/7,singlemission5Id, singlemission5Name, singlemission5Story, singlemission5Time, singlemission5InputMoney, singlemission5InputPeople, singlemission5InputOre, singlemission5InputWater, singlemission5InputShips, singlemission5RewardMoney, singlemission5RewardPeople, singlemission5RewardOre, singlemission5RewardWater, singlemission5Rank);
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
-   
+
+    
+
+    console.log(runningSoloMissions);
+
+
+    //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr
+  	 for (let i=0; i<singleMissionsArr.length; i++){
+       for (let j=0; j<runningSoloMissions.length; j++){
+        if(singleMissionsArr[i].missionId === runningSoloMissions[j]){
+          singleMissionsArr[i].acceptedMission();
+          runningSoloMissions[j] = i;
+        } 
+      }
+     }
+
+     //assign openMissions array
+     let dummyArray = [0,1,2,3,4];
+
+     opensingleMissionsArr = dummyArray.filter(function(el){ return !runningSoloMissions.includes(el);});
+
+
+     console.log('MissionsArr '+ singleMissionsArr);
+     console.log('open Missions Index '+ opensingleMissionsArr);
+     console.log('runningSoloMissions Index '+ runningSoloMissions);
+
+
+     
     push()
     fill(255);
     stroke(5);
@@ -371,26 +480,23 @@ let singlemissionAcceptBtn;
     singlemission4.drawBox();
     singlemission5.drawBox();
     pop();
+
+  
     
+
+  
+
+  
+
+
 }
 
 
 
 
 
-//_____________________________________________________
-//Accepting a Solo Mission!
 
-function acceptSoloMission(missionNumber){
-  
-  //Deduct resources of the mission from player resources
-  //block ship for use for the amount of time the mission takes! (change status of ship)
-  //update player resources and ship on database
 
-  
-  //remove accepted mission and put it into accepted missions
-  //send update to database
-  
 
 
 
@@ -424,7 +530,6 @@ let gridY = 1;   // height of the grid
     } 
   } 
 }*/
-
 
 let shipId=[];
 

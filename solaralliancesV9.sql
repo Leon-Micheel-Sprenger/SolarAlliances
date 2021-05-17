@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 09, 2021 at 05:29 PM
+-- Generation Time: May 10, 2021 at 04:28 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -21,6 +21,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `solaralliances`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accepted_solomissions`
+--
+
+CREATE TABLE `accepted_solomissions` (
+  `asm_Id` int(11) NOT NULL,
+  `Player_Id` int(11) NOT NULL,
+  `Solo_Mission_Id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -116,15 +128,16 @@ CREATE TABLE `player_missions` (
   `Mission2` int(11) NOT NULL,
   `Mission3` int(11) NOT NULL,
   `Mission4` int(11) NOT NULL,
-  `Mission5` int(11) NOT NULL
+  `Mission5` int(11) NOT NULL,
+  `RespawnMissionTime` time NOT NULL DEFAULT '00:05:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `player_missions`
 --
 
-INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`) VALUES
-(3, 50, 1, 4, 2, 3, 5);
+INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`, `RespawnMissionTime`) VALUES
+(3, 50, 1, 4, 2, 3, 5, '00:05:00');
 
 -- --------------------------------------------------------
 
@@ -149,7 +162,7 @@ CREATE TABLE `player_resources` (
 --
 
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
-(12, 1000, 1000, 1000, 100, 100, 1000, 1000, 50);
+(12, 1000, 420, 1000, 90, 100, 1000, 1000, 50);
 
 -- --------------------------------------------------------
 
@@ -298,6 +311,14 @@ CREATE TABLE `submited_mmissions` (
 --
 
 --
+-- Indexes for table `accepted_solomissions`
+--
+ALTER TABLE `accepted_solomissions`
+  ADD PRIMARY KEY (`asm_Id`),
+  ADD KEY `Player_Id` (`Player_Id`),
+  ADD KEY `Solo_Mission_Id` (`Solo_Mission_Id`);
+
+--
 -- Indexes for table `computer_trading`
 --
 ALTER TABLE `computer_trading`
@@ -391,6 +412,12 @@ ALTER TABLE `submited_mmissions`
 --
 
 --
+-- AUTO_INCREMENT for table `accepted_solomissions`
+--
+ALTER TABLE `accepted_solomissions`
+  MODIFY `asm_Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `computer_trading`
 --
 ALTER TABLE `computer_trading`
@@ -459,6 +486,12 @@ ALTER TABLE `space_station`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `accepted_solomissions`
+--
+ALTER TABLE `accepted_solomissions`
+  ADD CONSTRAINT `accepted_solomissions_ibfk_1` FOREIGN KEY (`Player_Id`) REFERENCES `player` (`Player_Id`);
 
 --
 -- Constraints for table `computer_trading`

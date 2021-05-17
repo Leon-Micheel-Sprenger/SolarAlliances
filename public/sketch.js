@@ -21,7 +21,6 @@ function draw() {
   drawResourceValues();
   drawGrid();
   
-  
   noLoop();
   console.log(cur_status);
   
