@@ -164,8 +164,7 @@ function createGame(){
   
   createResourceBar();
   createButtons();
-  //createGrid();
-  //drawGrid();
+  createGrid();
   //sendPlayerId_toServer();
   
 }
@@ -186,7 +185,7 @@ function createButtons(){
   missionButton.drawButton();
 
   //btn for the ship yard
-  shipFleetButton = new Button(width-1250,850,200,50,'Ship Fleet',0,255,20);
+  shipFleetButton = new Button(width-1250,height-200,200,50,'Ship Fleet',0,255,20);
   shipFleetButton.drawButton();
 
   //btn for the station upgrades
@@ -506,8 +505,8 @@ let singlemission5AcceptBtn;
 //_________________________________________________________________________________________________
 //ship fleet grid
 let tilesArr= [];
-let gridStartX= 7.6;
-let gridStartY= 9.5;
+let gridStartX= window.innerWidth/3 /100;  
+let gridStartY= (window.innerHeight-100)/100;
 let side = 100;
 let gridX = 5;    //length of the grid
 let gridY = 1;   // height of the grid
@@ -531,9 +530,10 @@ let gridY = 1;   // height of the grid
   } 
 }*/
 
-let shipId=[];
+let shipId=[];   //array of all ships in the ship fleet
 
 function createGrid(){
+  if(cur_status === 'status_play'){
   for (r=gridStartX; r<gridX+gridStartX;r++){
     tilesArr[r]= [];
     for(c=gridStartY; c<gridY+gridStartY; c++){
@@ -541,12 +541,15 @@ function createGrid(){
     } 
   } 
 }
+}
 
 function drawGrid(){
+  if(cur_status === 'status_play'){
   for (let r=gridStartX; r<gridX+gridStartX; r++)
     for(let c=gridStartY; c<gridY+gridStartY; c++){
       tilesArr[r][c].draw_tile();
   }
+}
 }
 
 function shiponsqr(){ 
@@ -631,7 +634,24 @@ function createShipFleetInterface(){
   //drawGrid();
 }
 
+
+
+//____________________________________________________________
+// Create ships and draw them 
+
+let shipList = [];
+
 function createships(){
+
+ for (r=gridStartX; r<gridX+gridStartX;r++){
+  for(c=gridStartY; c<gridY+gridStartY; c++){
+  for (let i=0; i<shipId.length; i++){
+  let ship = new Ship(shipId[i],r,c,100, 30, 20);
+  shipList.push(ship);
+}
+}
+}
+
   //create ships
   //reduce layer resources
   //update player resources database
@@ -651,4 +671,17 @@ function createStationUpgradesInterface(){
 
   stationExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
   stationExitBtn.drawExitButton();
+}
+
+
+//needs some thought!
+function drawShips() {
+  for(let i=0; i<shipList.length; i++){
+  for (r=gridStartX; r<gridX+gridStartX;r++){
+    for(c=gridStartY; c<gridY+gridStartY; c++){
+
+      shipList[i].drawShip();
+    }
+    }
+  }
 }

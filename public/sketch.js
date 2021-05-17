@@ -9,7 +9,7 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
   loginScreen();
-  createGrid();
+  //createGrid();
 
 
   

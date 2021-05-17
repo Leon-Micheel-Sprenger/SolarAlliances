@@ -186,11 +186,57 @@ class Icon {
     
   }
 
-  
 
 }
 
 
+
+//_________________________________________________________
+//
+class Ship {
+
+
+  constructor(shipId, r, c, side, width, height ){
+
+    this.shipId = shipId
+    this.iconpath;
+    this.r = r;           //place in grid (number eg. 5,2,3)
+    this.c = c;
+    this.side = side;
+    this.width = width;     //image width
+    this.height = height;  //image height
+
+    this.posX = this.r * 100
+    this.posY = this.c * 100; //place in px (500px, 200px...)
+
+  }
+
+  drawShip(){
+
+    switch (shipId) {
+
+      case 3: 
+        this.iconpath = warShipIconPath;
+        break;
+      case 4:
+        this.iconpath = miningShipIconPath;
+        break;
+      case 5:
+        this.iconpath = transportShipIconPath;
+        break;
+      case 6:
+        this.iconpath = explorationShipIconPath;
+        break;
+      default:
+        this.iconpath = emptyIconPath;
+    }
+
+    loadImage(this.iconpath, img => {
+      image(img, this.posX, this.posY, this.width, this.height);
+    })
+
+  }
+}
 
 
 

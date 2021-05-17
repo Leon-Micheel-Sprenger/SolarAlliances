@@ -207,6 +207,11 @@ if (cur_status=== 'status_login'){
     //ships
     loadJSON('/getPlayerShips/'+playerId, (dataReceived)=> {
       shipId = dataReceived[0].Spaceships_Id;
+
+      for(let i = 0; i<dataReceived.length; i++){
+        shipId.push(dataReceived[i].Spaceships_Id);
+      }
+
       console.log(dataReceived);
       loop(); 
     }) 
