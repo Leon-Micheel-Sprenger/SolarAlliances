@@ -18,6 +18,7 @@ function setup() {
 
 function draw() {
   drawResourceValues();
+  drawSoloMissions();
   noLoop();
   console.log(cur_status);
   

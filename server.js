@@ -61,7 +61,7 @@ setInterval(function(){
 
       db.query(sql, (err, result)=> {
         if (err) throw err;
-        console.log(result);
+        
       })
 
     })
@@ -72,6 +72,29 @@ setInterval(function(){
 
 
 
+
+//_____________________________________________________________
+// Deduct 30 seconds from all running missions, every 30 seconds.
+setInterval(function(){
+
+  //Deduct 30 seconds from all accepted missions. 
+  let sql = `Select timediff(Mission_Time, '00:00:30') as New_Time from accepted_solomissions;`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+    let newTime = result[0].New_Time;
+    
+    let sql = `UPDATE accepted_solomissions SET Mission_Time = '${newTime}' WHERE Mission_Time > '00:00:00';`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      
+      if (result.affectedRows == 1){
+        console.log(newTime);
+      }
+    })
+  })
+}, 3000000);
 
 
 
@@ -228,7 +251,7 @@ app.get('/getPlayerShips/:playerId', (req, res)=> {
   db.query(sql, (err, result)=> {
     if(err) throw err;
 
-    console.log(result);
+    
     res.send(result);
   })
 })
@@ -243,11 +266,11 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
-    console.log(result);
+   
     if(result.length>0){
 
       let Missions = [result[0].Mission1, result[0].Mission2, result[0].Mission3, result[0].Mission4, result[0].Mission5]
-      console.log('Missions'+Missions);
+      
 
       //let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${result[0].Mission1} OR Solo_Missions_Id = ${result[0].Mission2} OR Solo_Missions_Id = ${result[0].Mission3} OR Solo_Missions_Id = ${result[0].Mission4} OR Solo_Missions_Id = ${result[0].Mission5};`
       let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${Missions[0]} OR Solo_Missions_Id = ${Missions[1]} OR Solo_Missions_Id = ${Missions[2]} OR Solo_Missions_Id = ${Missions[3]} OR Solo_Missions_Id = ${Missions[4]}
@@ -262,7 +285,6 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
       db.query(sql, (err, result)=> {
         if(err) throw err;
         res.send(result);
-        console.log(result);
       })
     }
   })
@@ -291,7 +313,7 @@ app.get('/getRespawnTimer/:playerId', (req, res)=> {
 app.get('/getRunningMissions/:playerId', (req, res)=> {
   let playerId = req.params.playerId;
 
-  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id=${playerId};`;
+  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id=${playerId} AND Mission_Time > '00:00:00';`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
@@ -327,14 +349,46 @@ app.post('/updateAcceptedMissions', (req, res)=> {
   
   let Player_Id = req.body.Player_Id;
   let Mission_Id = req.body.Mission_Id;
+  
 
-  let sql = `INSERT INTO accepted_solomissions (Player_Id, Solo_Mission_Id) VALUES (${Player_Id}, ${Mission_Id});`
+  let sql = `SELECT Time from solo_missions WHERE Solo_Missions_Id = ${Mission_Id};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
-    res.send(result);
-         
+
+    let time = result[0].Time; 
+    
+    let sql = `INSERT INTO accepted_solomissions (Player_Id, Solo_Mission_Id, Mission_Time) VALUES (${Player_Id}, ${Mission_Id}, '${time}');`
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+           
+    })
   })
+})
+
+
+
+//Get completed missions from accepted_solomissions (fired by client every 30 seconds)
+
+app.post('/getCompletedMissions', (req, res)=> {
+
+  let playerId = req.body.playerId;
+
+  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id = ${playerId} AND Mission_Time = '00:00:00';`;
+
+  db.query(sql, (err, result)=> {
+    if (err) throw err;
+  
+    //update player Resources with rewards
+    // free blocked ships
+    //send confirmation to client
+    //change confirmation sent to true
+
+
+  })
+
 })
 
 

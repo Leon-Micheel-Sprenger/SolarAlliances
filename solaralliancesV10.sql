@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 10, 2021 at 04:28 PM
+-- Generation Time: May 18, 2021 at 05:44 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -31,8 +31,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `accepted_solomissions` (
   `asm_Id` int(11) NOT NULL,
   `Player_Id` int(11) NOT NULL,
-  `Solo_Mission_Id` int(11) NOT NULL
+  `Solo_Mission_Id` int(11) NOT NULL,
+  `Mission_Time` time NOT NULL,
+  `Confirmation_Sent_To_Player` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `accepted_solomissions`
+--
+
+INSERT INTO `accepted_solomissions` (`asm_Id`, `Player_Id`, `Solo_Mission_Id`, `Mission_Time`, `Confirmation_Sent_To_Player`) VALUES
+(173, 50, 3, '00:05:00', 0);
 
 -- --------------------------------------------------------
 
@@ -113,7 +122,9 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`Player_Id`, `Name`, `Email`, `Password`, `Rank`, `Faction_Id`, `In_Game_Date`) VALUES
-(50, 'Name', 'Email', 'Password', 1, 2, '2350-04-15');
+(50, 'Name', 'Email', 'Password', 1, 2, '2350-04-15'),
+(51, 'Leon', 'Email', 'Password', 1, 2, '2350-04-15'),
+(52, 'gandalfoson', 'Email', 'Password', 1, 2, '2350-04-15');
 
 -- --------------------------------------------------------
 
@@ -137,7 +148,9 @@ CREATE TABLE `player_missions` (
 --
 
 INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`, `RespawnMissionTime`) VALUES
-(3, 50, 1, 4, 2, 3, 5, '00:05:00');
+(3, 50, 3, 5, 1, 4, 2, '00:05:00'),
+(4, 51, 1, 3, 3, 5, 5, '00:05:00'),
+(5, 52, 1, 3, 3, 5, 5, '00:05:00');
 
 -- --------------------------------------------------------
 
@@ -162,7 +175,9 @@ CREATE TABLE `player_resources` (
 --
 
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
-(12, 1000, 420, 1000, 90, 100, 1000, 1000, 50);
+(12, 1000, -3280, 1000, -1760, 100, 1000, 1000, 50),
+(13, 1000, 1000, 1000, 100, 100, 1000, 1000, 51),
+(14, 1000, 1000, 1000, 100, 100, 1000, 1000, 52);
 
 -- --------------------------------------------------------
 
@@ -197,7 +212,9 @@ CREATE TABLE `ship_fleet` (
 --
 
 INSERT INTO `ship_fleet` (`Ship_Fleet_ID`, `Ship_on_Mission`, `Ship_UnderRepair`, `Ship_Health`, `Ship_UnderConstruction`, `Player_Id`, `Spaceships_Id`) VALUES
-(6, 0, 0, 100, 0, 50, 5);
+(6, 0, 0, 100, 0, 50, 5),
+(7, 0, 0, 100, 0, 51, 5),
+(8, 0, 0, 100, 0, 52, 5);
 
 -- --------------------------------------------------------
 
@@ -227,11 +244,11 @@ CREATE TABLE `solo_missions` (
 --
 
 INSERT INTO `solo_missions` (`Solo_Missions_Id`, `Name`, `Story`, `Time`, `Input_Money`, `Input_People`, `Input_Ore`, `Input_Water`, `Ships_Id`, `Reward_Money`, `Reward_People`, `Reward_Ore`, `Reward_Water`, `Rank`) VALUES
-(1, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
-(2, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
-(3, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
-(4, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
-(5, 'Cargo Transport', 'Description and story', '00:00:30', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1);
+(1, 'Cargo Transport', 'Description and story', '00:05:00', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(2, 'VIP Mission', 'Description and story', '00:05:00', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(3, 'War Mission', 'Description and story', '00:05:00', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(4, 'Mining Mission', 'Description and story', '00:05:00', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1),
+(5, 'Refugee Transport', 'Description and story', '00:05:00', NULL, 10, NULL, 20, 5, 300, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -415,7 +432,7 @@ ALTER TABLE `submited_mmissions`
 -- AUTO_INCREMENT for table `accepted_solomissions`
 --
 ALTER TABLE `accepted_solomissions`
-  MODIFY `asm_Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `asm_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
 
 --
 -- AUTO_INCREMENT for table `computer_trading`
@@ -439,19 +456,19 @@ ALTER TABLE `multiplayer_missions`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `player_missions`
 --
 ALTER TABLE `player_missions`
-  MODIFY `Player_Mission_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Player_Mission_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `player_resources`
 --
 ALTER TABLE `player_resources`
-  MODIFY `PResource_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `PResource_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `player_upgrades`
@@ -463,7 +480,7 @@ ALTER TABLE `player_upgrades`
 -- AUTO_INCREMENT for table `ship_fleet`
 --
 ALTER TABLE `ship_fleet`
-  MODIFY `Ship_Fleet_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Ship_Fleet_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `solo_missions`

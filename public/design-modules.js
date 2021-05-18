@@ -156,7 +156,6 @@ function registerScreen(){
 //Creating and drawing main Menu.
 //Variables:
 let gameStatus= false;
-
 function createGame(){
 
   gameStatus = true;
@@ -168,24 +167,8 @@ function createGame(){
 
   createResourceBar();
   createButtons();
-
-
-  //Load Mission Respawn timer
-  loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
-    missionRespawnTime = dataReceived[0].RespawnMissionTime;
   
-  })
 
-
-  //Load Accepted Missions and put them in Running Missions array
-  loadJSON('/getRunningMissions/'+playerId, (dataReceived)=> {
-    for(let i=0; i<dataReceived.length; i++){
-      runningSoloMissions.push(dataReceived[i].Solo_Mission_Id);
-      
-    }
-    
-  })
-  
 }
 
 
@@ -407,11 +390,9 @@ let singlemission5AcceptBtn;
 
 
 //Create AND draw Missions Interface
- function createMissionInterface(){
+ function createMissions(){
+  if (missionMenuEnable === true){
 
-  
-
-  missionMenuEnable = true;
 
     rx= width*0.5;
     ry= height*0.5;
@@ -442,10 +423,11 @@ let singlemission5AcceptBtn;
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-    
+  
 
-    //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr
-  	 for (let i=0; i<singleMissionsArr.length; i++){
+    //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr (this needs to stay on here, because otherwise it will create a bugg, whenver we are opening the missions interface again with a recently accepted mission --> it will not show then)
+  	runningSoloMissionsIndex = []; 
+    for (let i=0; i<singleMissionsArr.length; i++){
        for (let j=0; j<runningSoloMissions.length; j++){
         if(singleMissionsArr[i].missionId === runningSoloMissions[j]){
           singleMissionsArr[i].acceptedMission();
@@ -455,16 +437,20 @@ let singlemission5AcceptBtn;
      }
 
 
+
+
      //assign openMissions array
      let dummyArray = [0,1,2,3,4];
 
-     opensingleMissionsArr = dummyArray.filter(function(el){ return !runningSoloMissions.includes(el);});
+    opensingleMissionsArr = dummyArray.filter(el => !runningSoloMissionsIndex.includes(el));
 
 
      //print arrays
      console.log('open Missions Index '+ opensingleMissionsArr);
      console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
-     console.log('running missions unindexed'+runningSoloMissions);
+     console.log('running missions unindexed '+runningSoloMissions);
+     //console.log('Assigned missions '+singleMissionsArr.length);
+    }
 }
 
 
@@ -473,7 +459,7 @@ let singlemission5AcceptBtn;
 //Draw Missions Interface
 
 function drawSoloMissions(){
-
+  if (missionMenuEnable === true){
 
   rx= width*0.5;
   ry= height*0.5;
@@ -511,7 +497,7 @@ function drawSoloMissions(){
     singlemission5.drawBox();
     pop();
 
-
+  }
 }
 
 
