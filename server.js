@@ -74,7 +74,7 @@ setInterval(function(){
 
 
 //_____________________________________________________________
-// Deduct 30 seconds from all running missions, every 30 seconds.
+// Deduct 30 seconds from all running missions (accepted missions), every 30 seconds.
 setInterval(function(){
 
   //Deduct 30 seconds from all accepted missions. 
@@ -94,7 +94,7 @@ setInterval(function(){
       }
     })
   })
-}, 3000000);
+}, 30000);
 
 
 
