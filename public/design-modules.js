@@ -28,31 +28,31 @@ let exitButtonIconPath = 'assets/exit-icon.jpg';
 
 
 
-//_____________________________________________________________________
-//Creating the Grid for the main menu. (not used, just for reference) 
-//Grid variables
-let tilesArr= [];
-let gridStartX=0;
-let gridStartY=0;
-let side = 100;
-let gridX = window.innerWidth/side;    //length of the grid
-let gridY = window.innerHeight/side;   // height of the grid
+// //_____________________________________________________________________
+// //Creating the Grid for the main menu. (not used, just for reference) 
+// //Grid variables
+// let tilesArr= [];
+// let gridStartX=0;
+// let gridStartY=0;
+// let side = 100;
+// let gridX = window.innerWidth/side;    //length of the grid
+// let gridY = window.innerHeight/side;   // height of the grid
 
-function createGrid(){
-  for (r=gridStartX; r<gridX+gridStartX;r++){
-    tilesArr[r]= [];
-    for(c=gridStartY; c<gridY+gridStartY; c++){
-      tilesArr[r][c] = new Tile (r, c, side,txt=``,255);    //to let tile numbers appear, insert into txt: ${r},${c} 
-    } 
-  } 
-}
+// function createGrid(){
+//   for (r=gridStartX; r<gridX+gridStartX;r++){
+//     tilesArr[r]= [];
+//     for(c=gridStartY; c<gridY+gridStartY; c++){
+//       tilesArr[r][c] = new Tile (r, c, side,txt=``,255);    //to let tile numbers appear, insert into txt: ${r},${c} 
+//     } 
+//   } 
+// }
 
-function drawGrid(){
-  for (r=gridStartX; r<gridX+gridStartX;r++)
-    for(c=gridStartY; c<gridY+gridStartY; c++){
-      tilesArr[r][c].drawCharacter();
-  }
-}
+// function drawGrid(){
+//   for (r=gridStartX; r<gridX+gridStartX;r++)
+//     for(c=gridStartY; c<gridY+gridStartY; c++){
+//       tilesArr[r][c].drawCharacter();
+//   }
+// }
 
 
 
@@ -167,7 +167,8 @@ function createGame(){
 
   createResourceBar();
   createButtons();
-  
+  createGrid();
+  //createships();
 
 }
 
@@ -189,6 +190,15 @@ let marketplaceButton;
 function createButtons(){
 missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
 missionButton.drawButton();
+
+// //btn for the ship yard
+// shipFleetButton = new Button(width-1250,height-200,200,50,'Ship Fleet',0,255,20);
+// shipFleetButton.drawButton();
+
+// //btn for the station upgrades
+// stationButton = new Button(width-1550,height-200,200,50,'Station Upgrades',0,255,20);
+// stationButton.drawButton();
+
 }
 
 
@@ -266,6 +276,76 @@ function drawResourceValues(){
     
   pop();
 
+  }
+}
+
+
+
+
+//_________________________________________________________________________________________________
+//ship fleet grid
+let tilesArr= [];
+let gridStartX= window.innerWidth/3 /100;  
+let gridStartY= (window.innerHeight-100)/100;
+let side = 100;
+let gridX = 5;    //length of the grid
+let gridY = 1;   // height of the grid
+
+function createGrid(){
+  if(cur_status === 'status_play'){
+    for (r=gridStartX; r<gridX+gridStartX;r++){
+      tilesArr[r]= [];
+      for(c=gridStartY; c<gridY+gridStartY; c++){
+        tilesArr[r][c] = new Tile (r, c, side, txt='', 200);    //to let tile numbers appear, insert into txt: ${r},${c} 
+      } 
+    } 
+  }
+}
+
+function drawGrid(){
+  if(cur_status === 'status_play'){
+    for (let r=gridStartX; r<gridX+gridStartX; r++){
+      for(let c=gridStartY; c<gridY+gridStartY; c++){
+        tilesArr[r][c].draw_tile();
+      }
+    }
+  }
+}
+
+
+
+//____________________________________________________________
+// Create ships and draw them 
+let shipId=[];   //array of all shipIDs in the ship fleet
+let shipList=[];  //array of all ship objects
+
+function createships(){
+
+  print('shipId '+shipId);
+  
+  if(cur_status === 'status_play'){
+
+    //shipId = [5,4,4,5];     //to be deleted later!!!!________________________________________________________________________________________________________
+
+  for (let i=0; i<shipId.length; i++){
+          let ship = new Ship(shipId[i],0,i, gridStartX, gridStartY, side, 30, 40);
+          shipList.push(ship);
+    }
+  }
+  console.log('shipList '+shipList);
+}
+
+
+
+function drawShips(){
+  if(cur_status === 'status_play'){
+    for(let i=0; i<shipList.length; i++){
+      for (r=gridStartX; r<gridX+gridStartX;r++){
+        for(c=gridStartY; c<gridY+gridStartY; c++){
+          shipList[i].drawShip();
+        }
+      }
+    }
   }
 }
 
@@ -509,6 +589,9 @@ function drawSoloMissions(){
 function createRunningMissionInterface(){
 
 }
+
+
+
 
 
 

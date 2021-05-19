@@ -18,6 +18,8 @@ function setup() {
 
 function draw() {
   drawResourceValues();
+  drawGrid();
+  drawShips();
   drawSoloMissions();
   noLoop();
   console.log(cur_status);

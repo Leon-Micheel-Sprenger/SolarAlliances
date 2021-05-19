@@ -179,6 +179,16 @@ if (cur_status=== 'status_login'){
     loadRunningMissions();
 
 
+    // Get player ships from ship-fleet
+    loadJSON('/getPlayerShips/'+playerId, (dataReceived)=> {
+      for(let i = 0; i<dataReceived.length; i++){
+        shipId.push(dataReceived[i].Spaceships_Id);
+      }
+      createships();
+      loop(); 
+     
+    }) 
+
     // add all the loadJSON paths below: 
 
     //ships
@@ -191,9 +201,9 @@ if (cur_status=== 'status_login'){
 
 
 
-
-    //Create the game
-    createGame();
+     //Create the game
+     createGame();
+    
    
        }
      })
