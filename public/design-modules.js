@@ -17,7 +17,7 @@ let emptyIconPath = 'assets/money-icon.jpg';
 
 //Ship Icon Paths
 let transportShipIconPath =  'assets/ship-icon.jpg';
-let miningShipIconPath =  'assets/ship-icon.jpg';
+let miningShipIconPath =  'assets/exit-icon.jpg';
 let warShipIconPath =  'assets/ship-icon.jpg';
 let explorationShipIconPath =  'assets/ship-icon.jpg';
 
@@ -139,6 +139,8 @@ function registerScreen(){
 let gameStatus= false;
 
 function createGame(){
+
+ 
 
   gameStatus = true;
   cur_status = 'status_play';
@@ -523,25 +525,27 @@ function createShipFleetInterface(){
 
 //____________________________________________________________
 // Create ships and draw them 
-let shipId=[];   //array of all ships in the ship fleet
-let shipList=[];
+let shipId=[];   //array of all shipIDs in the ship fleet
+let shipList=[];  //array of all ship objects
 
 //problem --> in the new ship(shipId[i],...) shipId appears as Array(0) (doesn't read the shipId array)
 //problem --> more than 1 shipList appears in the console (no errors appear about this)
 function createships(){
-  //if(cur_status === 'status_play'){
-    for (r=gridStartX; r<gridX+gridStartX; r++){
-      for(c=gridStartY; c<gridY+gridStartY; c++){
-        for (let i=0; i<=shipId.length; i++){
-          let ship = new Ship(shipId[i],r,c,side, 30, 40);
+
+  
+  if(cur_status === 'status_play'){
+
+    shipId = [5,4,4,5];     //to be deleted later!!!!
+
+  for (let i=0; i<shipId.length; i++){
+          let ship = new Ship(shipId[i],0,i, gridStartX, gridStartY, side, 30, 40);
           shipList.push(ship);
-          print(shipList);
-          print(shipId);
-        }
-      }
     }
-  //}
+  }
+  console.log('shipList '+shipList);
 }
+
+
 
 function drawShips(){
   if(cur_status === 'status_play'){

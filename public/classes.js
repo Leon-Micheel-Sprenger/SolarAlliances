@@ -159,8 +159,10 @@ class OnScreenFrame {
   }
 
   drawScreen(){
+    push();
     rectMode(CENTER);
     rect(this.rx,this.ry,this.rw,this.rh);
+    pop();
   }
 
 
@@ -190,11 +192,12 @@ class Icon {
 
 
 
+
 //_________________________________________________________
-//
+//ship class
 class Ship {
 
-  constructor(shipId=[], r, c, side, width, height){
+  constructor(shipId, r, c,gridStartX, gridStartY, side, width, height){
 
     this.shipId = shipId;
     this.iconpath;
@@ -203,15 +206,17 @@ class Ship {
     this.side = side;
     this.width = width;     //image width
     this.height = height;  //image height
+    this.gridStartX = gridStartX;
+    this.gridStartY = gridStartY;
 
-    this.posX = this.r * side;
-    this.posY = this.c * side; //place in px (500px, 200px...)
+    this.posX =    this.gridStartX * side + (this.c * side);
+    this.posY =    this.gridStartY * side + (this.r *side); //place in px (500px, 200px...)
 
   }
 
   drawShip(){
 
-    switch (shipId) {
+    switch (this.shipId) {
 
       case 3: 
         this.iconpath = warShipIconPath;
@@ -233,9 +238,10 @@ class Ship {
       image(img, this.posX-(this.side/5), this.posY-(this.side/5), this.width, this.height);
     })
 
+    console.log(this.iconpath);
+
   }
 }
-
 
 
 

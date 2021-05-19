@@ -198,7 +198,6 @@ function mousePressed(){
         max_ore = dataReceived[0].Max_Ore;
         max_water = dataReceived[0].Max_Water;
         max_people = dataReceived[0].Max_People;
-        console.log(dataReceived);
         loop();
       })  
   
@@ -324,9 +323,10 @@ function mousePressed(){
   
   
   
-      createGame();
+      
      
          }
+         createGame();
        })
       }
     }
