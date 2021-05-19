@@ -1,4 +1,3 @@
-
 //Grid Tile
 
 //const { text } = require("body-parser");
@@ -195,10 +194,9 @@ class Icon {
 //
 class Ship {
 
+  constructor(shipId=[], r, c, side, width, height){
 
-  constructor(shipId, r, c, side, width, height ){
-
-    this.shipId = shipId
+    this.shipId = shipId;
     this.iconpath;
     this.r = r;           //place in grid (number eg. 5,2,3)
     this.c = c;
@@ -206,8 +204,8 @@ class Ship {
     this.width = width;     //image width
     this.height = height;  //image height
 
-    this.posX = this.r * 100
-    this.posY = this.c * 100; //place in px (500px, 200px...)
+    this.posX = this.r * side;
+    this.posY = this.c * side; //place in px (500px, 200px...)
 
   }
 
@@ -232,7 +230,7 @@ class Ship {
     }
 
     loadImage(this.iconpath, img => {
-      image(img, this.posX, this.posY, this.width, this.height);
+      image(img, this.posX-(this.side/5), this.posY-(this.side/5), this.width, this.height);
     })
 
   }
@@ -519,11 +517,3 @@ class SoloMissionBox {
   }
 
 }
-
-
-
-
-
-
-
-
