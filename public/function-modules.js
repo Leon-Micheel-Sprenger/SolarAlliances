@@ -62,35 +62,35 @@ function mousePressed(){
 
 
     
-//Ship Fleet Button clicked
-if (gameStatus){
-  if(shipFleetButton.isClicked(mouseX, mouseY)){
-    createShipFleetInterface();
-  }
-}  
+// //Ship Fleet Button clicked
+// if (gameStatus){
+//   if(shipFleetButton.isClicked(mouseX, mouseY)){
+//     createShipFleetInterface();
+//   }
+// }  
 
-//Ship Fleet Exit Button clicked
-if(cur_status === 'status_play'){
-  if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
-    createGame();
-    loop();
-  }
-}
+// //Ship Fleet Exit Button clicked
+// if(cur_status === 'status_play'){
+//   if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
+//     createGame();
+//     loop();
+//   }
+// }
 
-//Station Upgrades Button clicked
-if (gameStatus){
-  if(stationButton.isClicked(mouseX, mouseY)){
-    createStationUpgradesInterface();
-  }
-}
+// //Station Upgrades Button clicked
+// if (gameStatus){
+//   if(stationButton.isClicked(mouseX, mouseY)){
+//     createStationUpgradesInterface();
+//   }
+// }
 
-//Station Upgrades Exit Button clicked
-if(cur_status === 'status_play'){
-  if (stationExitBtn.isClicked(mouseX, mouseY)){
-    createGame();
-    loop();
-  }
-}
+// //Station Upgrades Exit Button clicked
+// if(cur_status === 'status_play'){
+//   if (stationExitBtn.isClicked(mouseX, mouseY)){
+//     createGame();
+//     loop();
+//   }
+// }
    
     
 
@@ -284,6 +284,7 @@ function acceptSoloMission(missionIndex){
 
 
   // draw missions again.
+  //createResourceBar();
   loop();
 
 }
