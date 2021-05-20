@@ -109,3 +109,18 @@ loadJSON('/getPlayerResources/'+playerId, (dataReceived)=> {
     loop();
   })  
 }
+
+
+//Get player ships;
+function loadPlayerShips(){
+  loadJSON('/getPlayerShips/'+playerId, (dataReceived)=> {
+    ships = [];
+    availableShips = [];
+    blockedShips = [];
+    for(let i = 0; i<dataReceived.length; i++){
+      ships.push(dataReceived[i]);
+    }
+    createships();
+    loop(); 
+  }) 
+}

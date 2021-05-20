@@ -77,11 +77,21 @@ setInterval(function(){
 // Deduct 30 seconds from all running missions (accepted missions), every 30 seconds.
 setInterval(function(){
 
+  let sql = `Select * from accepted_solomissions`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    if (result.length>0){
+
   //Deduct 30 seconds from all accepted missions. 
   let sql = `Select timediff(Mission_Time, '00:00:30') as New_Time from accepted_solomissions;`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
+
+    
+
     let newTime = result[0].New_Time;
     
     let sql = `UPDATE accepted_solomissions SET Mission_Time = '${newTime}' WHERE Mission_Time > '00:00:00';`;
@@ -90,10 +100,12 @@ setInterval(function(){
       if(err) throw err;
       
       if (result.affectedRows == 1){
-        console.log(newTime);
+        console.log('new time '+newTime);
       }
     })
   })
+}
+})
 }, 30000);
 
 
@@ -246,7 +258,7 @@ app.get('/getPlayerRank/:playerId', (req, res)=> {
 app.get('/getPlayerShips/:playerId', (req, res)=> {
   let playerId = req.params.playerId
   
-  let sql = `SELECT Spaceships_Id FROM ship_fleet WHERE Player_Id = ${playerId};`;
+  let sql = `SELECT * FROM ship_fleet WHERE Player_Id = ${playerId};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
@@ -370,6 +382,25 @@ app.post('/updateAcceptedMissions', (req, res)=> {
 
 
 
+
+
+//Update Ship Fleet, when Mission was accepted
+app.post('/updateShipFleet', (req, res)=> {
+
+  let Ship_Fleet_ID = req.body.Ship_Fleet_ID;
+
+  let sql = `UPDATE ship_fleet SET Ship_on_Mission = 1 WHERE Ship_Fleet_ID = ${Ship_Fleet_ID};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+  })
+
+})
+
+
+
+
+
 //Get completed missions from accepted_solomissions (fired by client every 30 seconds)
 
 app.post('/getCompletedMissions', (req, res)=> {
@@ -380,6 +411,15 @@ app.post('/getCompletedMissions', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
+
+    if (result.length>0){
+
+     // let Solo_Mission_Id = result[]
+
+
+    }
+
+
   
     //update player Resources with rewards
     // free blocked ships
@@ -390,6 +430,9 @@ app.post('/getCompletedMissions', (req, res)=> {
   })
 
 })
+
+
+
 
 
 

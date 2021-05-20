@@ -24,6 +24,7 @@ let explorationShipIconPath =  'assets/money-icon.jpg';
 
 //Other paths
 let exitButtonIconPath = 'assets/exit-icon.jpg';
+let shipOnMissionIconPath = 'assets/exit-icon.jpg';
 
 
 
@@ -316,23 +317,41 @@ function drawGrid(){
 
 //____________________________________________________________
 // Create ships and draw them 
-let shipId=[];   //array of all shipIDs in the ship fleet
-let shipList=[];  //array of all ship objects
+let ships=[];   //array of all ship-rows in the ship fleet table (from DB every 30 seconds)
+
+let availableShips = []; //array of all ship objects, that are available in shipfleet
+let blockedShips = [];   //array of all ship objects, that are blocked ships in shipfleet
+let shipList=[];  //array of all ship objects, that are created in createships for drawing (blocked and available)
+
+
 
 function createships(){
 
-  print('shipId '+shipId);
+ 
   
   if(cur_status === 'status_play'){
 
-    //shipId = [5,4,4,5];     //to be deleted later!!!!________________________________________________________________________________________________________
+  shipList = [];
+  for (let i=0; i<ships.length; i++){
+      
+    let ship = new Ship(ships[i].Ship_Fleet_ID, ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,i, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
 
-  for (let i=0; i<shipId.length; i++){
-          let ship = new Ship(shipId[i],0,i, gridStartX, gridStartY, side, 30, 40);
-          shipList.push(ship);
+      //assign blocked and available ships
+      if(ship.Ship_on_Mission === 0){
+        availableShips.push(ship);
+      } else if (ship.Ship_on_Mission === 1){
+        blockedShips.push(ship);
+        ship.blockShip();
+      }
+
+      shipList.push(ship);
+
     }
   }
+  print('ships '+ships);
   console.log('shipList '+shipList);
+  console.log('available Ships '+availableShips);
+  console.log('blocked Ships '+blockedShips);
 }
 
 

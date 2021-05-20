@@ -194,17 +194,26 @@ class Icon {
 //ship class
 class Ship {
 
-  constructor(shipId, r, c,gridStartX, gridStartY, side, width, height){
+  constructor(ship_Fleet_ID, Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_Under_Construction, shipId, r, c,gridStartX, gridStartY, side, width, height, shipOnMissionIconPath){
 
+
+    this.ship_Fleet_ID = ship_Fleet_ID;
+    this.Ship_on_Mission = Ship_on_Mission;
+    this.Ship_UnderRepair = Ship_UnderRepair;
+    this.Ship_Health = Ship_Health;
+    this.Ship_Under_Construction = Ship_Under_Construction;
     this.shipId = shipId;
+
     this.iconpath;
     this.r = r;           //place in grid (number eg. 5,2,3)
     this.c = c;
-    this.side = side;
+    this.side = side;     //side of the tile
     this.width = width;     //image width
     this.height = height;  //image height
     this.gridStartX = gridStartX;
     this.gridStartY = gridStartY;
+    this.available = true;
+    this.shipOnMissionIconPath = shipOnMissionIconPath;
 
     this.posX =    this.gridStartX * side + (this.c * side);
     this.posY =    this.gridStartY * side + (this.r *side); //place in px (500px, 200px...)
@@ -231,12 +240,26 @@ class Ship {
         this.iconpath = emptyIconPath;
     }
 
+    
     loadImage(this.iconpath, img => {
       image(img, this.posX-(this.side/5), this.posY-(this.side/5), this.width, this.height);
     })
 
-    console.log(this.iconpath);
 
+  if (this.available === false) {
+    loadImage(this.shipOnMissionIconPath, img2 => {
+      image(img2, this.posX-this.side/2, this.posY-this.side/2, 20, 25);
+    }) 
+  }
+    
+}
+
+  blockShip(){
+    this.available = false;
+  }
+
+  unblockShip(){
+    this.available = true;
   }
 }
 
@@ -265,7 +288,7 @@ class SoloMissionBox {
     this.InputPeople = InputPeople;
     this.InputOre = InputOre;
     this.InputWater = InputWater;
-    this.InputShip = InputShip;
+    this.InputShip = InputShip;           //Ship Id
     this.RewardMoney = RewardMoney;
     this.RewardPeople = RewardPeople;
     this.RewardOre = RewardOre;
@@ -277,6 +300,9 @@ class SoloMissionBox {
     //Input resources
     this.InputResource1;
     this.InputResource2;
+
+    this.InputResource1Name;
+    this.InputResource2Name;
     //input resource icons
     this.inputResource1IconPath;
     this.inputResource2IconPath;
