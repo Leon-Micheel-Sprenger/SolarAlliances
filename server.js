@@ -177,7 +177,7 @@ app.post('/Register', (req, res)=> {
 
                 db.query(sql, (err, result)=> {
                   if (err) throw err;
-                  
+                  res.send(result);
                 })
 
               })
@@ -393,6 +393,7 @@ app.post('/updateShipFleet', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
+    res.send(result);
   })
 
 })
@@ -407,16 +408,55 @@ app.post('/getCompletedMissions', (req, res)=> {
 
   let playerId = req.body.playerId;
 
-  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id = ${playerId} AND Mission_Time = '00:00:00';`;
+  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id = ${playerId} AND Mission_Time = '00:00:00' AND Confirmation_Sent_To_Player = 0;`;
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
 
     if (result.length>0){
 
-     // let Solo_Mission_Id = result[]
+      let completedMissions = [];
+      let completedSoloMissions = [];
+
+    //for every mission, that is completed, do the following!
+      for (let i=0; i<result.length; i++){
+        completedMissions.push(result[i].Solo_Mission_Id);
+      }
+
+      //console.log(completedMissions[0].Solo_Mission_Id);
+      //console.log('completed Missions' +completedMissions.length);
+
+      for (let i=0; i<completedMissions.length; i++){
+      
+      //get the mission inputs and rewards
+      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${completedMissions[i]};`;
+
+      db.query(sql, (err, result)=> {
+        if (err) throw err;
+        completedSoloMissions.push(result);
+        
+
+       
+        //give player the rewards of the completed mission
+        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People=${result[0].Reward_People} WHERE Player_Id=${playerId};`;
+        db.query(sql, (err, result)=> {
+          if (err) throw err;
+          res.send(result);
+          console.log(result);
+          
+          //set ship back to not on a mission in ship_fleet
+          let sql = `UPDATE ship_fleet SET Ship_on_Mission = 0 WHERE Player_Id= ${playerId} AND `
 
 
+          //send confirmation message to the client
+
+          //change confirmation sent to 1 in accepted missions
+
+
+        })
+      })
+
+    }
     }
 
 
@@ -428,7 +468,6 @@ app.post('/getCompletedMissions', (req, res)=> {
 
 
   })
-
 })
 
 
