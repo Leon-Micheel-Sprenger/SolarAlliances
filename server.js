@@ -77,35 +77,12 @@ setInterval(function(){
 // Deduct 30 seconds from all running missions (accepted missions), every 30 seconds.
 setInterval(function(){
 
-  let sql = `Select * from accepted_solomissions`;
-
-  db.query(sql, (err, result)=> {
-    if(err) throw err;
-
-    if (result.length>0){
-
-  //Deduct 30 seconds from all accepted missions. 
-  let sql = `Select timediff(Mission_Time, '00:00:30') as New_Time from accepted_solomissions;`;
-
-  db.query(sql, (err, result)=> {
-    if(err) throw err;
-
-    
-
-    let newTime = result[0].New_Time;
-    
-    let sql = `UPDATE accepted_solomissions SET Mission_Time = '${newTime}' WHERE Mission_Time > '00:00:00';`;
+    let sql = `UPDATE accepted_solomissions SET Mission_Time = subtime(Mission_Time, '00:00:30') WHERE Mission_Time > '00:00:00';`;
 
     db.query(sql, (err, result)=> {
       if(err) throw err;
-      
-      if (result.affectedRows == 1){
-        console.log('new time '+newTime);
-      }
     })
-  })
-}
-})
+  
 }, 30000);
 
 
@@ -361,6 +338,7 @@ app.post('/updateAcceptedMissions', (req, res)=> {
   
   let Player_Id = req.body.Player_Id;
   let Mission_Id = req.body.Mission_Id;
+  let Ship_Fleet_ID = req.body.Ship_Fleet_ID;
   
 
   let sql = `SELECT Time from solo_missions WHERE Solo_Missions_Id = ${Mission_Id};`;
@@ -370,7 +348,7 @@ app.post('/updateAcceptedMissions', (req, res)=> {
 
     let time = result[0].Time; 
     
-    let sql = `INSERT INTO accepted_solomissions (Player_Id, Solo_Mission_Id, Mission_Time) VALUES (${Player_Id}, ${Mission_Id}, '${time}');`
+    let sql = `INSERT INTO accepted_solomissions (Player_Id, Solo_Mission_Id, Mission_Time, Ship_Fleet_ID) VALUES (${Player_Id}, ${Mission_Id}, '${time}', ${Ship_Fleet_ID});`
 
     db.query(sql, (err, result)=> {
       if(err) throw err;
@@ -415,58 +393,51 @@ app.post('/getCompletedMissions', (req, res)=> {
 
     if (result.length>0){
 
+      //put it into these arrays
       let completedMissions = [];
-      let completedSoloMissions = [];
+      let Ship_Fleet_IDs = [];
 
-    //for every mission, that is completed, do the following!
       for (let i=0; i<result.length; i++){
-        completedMissions.push(result[i].Solo_Mission_Id);
+        completedMissions.push(result[i]);
+        Ship_Fleet_IDs.push(result[i].Ship_Fleet_ID);
       }
 
-      //console.log(completedMissions[0].Solo_Mission_Id);
-      //console.log('completed Missions' +completedMissions.length);
 
-      for (let i=0; i<completedMissions.length; i++){
-      
       //get the mission inputs and rewards
-      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${completedMissions[i]};`;
+      let sql = `SELECT * FROM solo_missions WHERE Solo_Missions_Id = ${completedMissions[0].Solo_Mission_Id};`;
 
       db.query(sql, (err, result)=> {
         if (err) throw err;
-        completedSoloMissions.push(result);
-        
-
        
-        //give player the rewards of the completed mission
-        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People=${result[0].Reward_People} WHERE Player_Id=${playerId};`;
-        db.query(sql, (err, result)=> {
+        //give player the rewards of the completed mission && set ship back to not on a mission in ship_fleet
+        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People= People + ${result[0].Reward_People} WHERE Player_Id=${playerId};
+                   `;
+        
+      db.query(sql, (err, result)=> {
           if (err) throw err;
-          res.send(result);
-          console.log(result);
-          
-          //set ship back to not on a mission in ship_fleet
-          let sql = `UPDATE ship_fleet SET Ship_on_Mission = 0 WHERE Player_Id= ${playerId} AND `
 
+          let sql = `UPDATE ship_fleet SET Ship_on_Mission = 0 WHERE Player_Id= ${playerId} AND Ship_Fleet_ID = ${Ship_Fleet_IDs[0]};`; 
 
+          db.query(sql, (err, result)=> {
+            if (err) throw err;
+
+            let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Ship_Fleet_ID = ${Ship_Fleet_IDs[0]};`
+            db.query(sql, (err, result)=> {
+              if (err) throw err;
+              res.send(result);
+              console.log('mission complete '+result)
+            })
+          })
+            
+          })
+
+        
           //send confirmation message to the client
 
           //change confirmation sent to 1 in accepted missions
 
-
-        })
       })
-
     }
-    }
-
-
-  
-    //update player Resources with rewards
-    // free blocked ships
-    //send confirmation to client
-    //change confirmation sent to true
-
-
   })
 })
 

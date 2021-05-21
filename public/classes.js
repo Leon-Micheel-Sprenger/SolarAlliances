@@ -214,6 +214,7 @@ class Ship {
     this.gridStartY = gridStartY;
     this.available = true;
     this.shipOnMissionIconPath = shipOnMissionIconPath;
+    this.removeImages = true;
 
     this.posX =    this.gridStartX * side + (this.c * side);
     this.posY =    this.gridStartY * side + (this.r *side); //place in px (500px, 200px...)
@@ -260,6 +261,11 @@ class Ship {
 
   unblockShip(){
     this.available = true;
+  }
+
+  removeImages(){
+    img.remove();
+    img2.remove();
   }
 }
 
