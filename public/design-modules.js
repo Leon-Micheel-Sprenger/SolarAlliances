@@ -10,17 +10,17 @@ let cur_status = 'status_login'; //status_login, status_register, status_play
 
 //Resource Icon paths
 let moneyIconPath = 'assets/money-icon.jpg';
-let oreIconPath = 'assets/money-icon.jpg';
-let waterIconPath = 'assets/money-icon.jpg';
-let peopleIconPath = 'assets/money-icon.jpg';
-let rankIconPath = 'assets/money-icon.jpg';
-let emptyIconPath = 'assets/money-icon.jpg';
+let oreIconPath = 'assets/ore-icon.jpg';
+let waterIconPath = 'assets/water-icon.jpg';
+let peopleIconPath = 'assets/people-icon.jpg';
+let rankIconPath = 'assets/rank-icon.jpg';
+let emptyIconPath = 'assets/empty-icon.jpg';
 
 //Ship Icon Paths
-let transportShipIconPath =  'assets/money-icon.jpg';
-let miningShipIconPath =  'assets/money-icon.jpg';
-let warShipIconPath =  'assets/money-icon.jpg';
-let explorationShipIconPath =  'assets/money-icon.jpg';
+let transportShipIconPath =  'assets/ship-icon.jpg';
+let miningShipIconPath =  'assets/ship-icon.jpg';
+let warShipIconPath =  'assets/ship-icon.jpg';
+let explorationShipIconPath =  'assets/ship-icon.jpg';
 
 //Other paths
 let exitButtonIconPath = 'assets/exit-icon.jpg';
