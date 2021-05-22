@@ -17,10 +17,10 @@ let rankIconPath = 'assets/rank-icon.jpg';
 let emptyIconPath = 'assets/empty-icon.jpg';
 
 //Ship Icon Paths
-let transportShipIconPath =  'assets/ship-icon.jpg';
-let miningShipIconPath =  'assets/ship-icon.jpg';
-let warShipIconPath =  'assets/ship-icon.jpg';
-let explorationShipIconPath =  'assets/ship-icon.jpg';
+let transportShipIconPath =  'assets/transportship-icon.jpg';
+let miningShipIconPath =  'assets/miningship-icon.jpg';
+let warShipIconPath =  'assets/warship-icon.jpg';
+let explorationShipIconPath =  'assets/explorationship-icon.jpg';
 
 //Other paths
 let exitButtonIconPath = 'assets/exit-icon.jpg';
