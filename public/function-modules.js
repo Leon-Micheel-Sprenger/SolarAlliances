@@ -229,10 +229,11 @@ if (cur_status=== 'status_login'){
 
      //Create the game
      createGame();
-    
+      
    
        }
      })
+     //loop();
     }
   }
 
@@ -278,7 +279,7 @@ function acceptSoloMission(missionIndex){
 }
 
 
-  //Update resources on DB!
+  //Update DB!
   dataSent = {
     "Player_Id": playerId,
     "Money": money,
@@ -289,6 +290,7 @@ function acceptSoloMission(missionIndex){
     "Ship_Fleet_ID": missionShip.ship_Fleet_ID
   }
   
+  //update resources
   httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {} )
 
   //put mission in accepted missions on db
@@ -366,7 +368,12 @@ setInterval(function(){
   //Listening for completed missions in accepted solo_missions
  dataSent = {"playerId": playerId};
 
- httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {});
+ httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
+  console.log('mission completed '+dataReceived[0]);
+   if (dataReceived.length > 0){
+     alert('Your mission is finished');
+   }
+ });
  
 
 
@@ -376,7 +383,8 @@ setInterval(function(){
   loadSoloMissions();
   loadRunningMissions();      //get solomissions data from DB       
   createMissions();           //assign data to missions
-  loop();                     //draw missions     
+  createResourceBar();
+  loop();                     //draw     
  
 
-},5000);
+},15000);

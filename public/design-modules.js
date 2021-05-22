@@ -170,7 +170,7 @@ function createGame(){
   createButtons();
   createGrid();
   //createships();
-
+  //loop();
 }
 
 
