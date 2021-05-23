@@ -36,7 +36,8 @@ function mousePressed(){
       if(missionButton.isClicked(mouseX, mouseY)){
         missionMenuEnable = true;
         createMissions();
-        loop();
+        drawSoloMissions();
+        //loop();
       }
     }
 
@@ -268,6 +269,7 @@ function acceptSoloMission(missionIndex){
   ore -= acceptedMission.InputOre;
   water -= acceptedMission.InputWater;
 
+
   //block ship for use of the player for time of mission (change status on DB): 
  for (let i=0; i<availableShips.length; i++){
   if (acceptedMission.InputShip === availableShips[i].shipId){
@@ -277,6 +279,13 @@ function acceptSoloMission(missionIndex){
     availableShips.splice(i,1);
   }
 }
+
+// draw missions again.
+//loop();
+drawSoloMissions();
+drawResourceValues();
+
+
 
 
   //Update DB!
@@ -302,8 +311,7 @@ function acceptSoloMission(missionIndex){
 
 
 
-  // draw missions again.
-  loop();
+  
   }
 
   else{
@@ -361,12 +369,16 @@ function missionShipVerified(acceptedMission){
 
 
 //___________________________________________________________________________________
-//Ping function to get updated solo missions and completed running missions every 30 seconds. 
+//Ping function to get updated solo missions and completed running missions every 15 seconds. 
 
 setInterval(function(){
+ if(cur_status === 'status_play'){
 
   //Listening for completed missions in accepted solo_missions
- dataSent = {"playerId": playerId};
+ dataSent = {
+   "playerId": playerId,
+};
+ 
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
   console.log('mission completed '+dataReceived[0]);
@@ -377,14 +389,17 @@ setInterval(function(){
  
 
 
-
   loadResources();
   loadPlayerShips(); 
   loadSoloMissions();
   loadRunningMissions();      //get solomissions data from DB       
   createMissions();           //assign data to missions
   createResourceBar();
-  loop();                     //draw     
- 
 
-},15000);
+  
+  //draw 
+  loop();
+                         
+ 
+}
+},4000);

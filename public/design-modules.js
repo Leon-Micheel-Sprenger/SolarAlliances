@@ -100,7 +100,7 @@ function loginScreen(){
   
 
   InputName = createInput('Name').position(rx-100, ry-60);
-  InputPass = createInput('Password').position(rx-100, ry);
+  InputPass = createInput('Password', 'password').position(rx-100, ry);
   
    //Draw Buttons
    rectMode(CENTER);
@@ -129,7 +129,7 @@ function registerScreen(){
     rw= 600;
     rh= 500;   
 
-    InputPassTwo = createInput('Repeat Password').position(rx-100, ry+30);
+    InputPassTwo = createInput('Repeat Password', 'password').position(rx-100, ry+30);
     InputEmail = createInput('Email').position(rx-100, ry-30);
     
 
@@ -357,7 +357,7 @@ function createships(){
 
 
 function drawShips(){
-  if(cur_status === 'status_play'){
+  if(cur_status === 'status_play' && missionMenuEnable === false){
     for(let i=0; i<shipList.length; i++){
       for (r=gridStartX; r<gridX+gridStartX;r++){
         for(c=gridStartY; c<gridY+gridStartY; c++){
