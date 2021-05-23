@@ -22,7 +22,7 @@ function draw() {
   drawShips();
   drawSoloMissions();
   noLoop();
-  console.log(cur_status);
+  //console.log(cur_status);
   
   
 }

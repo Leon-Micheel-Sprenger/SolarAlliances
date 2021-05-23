@@ -46,7 +46,7 @@ function mousePressed(){
       for (let i=0; i<5; i++){
         if(singleMissionsArr[i].acceptButton.isClicked(mouseX, mouseY)){
           acceptSoloMission(i);
-          createResourceBar();
+          //createResourceBar();
           //loop();
         }
       }
@@ -253,7 +253,7 @@ function acceptSoloMission(missionIndex){
   //Verify, if player has resources and ship available for the mission.
   if (missionResourcesVerified(acceptedMission) && missionShipVerified(acceptedMission)){
 
-  console.log('inputResource1 '+acceptedMission.inputResource1);
+  console.log('inputResource1 '+acceptedMission.InputResource1);
 
 
 
@@ -280,11 +280,12 @@ function acceptSoloMission(missionIndex){
   }
 }
 
-// draw missions again.
+// create and draw missions again.
 //loop();
-drawSoloMissions();
-drawResourceValues();
-
+ createMissions();
+ drawSoloMissions();
+ createResourceBar();
+ drawResourceValues();
 
 
 
@@ -381,10 +382,7 @@ setInterval(function(){
  
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
-  console.log('mission completed '+dataReceived[0]);
-   if (dataReceived.length > 0){
-     alert('Your mission is finished');
-   }
+  console.log(dataReceived.message);
  });
  
 
@@ -393,13 +391,13 @@ setInterval(function(){
   loadPlayerShips(); 
   loadSoloMissions();
   loadRunningMissions();      //get solomissions data from DB       
-  createMissions();           //assign data to missions
-  createResourceBar();
-
+  //createMissions();           //assign data to missions
   
+
+
   //draw 
-  loop();
+  //loop();
                          
  
 }
-},4000);
+},15000);

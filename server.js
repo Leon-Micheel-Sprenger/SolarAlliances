@@ -73,6 +73,9 @@ setInterval(function(){
 
 
 
+
+
+
 //_____________________________________________________________
 // Deduct 30 seconds from all running missions (accepted missions), every 30 seconds.
 setInterval(function(){
@@ -154,7 +157,7 @@ app.post('/Register', (req, res)=> {
 
                 db.query(sql, (err, result)=> {
                   if (err) throw err;
-                  res.send(result);
+                  //res.send(result);
                 })
 
               })
@@ -424,8 +427,8 @@ app.post('/getCompletedMissions', (req, res)=> {
             let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Ship_Fleet_ID = ${Ship_Fleet_IDs[0]};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
-              res.send(result);
-              console.log('mission complete '+result)
+              res.send({message: 'mission completed successfully'});
+              console.log('mission completed successfully');
             })
           })
             
@@ -438,6 +441,7 @@ app.post('/getCompletedMissions', (req, res)=> {
 
       })
     }
+    else res.send(result);
   })
 })
 

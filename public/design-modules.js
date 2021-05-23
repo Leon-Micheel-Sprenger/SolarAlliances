@@ -348,10 +348,10 @@ function createships(){
 
     }
   }
-  print('ships '+ships);
-  console.log('shipList '+shipList);
-  console.log('available Ships '+availableShips);
-  console.log('blocked Ships '+blockedShips);
+  // print('ships '+ships);
+  // console.log('shipList '+shipList);
+  // console.log('available Ships '+availableShips);
+  // console.log('blocked Ships '+blockedShips);
 }
 
 
@@ -463,90 +463,7 @@ let runningSoloMissions = []; // all running missions (reference by MissionId)
 
 let runningSoloMissionsIndex = [];
 
-//Mission1 Variables; 
-let singlemissionId;
-let singlemissionName;
-let singlemissionStory;
-let singlemissionTime;
-let singlemissionInputMoney;
-let singlemissionInputPeople;
-let singlemissionInputOre;
-let singlemissionInputWater;
-let singlemissionInputShips;
-let singlemissionRewardMoney;
-let singlemissionRewardPeople;
-let singlemissionRewardOre;
-let singlemissionRewardWater;
-let singlemissionRank;
-let singlemissionAcceptBtn;
 
-//Mission2 Variables;
-let singlemission2Id;
-let singlemission2Name;
-let singlemission2Story;
-let singlemission2Time;
-let singlemission2InputMoney;
-let singlemission2InputPeople;
-let singlemission2InputOre;
-let singlemission2InputWater;
-let singlemission2InputShips;
-let singlemission2RewardMoney;
-let singlemission2RewardPeople;
-let singlemission2RewardOre;
-let singlemission2RewardWater;
-let singlemission2Rank;
-let singlemission2AcceptBtn;
-
-//Mission3 Variables;
-let singlemission3Id;
-let singlemission3Name;
-let singlemission3Story;
-let singlemission3Time;
-let singlemission3InputMoney;
-let singlemission3InputPeople;
-let singlemission3InputOre;
-let singlemission3InputWater;
-let singlemission3InputShips;
-let singlemission3RewardMoney;
-let singlemission3RewardPeople;
-let singlemission3RewardOre;
-let singlemission3RewardWater;
-let singlemission3Rank;
-let singlemission3AcceptBtn;
-
-//Mission4 Variables;
-let singlemission4Id;
-let singlemission4Name;
-let singlemission4Story;
-let singlemission4Time;
-let singlemission4InputMoney;
-let singlemission4InputPeople;
-let singlemission4InputOre;
-let singlemission4InputWater;
-let singlemission4InputShips;
-let singlemission4RewardMoney;
-let singlemission4RewardPeople;
-let singlemission4RewardOre;
-let singlemission4RewardWater;
-let singlemission4Rank;
-let singlemission4AcceptBtn;
-
-//Mission5 Variables;
-let singlemission5Id;
-let singlemission5Name;
-let singlemission5Story;
-let singlemission5Time;
-let singlemission5InputMoney;
-let singlemission5InputPeople;
-let singlemission5InputOre;
-let singlemission5InputWater;
-let singlemission5InputShips;
-let singlemission5RewardMoney;
-let singlemission5RewardPeople;
-let singlemission5RewardOre;
-let singlemission5RewardWater;
-let singlemission5Rank;
-let singlemission5AcceptBtn;
 
 
 //Create AND draw Missions Interface
@@ -606,9 +523,9 @@ let singlemission5AcceptBtn;
 
 
      //print arrays
-     console.log('open Missions Index '+ opensingleMissionsArr);
-     console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
-     console.log('running missions unindexed '+runningSoloMissions);
+    //  console.log('open Missions Index '+ opensingleMissionsArr);
+    //  console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
+    //  console.log('running missions unindexed '+runningSoloMissions);
      //console.log('Assigned missions '+singleMissionsArr.length);
     }
 }
