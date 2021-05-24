@@ -11,32 +11,32 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
---Create all table entities of the database
+-- Create all table entities of the database
 --------------------------------------------------------------------------
 
---Create table player 
+-- Create table player 
 CREATE TABLE `player` (
   `Player_Id` int(11) NOT NULL,
   `Name` varchar(20) NOT NULL,
   `Email` varchar(100) NOT NULL,
   `Password` varchar(20) NOT NULL,
-  `Rank` int(11) NOT NULL DEFAULT '1',							--determines, which missions will be displayed and can be upgraded by station upgrades
+  `Rank` int(11) NOT NULL DEFAULT '1',							-- determines, which missions will be displayed and can be upgraded by station upgrades
   `Faction_Id` int(11) NOT NULL DEFAULT '2',
   `In_Game_Date` date NOT NULL DEFAULT '2350-04-15'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Create table accepted_solomissions --> stores all Solo missions, that have been accepted by the players (running and finished).
 CREATE TABLE `accepted_solomissions` (
-  `asm_Id` int(11) NOT NULL,										  	              --accepted-solomissions
+  `asm_Id` int(11) NOT NULL,										  	              -- accepted-solomissions
   `Player_Id` int(11) NOT NULL,											
   `Solo_Mission_Id` int(11) NOT NULL,			
-  `Mission_Time` time NOT NULL,									                	--time to finish mission (determines, how long ship will be blocked)
+  `Mission_Time` time NOT NULL,									                	-- time to finish mission (determines, how long ship will be blocked)
   `Ship_Fleet_ID` int(11) NOT NULL,										
-  `Confirmation_Sent_To_Player` tinyint(1) NOT NULL DEFAULT '0'		--0 means not sent, 1 means sent
+  `Confirmation_Sent_To_Player` tinyint(1) NOT NULL DEFAULT '0'		-- 0 means not sent, 1 means sent
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create Table computer_trading --> not used for this prototype
+-- Create Table computer_trading --> not used for this prototype
 CREATE TABLE `computer_trading` (
   `Trading_Id` int(11) NOT NULL,
   `Spaceships_Id` int(11) NOT NULL
@@ -50,8 +50,8 @@ CREATE TABLE `factions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table Multiplayer Missions (not used for prototype)
---Input resources are costs of the mission, reward resources are profits. 
+-- Create table Multiplayer Missions (not used for prototype)
+-- Input resources are costs of the mission, reward resources are profits. 
 CREATE TABLE `multiplayer_missions` (
   `MMissions_Id` int(11) NOT NULL,
   `MMission_Name` varchar(30) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE `multiplayer_missions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table for Solo Missions --> 5 solo missions, that are displayed to the player in the solo missions interface (updated every 5 minutes)
+-- Create table for Solo Missions --> 5 solo missions, that are displayed to the player in the solo missions interface (updated every 5 minutes)
 CREATE TABLE `player_missions` (
   `Player_Mission_Id` int(11) NOT NULL,
   `Player_Id` int(11) NOT NULL,
@@ -83,11 +83,11 @@ CREATE TABLE `player_missions` (
   `Mission3` int(11) NOT NULL,
   `Mission4` int(11) NOT NULL,
   `Mission5` int(11) NOT NULL,
-  `RespawnMissionTime` time NOT NULL DEFAULT '00:05:00'				--all handled through the server so far. 
+  `RespawnMissionTime` time NOT NULL DEFAULT '00:05:00'				-- all handled through the server so far. 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table player_resources --> holds all resources as well as maximum capacity of resources of the players 
+-- Create table player_resources --> holds all resources as well as maximum capacity of resources of the players 
 CREATE TABLE `player_resources` (
   `PResource_Id` int(11) NOT NULL,
   `Money` int(11) NOT NULL,
@@ -101,38 +101,38 @@ CREATE TABLE `player_resources` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table player_upgrades --> all upgrades, that the player did!
+-- Create table player_upgrades --> all upgrades, that the player did!
 CREATE TABLE `player_upgrades` (	
   `Id` int(11) NOT NULL,		
   `Player_Id` int(11) NOT NULL,
-  `SSUpgrade_Id` int(11) NOT NULL					--coming from space_station (SSUpgrade_Id)
+  `SSUpgrade_Id` int(11) NOT NULL					-- coming from space_station (SSUpgrade_Id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table ship_fleet --> all ships, that the player owns (available and on a mission)
+-- Create table ship_fleet --> all ships, that the player owns (available and on a mission)
 CREATE TABLE `ship_fleet` (
   `Ship_Fleet_ID` int(11) NOT NULL,
-  `Ship_on_Mission` int(11) NOT NULL,				    --0 means not on mission, 1 means on mission
-  `Ship_UnderRepair` int(11) NOT NULL,				  --0 not repairing, 1 is repairing
-  `Ship_Health` int(11) NOT NULL,					      --between 0 and 100
-  `Ship_UnderConstruction` int(11) NOT NULL,		--0 not under construction, 1 under construction
+  `Ship_on_Mission` int(11) NOT NULL,				    -- 0 means not on mission, 1 means on mission
+  `Ship_UnderRepair` int(11) NOT NULL,				  	-- 0 not repairing, 1 is repairing
+  `Ship_Health` int(11) NOT NULL,					    -- between 0 and 100
+  `Ship_UnderConstruction` int(11) NOT NULL,			-- 0 not under construction, 1 under construction
   `Player_Id` int(11) NOT NULL,
-  `Spaceships_Id` int(11) NOT NULL					    --coming from spaceships (Spaceships_Id)
+  `Spaceships_Id` int(11) NOT NULL					    -- coming from spaceships (Spaceships_Id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table solo_missions --> stores all available solo_missions, that can be generated in the solo missions interface
---Input resources are costs of the mission, reward resources are profits. 
+-- Create table solo_missions --> stores all available solo_missions, that can be generated in the solo missions interface
+-- Input resources are costs of the mission, reward resources are profits. 
 CREATE TABLE `solo_missions` (
   `Solo_Missions_Id` int(11) NOT NULL,
   `Name` varchar(30) NOT NULL,
   `Story` varchar(800) NOT NULL,
-  `Time` time NOT NULL,						      	--time, how long mission will run
+  `Time` time NOT NULL,						      	-- time, how long mission will run
   `Input_Money` int(11) DEFAULT NULL,
   `Input_People` int(11) DEFAULT NULL,
   `Input_Ore` int(11) DEFAULT NULL,
   `Input_Water` int(11) DEFAULT NULL,
-  `Ships_Id` int(11) NOT NULL,				    --coming from spaceships (Spaceships_Id)
+  `Ships_Id` int(11) NOT NULL,				    	-- coming from spaceships (Spaceships_Id)
   `Reward_Money` int(11) DEFAULT NULL,
   `Reward_People` int(11) DEFAULT NULL,
   `Reward_Ore` int(11) DEFAULT NULL,
@@ -141,62 +141,62 @@ CREATE TABLE `solo_missions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table spaceships --> lists all available ships of the game
+-- Create table spaceships --> lists all available ships of the game
 CREATE TABLE `spaceships` (
   `Spaceships_Id` int(11) NOT NULL,		
   `Type` text NOT NULL,
   `Time_Build` time NOT NULL,
   `Time_Repair` time NOT NULL,	
-  `Price_Min` int(11) NOT NULL,				--to buy ship on trading bot (will generate an offer between price min and price max)
+  `Price_Min` int(11) NOT NULL,				-- to buy ship on trading bot (will generate an offer between price min and price max)
   `Price_Max` int(11) NOT NULL,
-  `Input_Crew` int(11) NOT NULL,			--amount of people, that will be deducted when the ship is bought or build
-  `Input_Ore` int(11) NOT NULL				--amount of ore needed to build the ship in the shipyard
+  `Input_Crew` int(11) NOT NULL,			-- amount of people, that will be deducted when the ship is bought or build
+  `Input_Ore` int(11) NOT NULL				-- amount of ore needed to build the ship in the shipyard
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table space_station --> holds all available station upgrades
+-- Create table space_station --> holds all available station upgrades
 CREATE TABLE `space_station` (
   `SSUpgrade_Id` int(11) NOT NULL,
-  `Upgrade_Type` text NOT NULL,					--Dome or Storage or Shipyard
+  `Upgrade_Type` text NOT NULL,					-- Dome or Storage or Shipyard
   `Upgrade_Level` int(11) NOT NULL,				-- 1, 2 or 3 --> determining the rank
-  `Spaceships_Id` int(11) DEFAULT NULL,			--coming from spaceships (to unlock new ships)
-  `Price` int(11) NOT NULL,						--money cost of the upgrade
-  `Increase_People` int(11) DEFAULT NULL,		--increase in max amount people
-  `Increase_Water` int(11) DEFAULT NULL,		--increase in max amount water
-  `Increase_Ore` int(11) DEFAULT NULL			--increase in max amount ore
+  `Spaceships_Id` int(11) DEFAULT NULL,			-- coming from spaceships (to unlock new ships)
+  `Price` int(11) NOT NULL,						-- money cost of the upgrade
+  `Increase_People` int(11) DEFAULT NULL,		-- increase in max amount people
+  `Increase_Water` int(11) DEFAULT NULL,		-- increase in max amount water
+  `Increase_Ore` int(11) DEFAULT NULL			-- increase in max amount ore
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
---Create table submitted_missions --> holds amount of submitted resources in the multiplayer missions
+-- Create table submitted_missions --> holds amount of submitted resources in the multiplayer missions
 CREATE TABLE `submited_mmissions` (
   `SubmittedMissions_Id` int(11) NOT NULL,
   `Submited_water` int(11) DEFAULT NULL,
   `Submited_people` int(11) DEFAULT NULL,
   `Submited_ore` int(11) DEFAULT NULL,
   `Submited_money` int(11) DEFAULT NULL,
-  `Submited_shipId` int(11) DEFAULT NULL			--amount of ships submitted
+  `Submited_shipId` int(11) DEFAULT NULL			-- amount of ships submitted
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
 
 
---Default Inserts to start game
+-- Default Inserts to start game
 ---------------------------------------------------------------------------------------------
 
---Insert factions into factions
+-- Insert factions into factions
 INSERT INTO `factions` (`Factions_Id`, `Faction_Name`) VALUES
 (1, 'Earth | United Nations'),
-(2, 'Martian Congressional Republic'),							--only playable faction so far
+(2, 'Martian Congressional Republic'),							-- only playable faction so far
 (3, 'Belt | OPA');
 
 
---Insert Test Player into player
+-- Insert Test Player into player
 INSERT INTO `player` (`Player_Id`, `Name`, `Email`, `Password`, `Rank`, `Faction_Id`, `In_Game_Date`) VALUES
 (1, 'Name', 'Email', 'Password', 1, 2, '2350-04-15');
 
 
---Insert available solo_missions, that can be generated
+-- Insert available solo_missions, that can be generated
 INSERT INTO `solo_missions` (`Solo_Missions_Id`, `Name`, `Story`, `Time`, `Input_Money`, `Input_People`, `Input_Ore`, `Input_Water`, `Ships_Id`, `Reward_Money`, `Reward_People`, `Reward_Ore`, `Reward_Water`, `Rank`) VALUES
 (1, 'Cargo Transport', 'Description and story', '00:05:00', 0, 5, 0, 50, 5, 300, 0, 0, 0, 1),
 (2, 'VIP Transport', 'Description and story', '00:07:00', 0, 10, 0, 0, 5, 500, 0, 0, 0, 1),
@@ -209,7 +209,7 @@ INSERT INTO `solo_missions` (`Solo_Missions_Id`, `Name`, `Story`, `Time`, `Input
 (9, 'Refugee Rescue', 'Description and story', '00:10:00', 0, 0, 0, 100, 5, 0, 50, 0, 0, 1);
 
 
---Insert possible spaceships into spaceships
+-- Insert possible spaceships into spaceships
 INSERT INTO `spaceships` (`Spaceships_Id`, `Type`, `Time_Build`, `Time_Repair`, `Price_Min`, `Price_Max`, `Input_Crew`, `Input_Ore`) VALUES
 (3, 'War Ship', '00:00:30', '00:00:30', 100, 200, 20, 50),
 (4, 'Mining Ship', '00:00:30', '00:00:30', 100, 200, 20, 50),
@@ -217,8 +217,8 @@ INSERT INTO `spaceships` (`Spaceships_Id`, `Type`, `Time_Build`, `Time_Repair`, 
 (6, 'Exploration Ship', '00:00:30', '00:00:30', 100, 200, 20, 50);
 
 
---Insert Upgrades
---Dome upgrades increase max people and storage upgrades max water/ore and Shipyard upgrades unlock ships
+-- Insert Upgrades
+-- Dome upgrades increase max people and storage upgrades max water/ore and Shipyard upgrades unlock ships
 INSERT INTO `space_station` (`SSUpgrade_Id`, `Upgrade_Type`, `Upgrade_Level`, `Spaceships_Id`, `Price`, `Increase_People`, `Increase_Water`, `Increase_Ore`) VALUES
 (1, 'Dome', 1, NULL, 100, 50, NULL, NULL),			
 (2, 'Dome', 2, NULL, 200, 100, NULL, NULL),
@@ -234,26 +234,26 @@ INSERT INTO `space_station` (`SSUpgrade_Id`, `Upgrade_Type`, `Upgrade_Level`, `S
 
 
 
---Test player Inserts
+-- Test player Inserts
 ------------------------------------------------------------------------
---Insert Missions for Test Player
+-- Insert Missions for Test Player
 INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`, `RespawnMissionTime`) VALUES
 (3, 1, 4, 2, 3, 5, 1, '00:05:00');
 
 
---Insert Resources for Test Player
+-- Insert Resources for Test Player
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
 (12, 1000, 1000, 1000, 100, 100, 1000, 1000, 1);
 
 
---Insert Ship for Test player
+-- Insert Ship for Test player
 INSERT INTO `ship_fleet` (`Ship_Fleet_ID`, `Ship_on_Mission`, `Ship_UnderRepair`, `Ship_Health`, `Ship_UnderConstruction`, `Player_Id`, `Spaceships_Id`) VALUES
 (6, 0, 0, 100, 0, 1, 5),
 (8, 0, 0, 100, 0, 1, 4);
 
 
 
---Alterations on the tables (assigning primary and secondary keys)
+-- Alterations on the tables (assigning primary and secondary keys)
 ----------------------------------------------------------------------
 ALTER TABLE `accepted_solomissions`
   ADD PRIMARY KEY (`asm_Id`),
@@ -327,7 +327,7 @@ ALTER TABLE `submited_mmissions`
   ADD KEY `Submited_ship` (`Submited_shipId`);
   
   
---Alterations on the tables (assigning auto increments)
+-- Alterations on the tables (assigning auto increments)
 ----------------------------------------------------------------------
 
 ALTER TABLE `accepted_solomissions`
@@ -379,7 +379,7 @@ ALTER TABLE `space_station`
 
 
 
---Alterations on the tables (assigning foreign keys)
+-- Alterations on the tables (assigning foreign keys)
 ----------------------------------------------------------------------
 
 ALTER TABLE `accepted_solomissions`
