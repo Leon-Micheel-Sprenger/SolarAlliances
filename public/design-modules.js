@@ -197,7 +197,7 @@ missionButton.drawButton();
   shipFleetButton.drawButton();
   
   //btn for the station upgrades
-  stationButton = new Button(width-1550,height-200,200,50,'Station Upgrades',0,255,20);
+  stationButton = new Button(width-1250,height-300,200,50,'Station Upgrades',0,255,20);
   stationButton.drawButton();
 
 }
@@ -375,63 +375,8 @@ function drawShips(){
 
 //_________________________________________________________________________________________________
 //create ship fleet frame
-let shipfleetFrame;
-let shipfleetExitBtn;
-let buildWarshipBtn;
-let buildTransportshipBtn;
-let buildMiningtshipBtn;
-let buildExplorationshipBtn;
+let shipFleetEnable = false;
 
-function createShipFleetInterface(){
-  rx= width*0.5;
-  ry= height*0.5;
-  rw= 700;
-  rh= 750;
-
-  shipfleetFrame = new OnScreenFrame(rx, ry, rw, rh);
-  shipfleetFrame.drawScreen();
-
-  shipfleetExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
-  shipfleetExitBtn.drawExitButton();
-
-  buildWarshipBtn = new Button(rx-rx/2+270,ry+(rh/2-110),250,50,'Build War Ship',0,255,20)
-  buildWarshipBtn.drawButton();
-
-  buildTransportshipBtn = new Button(rx+200,ry+(rh/2-110),250,50,'Build Transport Ship',0,255,20)
-  buildTransportshipBtn.drawButton();
-
-  buildMiningtshipBtn = new Button(rx+200,ry+(rh/2-50),250,50,'Build Mining Ship',0,255,20);
-  buildMiningtshipBtn.drawButton();
-
-  buildExplorationshipBtn = new Button(rx-rx/2+270,ry+(rh/2-50),250,50,'Build Exploration Ship',0,255,20);
-  buildExplorationshipBtn.drawButton();
-}
-
-
-
-//_________________________________________________________________________________________________
-//create station upgrades frame
-let stationFrame;
-let stationExitBtn;
-
-function createStationUpgradesInterface(){
-  rx= width*0.5;
-  ry= height*0.5;
-  rw= 700;
-  rh= 750;
-
-  stationFrame = new OnScreenFrame(rx, ry, rw, rh);
-  stationFrame.drawScreen();
-
-  stationExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
-  stationExitBtn.drawExitButton();
-}
-
-
-
-
-//_________________________________________________________________________________________________
-//create ship fleet frame
 let shipfleetFrame;
 let shipfleetExitBtn;
 let buildWarshipBtn;
@@ -487,6 +432,8 @@ function createShipFleetInterface(){
 
 //_________________________________________________________________________________________________
 //create station upgrades frame
+let stationUpgradeEnable = false;
+
 let stationFrame;
 let stationExitBtn;
 let exitbtnW=30;

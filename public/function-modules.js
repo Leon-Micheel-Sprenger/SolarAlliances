@@ -12,11 +12,12 @@ function mousePressed(){
     } 
 
     //'Register new player' button clicked
+    if (cur_status === 'status_login'){
     if(registerBtn.isClicked(mouseX, mouseY)){
       cur_status = 'status_register';
       registerScreen();
       loop();
-    
+    }
     }
 
     //Register Button clicked
@@ -32,7 +33,7 @@ function mousePressed(){
     
 
 //Missions Button clicked
-    if (gameStatus){
+    if (cur_status === 'status_play'){
       if(missionButton.isClicked(mouseX, mouseY)){
         missionMenuEnable = true;
         createMissions();
@@ -42,7 +43,7 @@ function mousePressed(){
     }
 
 //Solo Mission Accept Button clicked
-    if (cur_status === 'status_play'){
+    if (cur_status === 'status_play' && missionMenuEnable){
       for (let i=0; i<5; i++){
         if(singleMissionsArr[i].acceptButton.isClicked(mouseX, mouseY)){
           acceptSoloMission(i);
@@ -53,7 +54,7 @@ function mousePressed(){
     }
 
 //Solo Mission Exit Button clicked
-    if(cur_status === 'status_play'){
+    if(cur_status === 'status_play' && missionMenuEnable){
       if (missionExitBtn.isClicked(mouseX, mouseY)){
         missionMenuEnable = false;
         createGame();
@@ -66,20 +67,22 @@ function mousePressed(){
     //Ship Fleet Button clicked
 if (gameStatus){
   if(shipFleetButton.isClicked(mouseX, mouseY)){
+    shipFleetEnable = true;
     createShipFleetInterface();
   }
 }  
 
 //Ship Fleet Exit Button clicked
-if(cur_status === 'status_play'){
-  //if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
-    //createGame();
-    //loop();
-  //}
+if(cur_status === 'status_play' && shipFleetEnable){
+  if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
+    shipFleetEnable = false;
+    createGame();
+    loop();
+  }
 }
 
 //Build War Ship btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && shipFleetEnable){
   if(buildWarshipBtn.isClicked(mouseX,mouseY)){
     buildwarship();
     loop();
@@ -87,7 +90,7 @@ if (cur_status === 'status_play'){
 }
 
 //Build Mining Ship btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && shipFleetEnable){
   if(buildMiningtshipBtn.isClicked(mouseX,mouseY)){
     buildminingship();
     loop();
@@ -95,7 +98,7 @@ if (cur_status === 'status_play'){
 }
 
 //Build Transport Ship btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && shipFleetEnable){
   if(buildTransportshipBtn.isClicked(mouseX,mouseY)){
     buildtransportship();
     loop();
@@ -103,7 +106,7 @@ if (cur_status === 'status_play'){
 }
 
 //Build Exploration Ship btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && shipFleetEnable){
   if(buildExplorationshipBtn.isClicked(mouseX,mouseY)){
     buildexplorationship();
     loop();
@@ -111,22 +114,24 @@ if (cur_status === 'status_play'){
 }
 
 //Station Upgrades Button clicked
-if (gameStatus){
+if (cur_status === 'status_play'){
   if(stationButton.isClicked(mouseX, mouseY)){
+    stationUpgradeEnable = true;
     createStationUpgradesInterface();
   }
 }
 
 //Station Upgrades Exit Button clicked
-if(cur_status === 'status_play'){
-  //if (stationExitBtn.isClicked(mouseX, mouseY)){
-    //createGame();
-    //loop();
-  //}
+if(cur_status === 'status_play' && stationUpgradeEnable){
+  if (stationExitBtn.isClicked(mouseX, mouseY)){
+    stationUpgradeEnable = false;
+    createGame();
+    loop();
+  }
 }
 
 //Build station upgrade dome 1 btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && stationUpgradeEnable){
   if(buildDome1Btn.isClicked(mouseX,mouseY)){
     buildupgradedome1();
     loop();
@@ -134,7 +139,7 @@ if (cur_status === 'status_play'){
 }
 
 //Build station upgrade dome 2 btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && stationUpgradeEnable){
   if(buildDome2Btn.isClicked(mouseX,mouseY)){
     buildupgradedome2();
     loop();
@@ -142,7 +147,7 @@ if (cur_status === 'status_play'){
 }
 
 //Build station upgrade dome 3 btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && stationUpgradeEnable){
   if(buildDome3Btn.isClicked(mouseX,mouseY)){
     buildupgradedome3();
     loop();
@@ -150,7 +155,7 @@ if (cur_status === 'status_play'){
 }
  
 //Build station upgrade storage 1 btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && stationUpgradeEnable){
   if(buildStorage1Btn.isClicked(mouseX,mouseY)){
     buildupgradestorage1();
     loop();
@@ -158,7 +163,7 @@ if (cur_status === 'status_play'){
 }
 
 //Build station upgrade storage 2 btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && stationUpgradeEnable){
   if(buildStorage2Btn.isClicked(mouseX,mouseY)){
     buildupgradestorage2();
     loop();
@@ -166,7 +171,7 @@ if (cur_status === 'status_play'){
 }
 
 //Build station upgrade storage 3 btn is clicked
-if (cur_status === 'status_play'){
+if (cur_status === 'status_play' && stationUpgradeEnable){
   if(buildStorage3Btn.isClicked(mouseX,mouseY)){
     buildupgradestorage3();
     loop();
