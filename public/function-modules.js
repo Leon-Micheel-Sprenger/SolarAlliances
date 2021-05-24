@@ -698,7 +698,7 @@ setInterval(function(){
  
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
-  console.log(dataReceived.message);
+  console.log(dataReceived);
  });
  
 

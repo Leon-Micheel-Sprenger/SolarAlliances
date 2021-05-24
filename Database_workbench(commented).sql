@@ -191,11 +191,6 @@ INSERT INTO `factions` (`Factions_Id`, `Faction_Name`) VALUES
 (3, 'Belt | OPA');
 
 
--- Insert Test Player into player
-INSERT INTO `player` (`Player_Id`, `Name`, `Email`, `Password`, `Rank`, `Faction_Id`, `In_Game_Date`) VALUES
-(1, 'Name', 'Email', 'Password', 1, 2, '2350-04-15');
-
-
 -- Insert available solo_missions, that can be generated
 INSERT INTO `solo_missions` (`Solo_Missions_Id`, `Name`, `Story`, `Time`, `Input_Money`, `Input_People`, `Input_Ore`, `Input_Water`, `Ships_Id`, `Reward_Money`, `Reward_People`, `Reward_Ore`, `Reward_Water`, `Rank`) VALUES
 (1, 'Cargo Transport', 'Description and story', '00:05:00', 0, 5, 0, 50, 5, 300, 0, 0, 0, 1),
@@ -236,6 +231,11 @@ INSERT INTO `space_station` (`SSUpgrade_Id`, `Upgrade_Type`, `Upgrade_Level`, `S
 
 -- Test player Inserts
 ------------------------------------------------------------------------
+-- Insert Test Player into player
+INSERT INTO `player` (`Player_Id`, `Name`, `Email`, `Password`, `Rank`, `Faction_Id`, `In_Game_Date`) VALUES
+(1, 'Leon', 'Email', 'Password', 1, 2, '2350-04-15');
+
+
 -- Insert Missions for Test Player
 INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`, `RespawnMissionTime`) VALUES
 (3, 1, 4, 2, 3, 5, 1, '00:05:00');
@@ -243,13 +243,15 @@ INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mi
 
 -- Insert Resources for Test Player
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
-(12, 1000, 1000, 1000, 100, 100, 1000, 1000, 1);
+(12, 800, 450, 500, 70, 100, 1000, 1000, 1);
 
 
 -- Insert Ship for Test player
 INSERT INTO `ship_fleet` (`Ship_Fleet_ID`, `Ship_on_Mission`, `Ship_UnderRepair`, `Ship_Health`, `Ship_UnderConstruction`, `Player_Id`, `Spaceships_Id`) VALUES
-(6, 0, 0, 100, 0, 1, 5),
-(8, 0, 0, 100, 0, 1, 4);
+(1, 0, 0, 100, 0, 1, 5),
+(2, 0, 0, 100, 0, 1, 4),
+(3, 0, 0, 100, 0, 1, 3);
+
 
 
 

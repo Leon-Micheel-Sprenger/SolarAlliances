@@ -99,9 +99,12 @@ function loginScreen(){
   registerBtn = new Button(rx,ry+130,120,30,'Register as new Player',255,0,10);
   
 
-  InputName = createInput('Name').position(rx-100, ry-60);
-  InputPass = createInput('Password', 'password').position(rx-100, ry);
+  InputName = createInput('').position(rx-100, ry-60);
+  InputPass = createInput('', 'password').position(rx-100, ry);
   
+  InputPass.attribute('placeholder','Password');
+  InputName.attribute('placeholder','Username');
+
    //Draw Buttons
    rectMode(CENTER);
    loginBtn.drawButton();
@@ -129,8 +132,11 @@ function registerScreen(){
     rw= 600;
     rh= 500;   
 
-    InputPassTwo = createInput('Repeat Password', 'password').position(rx-100, ry+30);
-    InputEmail = createInput('Email').position(rx-100, ry-30);
+    InputPassTwo = createInput('', 'password').position(rx-100, ry+30);
+    InputEmail = createInput('').position(rx-100, ry-30);
+    
+    InputPassTwo.attribute('placeholder','Repeat Password');
+    InputEmail.attribute('placeholder','Email');
     
 
     //disable Loginbutton and Register player button

@@ -80,12 +80,21 @@ setInterval(function(){
 // Deduct 30 seconds from all running missions (accepted missions), every 30 seconds.
 setInterval(function(){
 
+    let sql = `Select * from accepted_solomissions`;
+
+    db.query(sql, (err, result)=> {
+
+      if (result.length>0){
+        
     let sql = `UPDATE accepted_solomissions SET Mission_Time = subtime(Mission_Time, '00:00:30') WHERE Mission_Time > '00:00:00';`;
 
     db.query(sql, (err, result)=> {
       if(err) throw err;
     })
-  
+
+      }
+    })
+
 }, 30000);
 
 
@@ -96,7 +105,7 @@ setInterval(function(){
 
 
 //_______________________________________________________________
-//Register Post !!1(also populate default resources.)!!!
+//Register Post !!(also populate default resources.)!!!
 
 app.post('/Register', (req, res)=> {
 
@@ -129,7 +138,7 @@ app.post('/Register', (req, res)=> {
         res.send(result);
         let playerId = result[0].Player_Id;
 
-        let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player_Id) VALUES ('1000', '1000', '1000', '100', '100', '1000', '1000', '${result[0].Player_Id}' ) ; `
+        let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player_Id) VALUES ('200', '200', '200', '25', '100', '1000', '1000', '${result[0].Player_Id}' ) ; `
 
           db.query(sql, (err, result)=> {
             if (err) throw err;
