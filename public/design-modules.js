@@ -192,13 +192,13 @@ function createButtons(){
 missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
 missionButton.drawButton();
 
-// //btn for the ship yard
-// shipFleetButton = new Button(width-1250,height-200,200,50,'Ship Fleet',0,255,20);
-// shipFleetButton.drawButton();
-
-// //btn for the station upgrades
-// stationButton = new Button(width-1550,height-200,200,50,'Station Upgrades',0,255,20);
-// stationButton.drawButton();
+  //btn for the ship yard
+  shipFleetButton = new Button(width-1250,height-200,200,50,'Ship Fleet',0,255,20);
+  shipFleetButton.drawButton();
+  
+  //btn for the station upgrades
+  stationButton = new Button(width-1550,height-200,200,50,'Station Upgrades',0,255,20);
+  stationButton.drawButton();
 
 }
 
@@ -430,6 +430,112 @@ function createStationUpgradesInterface(){
 
 
 
+//_________________________________________________________________________________________________
+//create ship fleet frame
+let shipfleetFrame;
+let shipfleetExitBtn;
+let buildWarshipBtn;
+let buildTransportshipBtn;
+let buildMiningtshipBtn;
+let buildExplorationshipBtn;
+//btns
+let btnW=250;
+let btnH=50;
+let btnclr=0;
+let txtclr=255;
+
+let spaceshipid;
+
+function createShipFleetInterface(){
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+  shipfleetFrame = new OnScreenFrame(rx, ry, rw, rh);
+  shipfleetFrame.drawScreen();
+
+  shipfleetExitBtn = new ExitButton(rx+rw/2-exitbtnW, ry-rh/2,exitbtnW,exitbtnH);
+  shipfleetExitBtn.drawExitButton();
+
+  buildWarshipBtn = new Button(rx,ry-(rh/2-250),btnW,btnH,'Build War Ship',btnclr,txtclr,20);
+  buildWarshipBtn.drawButton();
+
+  buildTransportshipBtn = new Button(rx,ry-(rh/2-350),btnW,btnH,'Build Transport Ship',btnclr,txtclr,20);
+  buildTransportshipBtn.drawButton();
+
+  buildMiningtshipBtn = new Button(rx,ry-(rh/2-450),btnW,btnH,'Build Mining Ship',btnclr,txtclr,20);
+  buildMiningtshipBtn.drawButton();
+
+  buildExplorationshipBtn = new Button(rx,ry-(rh/2-550),btnW,btnH,'Build Exploration Ship',btnclr,txtclr,20);
+  buildExplorationshipBtn.drawButton();
+
+  //if(buildWarshipBtn.isClicked()){
+    //spaceshipid=3;
+  //}else if(buildTransportshipBtn.isClicked()){
+    //spaceshipid=5;
+  //}else if(buildMiningtshipBtn.isClicked()){
+    //spaceshipid=4;
+  //}else if(buildExplorationshipBtn.isClicked()){
+    //spaceshipid=5;
+  //}else{
+    //spaceshipid=0;
+  //}
+}
+
+
+
+//_________________________________________________________________________________________________
+//create station upgrades frame
+let stationFrame;
+let stationExitBtn;
+let exitbtnW=30;
+let exitbtnH=30;
+let buildDome1Btn;
+let buildDome2Btn;
+let buildDome3Btn;
+let buildStorage1Btn;
+let buildStorage2Btn;
+let buildStorage3Btn;
+
+function createStationUpgradesInterface(){
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+  let rank1;
+  let rank2;
+  let rank3;
+  let btnrank1posY = ry-(rh/2-200);
+  let btnrank2posY = ry-(rh/2-450);
+  let btnrank3posY = ry+(rh/2-50);
+  let btndomeposX = rx-rx/2+270;
+  let btnstorageposX = rx+200;
+
+  stationFrame = new OnScreenFrame(rx, ry, rw, rh);
+  stationFrame.drawScreen();
+
+  stationExitBtn = new ExitButton(rx+rw/2-exitbtnW, ry-rh/2,exitbtnW,exitbtnH);
+  stationExitBtn.drawExitButton();
+
+  buildDome1Btn = new Button(btndomeposX,btnrank1posY,btnW,btnH,'Build Dome Rank 1',btnclr,txtclr,20);
+  buildDome1Btn.drawButton();
+
+  buildDome2Btn = new Button(btndomeposX,btnrank2posY,btnW,btnH,'Build Dome Rank 2',btnclr,txtclr,20);
+  buildDome2Btn.drawButton();
+
+  buildDome3Btn = new Button(btndomeposX,btnrank3posY,btnW,btnH,'Build Dome Rank 3',btnclr,txtclr,20);
+  buildDome3Btn.drawButton();
+
+  buildStorage1Btn = new Button(btnstorageposX,btnrank1posY,btnW,btnH,'Build Storage Rank 1',btnclr,txtclr,20);
+  buildStorage1Btn.drawButton();
+
+  buildStorage2Btn = new Button(btnstorageposX,btnrank2posY,btnW,btnH,'Build Storage Rank 2',btnclr,txtclr,20);
+  buildStorage2Btn.drawButton();
+
+  buildStorage3Btn = new Button(btnstorageposX,btnrank3posY,btnW,btnH,'Build Storage Rank 3',btnclr,txtclr,20);
+  buildStorage3Btn.drawButton();
+}
 
 
 

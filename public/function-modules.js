@@ -62,36 +62,118 @@ function mousePressed(){
     }
 
 
+
+    //Ship Fleet Button clicked
+if (gameStatus){
+  if(shipFleetButton.isClicked(mouseX, mouseY)){
+    createShipFleetInterface();
+  }
+}  
+
+//Ship Fleet Exit Button clicked
+if(cur_status === 'status_play'){
+  //if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
+    //createGame();
+    //loop();
+  //}
+}
+
+//Build War Ship btn is clicked
+if (cur_status === 'status_play'){
+  if(buildWarshipBtn.isClicked(mouseX,mouseY)){
+    buildwarship();
+    loop();
+  }
+}
+
+//Build Mining Ship btn is clicked
+if (cur_status === 'status_play'){
+  if(buildMiningtshipBtn.isClicked(mouseX,mouseY)){
+    buildminingship();
+    loop();
+  }
+}
+
+//Build Transport Ship btn is clicked
+if (cur_status === 'status_play'){
+  if(buildTransportshipBtn.isClicked(mouseX,mouseY)){
+    buildtransportship();
+    loop();
+  }
+}
+
+//Build Exploration Ship btn is clicked
+if (cur_status === 'status_play'){
+  if(buildExplorationshipBtn.isClicked(mouseX,mouseY)){
+    buildexplorationship();
+    loop();
+  }
+}
+
+//Station Upgrades Button clicked
+if (gameStatus){
+  if(stationButton.isClicked(mouseX, mouseY)){
+    createStationUpgradesInterface();
+  }
+}
+
+//Station Upgrades Exit Button clicked
+if(cur_status === 'status_play'){
+  //if (stationExitBtn.isClicked(mouseX, mouseY)){
+    //createGame();
+    //loop();
+  //}
+}
+
+//Build station upgrade dome 1 btn is clicked
+if (cur_status === 'status_play'){
+  if(buildDome1Btn.isClicked(mouseX,mouseY)){
+    buildupgradedome1();
+    loop();
+  }
+}
+
+//Build station upgrade dome 2 btn is clicked
+if (cur_status === 'status_play'){
+  if(buildDome2Btn.isClicked(mouseX,mouseY)){
+    buildupgradedome2();
+    loop();
+  }
+}
+
+//Build station upgrade dome 3 btn is clicked
+if (cur_status === 'status_play'){
+  if(buildDome3Btn.isClicked(mouseX,mouseY)){
+    buildupgradedome3();
+    loop();
+  }
+}
+ 
+//Build station upgrade storage 1 btn is clicked
+if (cur_status === 'status_play'){
+  if(buildStorage1Btn.isClicked(mouseX,mouseY)){
+    buildupgradestorage1();
+    loop();
+  }
+}
+
+//Build station upgrade storage 2 btn is clicked
+if (cur_status === 'status_play'){
+  if(buildStorage2Btn.isClicked(mouseX,mouseY)){
+    buildupgradestorage2();
+    loop();
+  }
+}
+
+//Build station upgrade storage 3 btn is clicked
+if (cur_status === 'status_play'){
+  if(buildStorage3Btn.isClicked(mouseX,mouseY)){
+    buildupgradestorage3();
+    loop();
+  }
+}
     
-// //Ship Fleet Button clicked
-// if (gameStatus){
-//   if(shipFleetButton.isClicked(mouseX, mouseY)){
-//     createShipFleetInterface();
-//   }
-// }  
 
-// //Ship Fleet Exit Button clicked
-// if(cur_status === 'status_play'){
-//   if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
-//     createGame();
-//     loop();
-//   }
-// }
-
-// //Station Upgrades Button clicked
-// if (gameStatus){
-//   if(stationButton.isClicked(mouseX, mouseY)){
-//     createStationUpgradesInterface();
-//   }
-// }
-
-// //Station Upgrades Exit Button clicked
-// if(cur_status === 'status_play'){
-//   if (stationExitBtn.isClicked(mouseX, mouseY)){
-//     createGame();
-//     loop();
-//   }
-// }
    
     
 
@@ -363,7 +445,190 @@ function missionShipVerified(acceptedMission){
 
 
 
+ //build transport ships
+ function buildtransportship(){
+  if(buildTransportshipBtn.isClicked(mouseX,mouseY)){
+    if(ore > 50 && people > 20){
+      let inputcrew=20;
+      let inputore=50;
+      ore=ore-inputore;
+      people=people-inputcrew
+      let dataSend={
+        "Player_Id": playerId,
+        "Ore": ore,
+        "People": people
+      }
+      httpPost('/buildtransportship','json',dataSend,(dataReceived)=>{
+        console.log(dataReceived.message);
+      });
+    }else{
+      alert ('You dont have the resources to build this ship');
+    }
+  }
+}
 
+//build exploration ships
+function buildexplorationship(){
+  if(buildExplorationshipBtn.isClicked(mouseX,mouseY)){
+    if(ore > 50 && people > 20){
+      let inputcrew=20;
+      let inputore=50;
+      ore=ore-inputore;
+      people=people-inputcrew
+      let dataSend={
+        "Player_Id": playerId,
+        "Ore": ore,
+        "People": people
+      }
+      httpPost('/buildexplorationship','json',dataSend,(dataReceived)=>{
+        console.log(dataReceived.message);
+      });
+    }else{
+      alert ('You dont have the resources to build this ship');
+    }
+  }
+}
+
+
+//____________________________________________________________________________________
+//station Upgardes
+//build station upgrade dome 1
+function buildupgradedome1(){
+  if(buildDome1Btn.isClicked(mouseX,mouseY)){
+    if(money > 100){
+      if(max_people === 100){
+        let price=100;
+        money=money-price;
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/builddome1','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade dome 2
+function buildupgradedome2(){
+  if(buildDome2Btn.isClicked(mouseX,mouseY)){
+    if(money > 200){
+      if(max_people === 150){
+        let price=200;
+        money=money-price;
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/builddome2','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade dome 3
+function buildupgradedome3(){
+  if(buildDome3Btn.isClicked(mouseX,mouseY)){
+    if(money > 300){
+      if(max_people === 250){
+        let price=300;
+        money=money-price;
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/builddome3','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade storage 1
+function buildupgradestorage1(){
+  if(buildStorage1Btn.isClicked(mouseX,mouseY)){
+    if(money > 100){
+      if(max_water === 1000 && max_ore === 1000){
+        let price=100;
+        money=money-price
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/buildstorage1','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade storage 2
+function buildupgradestorage2(){
+  if(buildStorage2Btn.isClicked(mouseX,mouseY)){
+    if(money > 200){
+      if(max_water === 1050 && max_ore === 1050){
+        let price=200;
+        money=money-price
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/buildstorage2','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade storage 3
+function buildupgradestorage3(){
+  if(buildStorage3Btn.isClicked(mouseX,mouseY)){
+    if(money > 300){
+      if(max_water === 1150 && max_ore === 1150){
+        let price=300;
+        money=money-price
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/buildstorage3','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
 
 
 

@@ -447,7 +447,222 @@ app.post('/getCompletedMissions', (req, res)=> {
 
 
 
+//build war ship
+app.post('/buildwarship', (req, res)=> {
 
+  let Player_Id = req.body.Player_Id;
+  let Ore = req.body.Ore;
+  let People = req.body.People;
+
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '3');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Ore ='${Ore}', People ='${People}' WHERE Player_Id ='${Player_Id}';`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build mining ship
+app.post('/buildminingship', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Ore = req.body.Ore;
+  let People = req.body.People;
+
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '4');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Ore ='${Ore}', People ='${People}' WHERE Player_Id ='${Player_Id}';`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build transport ship
+app.post('/buildtransportship', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Ore = req.body.Ore;
+  let People = req.body.People;
+
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '5');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Ore ='${Ore}', People ='${People}' WHERE Player_Id ='${Player_Id}';`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build exploration ship
+app.post('/buildexplorationship', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Ore = req.body.Ore;
+  let People = req.body.People;
+
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '6');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Ore ='${Ore}', People ='${People}' WHERE Player_Id ='${Player_Id}';`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//___________________________________________________________________________________________________________________________
+//station Upgardes
+
+//build station upgrade dome 1
+app.post('/builddome1', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+
+  let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '1');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Max_People = 150, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build station upgrade dome 2
+app.post('/builddome2', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+
+  let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '2');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Max_People = 250, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build station upgrade dome 3
+app.post('/builddome3', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+
+  let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '3');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Max_People = 400, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build station upgrade storage 1
+app.post('/buildstorage1', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+
+  let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '4');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Max_Ore = 1050, Max_Water = 1050, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build station upgrade storage 2
+app.post('/buildstorage2', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+
+  let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '5');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Max_Ore = 1150, Max_Water = 1150, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
+
+//build station upgrade storage 3
+app.post('/buildstorage3', (req, res)=> {
+
+  let Player_Id = req.body.Player_Id;
+  let Money = req.body.Money;
+
+  let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '3');`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let sql = `UPDATE player_resources SET Max_Ore = 1300, Max_Water = 1300, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      res.send(result);
+    })
+  })
+
+})
 
 
 
