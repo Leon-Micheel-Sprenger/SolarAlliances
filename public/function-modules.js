@@ -444,6 +444,52 @@ function missionShipVerified(acceptedMission){
 }
 
 
+//_______________________________________________________________________________________________
+  //build war ships
+  function buildwarship(){
+    if(buildWarshipBtn.isClicked(mouseX,mouseY)){
+      if(people > 20 && ore > 50){
+        let inputcrew=20;
+        let inputore=50;
+        ore=ore-inputore;
+        people=people-inputcrew
+        let dataSend={
+          "Player_Id": playerId,
+          "Ore": ore,
+          "People": people
+        }
+        httpPost('/buildwarship','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You dont have the resources to build this ship');
+      }
+    }
+  }
+  
+  //build mining ships
+  function buildminingship(){
+    if(buildMiningtshipBtn.isClicked(mouseX,mouseY)){
+      if(ore > 50 && people > 20){
+        let inputcrew=20;
+        let inputore=50;
+        ore=ore-inputore;
+        people=people-inputcrew
+        let dataSend={
+          "Player_Id": playerId,
+          "Ore": ore,
+          "People": people
+        }
+        httpPost('/buildminingship','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You dont have the resources to build this ship');
+      }
+    }
+  }
+
+
 
  //build transport ships
  function buildtransportship(){
