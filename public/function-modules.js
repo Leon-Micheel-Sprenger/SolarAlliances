@@ -12,11 +12,12 @@ function mousePressed(){
     } 
 
     //'Register new player' button clicked
+    if (cur_status === 'status_login'){
     if(registerBtn.isClicked(mouseX, mouseY)){
       cur_status = 'status_register';
       registerScreen();
       loop();
-    
+    }
     }
 
     //Register Button clicked
@@ -26,38 +27,158 @@ function mousePressed(){
         if (playerId){
           cur_status === 'status_login';
           reactivateLogin();
-          
         }
       }
     }
     
 
 //Missions Button clicked
-    if (gameStatus){
+    if (cur_status === 'status_play'){
       if(missionButton.isClicked(mouseX, mouseY)){
-        createMissionInterface();
+        missionMenuEnable = true;
+        createMissions();
+        drawSoloMissions();
+        //loop();
       }
     }
 
 //Solo Mission Accept Button clicked
-    if (cur_status === 'status_play'){
+    if (cur_status === 'status_play' && missionMenuEnable){
       for (let i=0; i<5; i++){
         if(singleMissionsArr[i].acceptButton.isClicked(mouseX, mouseY)){
           acceptSoloMission(i);
-          createResourceBar();
-          loop();
+          //createResourceBar();
+          //loop();
         }
       }
     }
 
 //Solo Mission Exit Button clicked
-    if(cur_status === 'status_play'){
+    if(cur_status === 'status_play' && missionMenuEnable){
       if (missionExitBtn.isClicked(mouseX, mouseY)){
         missionMenuEnable = false;
         createGame();
         loop();
       }
     }
+
+
+
+    //Ship Fleet Button clicked
+if (gameStatus){
+  if(shipFleetButton.isClicked(mouseX, mouseY)){
+    shipFleetEnable = true;
+    createShipFleetInterface();
+  }
+}  
+
+//Ship Fleet Exit Button clicked
+if(cur_status === 'status_play' && shipFleetEnable){
+  if (shipfleetExitBtn.isClicked(mouseX, mouseY)){
+    shipFleetEnable = false;
+    createGame();
+    loop();
+  }
+}
+
+//Build War Ship btn is clicked
+if (cur_status === 'status_play' && shipFleetEnable){
+  if(buildWarshipBtn.isClicked(mouseX,mouseY)){
+    buildwarship();
+    loop();
+  }
+}
+
+//Build Mining Ship btn is clicked
+if (cur_status === 'status_play' && shipFleetEnable){
+  if(buildMiningtshipBtn.isClicked(mouseX,mouseY)){
+    buildminingship();
+    loop();
+  }
+}
+
+//Build Transport Ship btn is clicked
+if (cur_status === 'status_play' && shipFleetEnable){
+  if(buildTransportshipBtn.isClicked(mouseX,mouseY)){
+    buildtransportship();
+    loop();
+  }
+}
+
+//Build Exploration Ship btn is clicked
+if (cur_status === 'status_play' && shipFleetEnable){
+  if(buildExplorationshipBtn.isClicked(mouseX,mouseY)){
+    buildexplorationship();
+    loop();
+  }
+}
+
+//Station Upgrades Button clicked
+if (cur_status === 'status_play'){
+  if(stationButton.isClicked(mouseX, mouseY)){
+    stationUpgradeEnable = true;
+    createStationUpgradesInterface();
+  }
+}
+
+//Station Upgrades Exit Button clicked
+if(cur_status === 'status_play' && stationUpgradeEnable){
+  if (stationExitBtn.isClicked(mouseX, mouseY)){
+    stationUpgradeEnable = false;
+    createGame();
+    loop();
+  }
+}
+
+//Build station upgrade dome 1 btn is clicked
+if (cur_status === 'status_play' && stationUpgradeEnable){
+  if(buildDome1Btn.isClicked(mouseX,mouseY)){
+    buildupgradedome1();
+    loop();
+  }
+}
+
+//Build station upgrade dome 2 btn is clicked
+if (cur_status === 'status_play' && stationUpgradeEnable){
+  if(buildDome2Btn.isClicked(mouseX,mouseY)){
+    buildupgradedome2();
+    loop();
+  }
+}
+
+//Build station upgrade dome 3 btn is clicked
+if (cur_status === 'status_play' && stationUpgradeEnable){
+  if(buildDome3Btn.isClicked(mouseX,mouseY)){
+    buildupgradedome3();
+    loop();
+  }
+}
+ 
+//Build station upgrade storage 1 btn is clicked
+if (cur_status === 'status_play' && stationUpgradeEnable){
+  if(buildStorage1Btn.isClicked(mouseX,mouseY)){
+    buildupgradestorage1();
+    loop();
+  }
+}
+
+//Build station upgrade storage 2 btn is clicked
+if (cur_status === 'status_play' && stationUpgradeEnable){
+  if(buildStorage2Btn.isClicked(mouseX,mouseY)){
+    buildupgradestorage2();
+    loop();
+  }
+}
+
+//Build station upgrade storage 3 btn is clicked
+if (cur_status === 'status_play' && stationUpgradeEnable){
+  if(buildStorage3Btn.isClicked(mouseX,mouseY)){
+    buildupgradestorage3();
+    loop();
+  }
+}
+    
+
    
     
 
@@ -146,148 +267,61 @@ if (cur_status=== 'status_login'){
       console.log('playerId '+ playerId);
     
     
+    //__________________________________________________________
+    //Load all initial stuff from DB, that we need for initial drawing
+
 
     //Get Rank from player
   loadJSON('/getPlayerRank/'+playerId, (dataReceived)=> {
     rank = dataReceived[0].Rank;
     gameDate = new Date(dataReceived[0].In_Game_Date).getFullYear();
-    console.log(gameDate);
     
   })
 
 
     //Get Resources from Database
-    loadJSON('/getPlayerResources/'+playerId, (dataReceived)=> {
-      money = dataReceived[0].Money;
-      ore = dataReceived[0].Ore;
-      water = dataReceived[0].Water;
-      people = dataReceived[0].People;
-      max_ore = dataReceived[0].Max_Ore;
-      max_water = dataReceived[0].Max_Water;
-      max_people = dataReceived[0].Max_People;
-      console.log(dataReceived);
-      loop();
-    })  
+    loadResources();
 
+
+
+    //Get SingleplayerMissions of the player: 
+    loadSoloMissions();
+
+
+     //Load Mission Respawn timer
+    loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
+    missionRespawnTime = dataReceived[0].RespawnMissionTime;
+    })
+
+    
+    //Load Accepted Missions and put them in Running Missions array
+    loadRunningMissions();
+
+
+    // Get player ships from ship-fleet
+    loadPlayerShips();
+
+    
 
     // add all the loadJSON paths below: 
 
     //ships
 
     //station upgrades
-
-
-    //SingleplayerMissions of the player: 
-    loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
-      //assign all variables of mission1. 
-      singlemissionId = dataReceived[0].Solo_Missions_Id;
-      singlemissionName = dataReceived[0].Name;
-      singlemissionStory = dataReceived[0].Story;
-      singlemissionTime = dataReceived[0].Time;
-      singlemissionInputMoney = dataReceived[0].Input_Money;
-      singlemissionInputPeople = dataReceived[0].Input_People;
-      singlemissionInputOre = dataReceived[0].Input_Ore;
-      singlemissionInputWater = dataReceived[0].Input_Water;
-      singlemissionInputShips = dataReceived[0].Ships_Id;
-      singlemissionRewardMoney = dataReceived[0].Reward_Money;
-      singlemissionRewardPeople = dataReceived[0].Reward_People;
-      singlemissionRewardOre = dataReceived[0].Reward_Ore;
-      singlemissionRewardWater = dataReceived[0].Reward_Water;
-      singlemissionRank = dataReceived[0].Rank;
-
-      //mission2
-      singlemission2Id = dataReceived[1].Solo_Missions_Id;
-      singlemission2Name = dataReceived[1].Name;
-      singlemission2Story = dataReceived[1].Story;
-      singlemission2Time = dataReceived[1].Time;
-      singlemission2InputMoney = dataReceived[1].Input_Money;
-      singlemission2InputPeople = dataReceived[1].Input_People;
-      singlemission2InputOre = dataReceived[1].Input_Ore;
-      singlemission2InputWater = dataReceived[1].Input_Water;
-      singlemission2InputShips = dataReceived[1].Ships_Id;
-      singlemission2RewardMoney = dataReceived[1].Reward_Money;
-      singlemission2RewardPeople = dataReceived[1].Reward_People;
-      singlemission2RewardOre = dataReceived[1].Reward_Ore;
-      singlemission2RewardWater = dataReceived[1].Reward_Water;
-      singlemission2Rank = dataReceived[1].Rank;
-
-      //mission3
-      singlemission3Id = dataReceived[2].Solo_Missions_Id;
-      singlemission3Name = dataReceived[2].Name;
-      singlemission3Story = dataReceived[2].Story;
-      singlemission3Time = dataReceived[2].Time;
-      singlemission3InputMoney = dataReceived[2].Input_Money;
-      singlemission3InputPeople = dataReceived[2].Input_People;
-      singlemission3InputOre = dataReceived[2].Input_Ore;
-      singlemission3InputWater = dataReceived[2].Input_Water;
-      singlemission3InputShips = dataReceived[2].Ships_Id;
-      singlemission3RewardMoney = dataReceived[2].Reward_Money;
-      singlemission3RewardPeople = dataReceived[2].Reward_People;
-      singlemission3RewardOre = dataReceived[2].Reward_Ore;
-      singlemission3RewardWater = dataReceived[2].Reward_Water;
-      singlemission3Rank = dataReceived[2].Rank;
-
-      //mission4
-      singlemission4Id = dataReceived[3].Solo_Missions_Id;
-      singlemission4Name = dataReceived[3].Name;
-      singlemission4Story = dataReceived[3].Story;
-      singlemission4Time = dataReceived[3].Time;
-      singlemission4InputMoney = dataReceived[3].Input_Money;
-      singlemission4InputPeople = dataReceived[3].Input_People;
-      singlemission4InputOre = dataReceived[3].Input_Ore;
-      singlemission4InputWater = dataReceived[3].Input_Water;
-      singlemission4InputShips = dataReceived[3].Ships_Id;
-      singlemission4RewardMoney = dataReceived[3].Reward_Money;
-      singlemission4RewardPeople = dataReceived[3].Reward_People;
-      singlemission4RewardOre = dataReceived[3].Reward_Ore;
-      singlemission4RewardWater = dataReceived[3].Reward_Water;
-      singlemission4Rank = dataReceived[3].Rank;
-      
-      //mission5
-      singlemission5Id = dataReceived[4].Solo_Missions_Id;
-      singlemission5Name = dataReceived[4].Name;
-      singlemission5Story = dataReceived[4].Story;
-      singlemission5Time = dataReceived[4].Time;
-      singlemission5InputMoney = dataReceived[4].Input_Money;
-      singlemission5InputPeople = dataReceived[4].Input_People;
-      singlemission5InputOre = dataReceived[4].Input_Ore;
-      singlemission5InputWater = dataReceived[4].Input_Water;
-      singlemission5InputShips = dataReceived[4].Ships_Id;
-      singlemission5RewardMoney = dataReceived[4].Reward_Money;
-      singlemission5RewardPeople = dataReceived[4].Reward_People;
-      singlemission5RewardOre = dataReceived[4].Reward_Ore;
-      singlemission5RewardWater = dataReceived[4].Reward_Water;
-      singlemission5Rank = dataReceived[4].Rank;
-      
-    })
-
-    //Load Mission Respawn timer
-    loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
-      missionRespawnTime = dataReceived[0].RespawnMissionTime;
     
-    })
-
-
-    //Load Accepted Missions and put them in Running Missions array
-    loadJSON('/getRunningMissions/'+playerId, (dataReceived)=> {
-      for(let i=0; i<dataReceived.length; i++){
-        runningSoloMissions.push(dataReceived[i].Solo_Mission_Id);
-        
-      }
-      
-    })
 
     //Load Multiplayer Missions
 
 
 
 
-
-
-    createGame();
+     //Create the game
+     createGame();
+      
    
        }
      })
+     //loop();
     }
   }
 
@@ -297,11 +331,24 @@ if (cur_status=== 'status_login'){
 //_____________________________________________________
 //Accepting a Solo Mission!
 
-function acceptSoloMission(missionNumber){
+function acceptSoloMission(missionIndex){
   
-  let acceptedMission = singleMissionsArr[missionNumber];
+  let acceptedMission = singleMissionsArr[missionIndex];
+  let missionShip;
 
-  
+
+  //Verify, if player has resources and ship available for the mission.
+  if (missionResourcesVerified(acceptedMission) && missionShipVerified(acceptedMission)){
+
+  console.log('inputResource1 '+acceptedMission.InputResource1);
+
+
+
+  console.log('Input Ship '+ acceptedMission.InputShip);
+
+  //Disable button of accepted mission and put it into running missions array on client
+  acceptedMission.acceptedMission();
+  runningSoloMissions.push(acceptedMission.missionId);
 
   //Deduct resources of the mission from the player resources:
   money -= acceptedMission.InputMoney;
@@ -309,52 +356,364 @@ function acceptSoloMission(missionNumber){
   ore -= acceptedMission.InputOre;
   water -= acceptedMission.InputWater;
 
-  //Update resources on DB!
+
+  //block ship for use of the player for time of mission (change status on DB): 
+ for (let i=0; i<availableShips.length; i++){
+  if (acceptedMission.InputShip === availableShips[i].shipId){
+    missionShip = availableShips[i];
+    missionShip.blockShip();
+    blockedShips.push(missionShip);
+    availableShips.splice(i,1);
+  }
+}
+
+// create and draw missions again.
+//loop();
+ createMissions();
+ drawSoloMissions();
+ createResourceBar();
+ drawResourceValues();
+
+
+
+  //Update DB!
   dataSent = {
     "Player_Id": playerId,
     "Money": money,
     "Water": water,
     "Ore": ore,
     "People": people,
-    "Mission_Id":  acceptedMission.missionId
+    "Mission_Id":  acceptedMission.missionId,
+    "Ship_Fleet_ID": missionShip.ship_Fleet_ID
   }
   
+  //update resources
   httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {} )
 
-  //remove mission from playerMissions and put it into acceptedmission (running missions)  
-  //singleMissionsArr.splice(missionNumber,1);
+  //put mission in accepted missions on db
   httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {})
 
 
-
-
-
-
-//block ship for use of the player for time of mission (change status on DB): 
-
+  //send updated Ships to DB:
+  httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {});
 
 
 
   
-  //Disable button of accepted mission and make it grey:
-  acceptedMission.acceptButton.disable();
-  push();
-  fill('rgba(148,148,148, 0.7)');
-  rectMode(CENTER);
-  rect(acceptedMission.rx, acceptedMission.ry, acceptedMission.rw, acceptedMission.rh);
-  pop();
+  }
 
- 
-
+  else{
+  alert ('You dont have the resources or available ships, to do this mission');
+   }
 }
 
+
+
+
+
+//verify if enough resources are on the client.
+function missionResourcesVerified(acceptedMission){
+
+  if (money < acceptedMission.InputMoney){
+    return false;
+  } 
+  else if (people < acceptedMission.InputPeople){
+    return false;
+  }
+  else if (ore < acceptedMission.InputOre){
+    return false;
+  }
+  else if (water < acceptedMission.InputWater){
+    return false;
+  }
+
+  else {
+    return true;
+  }
+ }
+
+
+
+
+
+
+
+//verify, if the required ship is in available ships.
+function missionShipVerified(acceptedMission){
+
+  for (let i=0; i<availableShips.length; i++){
+    if (acceptedMission.InputShip === availableShips[i].shipId){
+      return true;
+    }
+  }
+}
+
+
+//_______________________________________________________________________________________________
+  //build war ships
+  function buildwarship(){
+    if(buildWarshipBtn.isClicked(mouseX,mouseY)){
+      if(people > 20 && ore > 50){
+        let inputcrew=20;
+        let inputore=50;
+        ore=ore-inputore;
+        people=people-inputcrew
+        let dataSend={
+          "Player_Id": playerId,
+          "Ore": ore,
+          "People": people
+        }
+        httpPost('/buildwarship','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You dont have the resources to build this ship');
+      }
+    }
+  }
+  
+  //build mining ships
+  function buildminingship(){
+    if(buildMiningtshipBtn.isClicked(mouseX,mouseY)){
+      if(ore > 50 && people > 20){
+        let inputcrew=20;
+        let inputore=50;
+        ore=ore-inputore;
+        people=people-inputcrew
+        let dataSend={
+          "Player_Id": playerId,
+          "Ore": ore,
+          "People": people
+        }
+        httpPost('/buildminingship','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You dont have the resources to build this ship');
+      }
+    }
+  }
+
+
+
+ //build transport ships
+ function buildtransportship(){
+  if(buildTransportshipBtn.isClicked(mouseX,mouseY)){
+    if(ore > 50 && people > 20){
+      let inputcrew=20;
+      let inputore=50;
+      ore=ore-inputore;
+      people=people-inputcrew
+      let dataSend={
+        "Player_Id": playerId,
+        "Ore": ore,
+        "People": people
+      }
+      httpPost('/buildtransportship','json',dataSend,(dataReceived)=>{
+        console.log(dataReceived.message);
+      });
+    }else{
+      alert ('You dont have the resources to build this ship');
+    }
+  }
+}
+
+//build exploration ships
+function buildexplorationship(){
+  if(buildExplorationshipBtn.isClicked(mouseX,mouseY)){
+    if(ore > 50 && people > 20){
+      let inputcrew=20;
+      let inputore=50;
+      ore=ore-inputore;
+      people=people-inputcrew
+      let dataSend={
+        "Player_Id": playerId,
+        "Ore": ore,
+        "People": people
+      }
+      httpPost('/buildexplorationship','json',dataSend,(dataReceived)=>{
+        console.log(dataReceived.message);
+      });
+    }else{
+      alert ('You dont have the resources to build this ship');
+    }
+  }
+}
+
+
+//____________________________________________________________________________________
+//station Upgardes
+//build station upgrade dome 1
+function buildupgradedome1(){
+  if(buildDome1Btn.isClicked(mouseX,mouseY)){
+    if(money > 100){
+      if(max_people === 100){
+        let price=100;
+        money=money-price;
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/builddome1','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade dome 2
+function buildupgradedome2(){
+  if(buildDome2Btn.isClicked(mouseX,mouseY)){
+    if(money > 200){
+      if(max_people === 150){
+        let price=200;
+        money=money-price;
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/builddome2','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade dome 3
+function buildupgradedome3(){
+  if(buildDome3Btn.isClicked(mouseX,mouseY)){
+    if(money > 300){
+      if(max_people === 250){
+        let price=300;
+        money=money-price;
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/builddome3','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade storage 1
+function buildupgradestorage1(){
+  if(buildStorage1Btn.isClicked(mouseX,mouseY)){
+    if(money > 100){
+      if(max_water === 1000 && max_ore === 1000){
+        let price=100;
+        money=money-price
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/buildstorage1','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade storage 2
+function buildupgradestorage2(){
+  if(buildStorage2Btn.isClicked(mouseX,mouseY)){
+    if(money > 200){
+      if(max_water === 1050 && max_ore === 1050){
+        let price=200;
+        money=money-price
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/buildstorage2','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+//build station upgrade storage 3
+function buildupgradestorage3(){
+  if(buildStorage3Btn.isClicked(mouseX,mouseY)){
+    if(money > 300){
+      if(max_water === 1150 && max_ore === 1150){
+        let price=300;
+        money=money-price
+        let dataSend={
+          "Player_Id": playerId,
+          "Money": money
+        }
+        httpPost('/buildstorage3','json',dataSend,(dataReceived)=>{
+          console.log(dataReceived.message);
+        });
+      }else{
+        alert ('You already did this upgrade');
+      }
+    }else{
+      alert('You dont have the resources to do this upgrade')
+    }
+  }
+}
+
+
+
+
+
+//___________________________________________________________________________________
+//Ping function to get updated solo missions and completed running missions every 15 seconds. 
+
+setInterval(function(){
+ if(cur_status === 'status_play'){
+
+  //Listening for completed missions in accepted solo_missions
+ dataSent = {
+   "playerId": playerId,
+};
+ 
+
+ httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
+  console.log(dataReceived);
+ });
+ 
+
+
+  loadResources();
+  loadPlayerShips(); 
+  loadSoloMissions();
+  loadRunningMissions();      //get solomissions data from DB       
+  //createMissions();           //assign data to missions
   
 
 
-// //Sending the playerId to the server
-// function sendPlayerId_toServer(){
-//   dataSent = {
-//     "playerId": playerId
-//   }
-//   httpPost('/sendPlayerId', 'json',dataSent, (dataReceived)=> {})
-// }
+  //draw 
+  //loop();
+                         
+ 
+}
+},15000);

@@ -10,49 +10,50 @@ let cur_status = 'status_login'; //status_login, status_register, status_play
 
 //Resource Icon paths
 let moneyIconPath = 'assets/money-icon.jpg';
-let oreIconPath = 'assets/money-icon.jpg';
-let waterIconPath = 'assets/money-icon.jpg';
-let peopleIconPath = 'assets/money-icon.jpg';
-let rankIconPath = 'assets/money-icon.jpg';
-let emptyIconPath = 'assets/money-icon.jpg';
+let oreIconPath = 'assets/ore-icon.jpg';
+let waterIconPath = 'assets/water-icon.jpg';
+let peopleIconPath = 'assets/people-icon.jpg';
+let rankIconPath = 'assets/rank-icon.jpg';
+let emptyIconPath = 'assets/empty-icon.jpg';
 
 //Ship Icon Paths
-let transportShipIconPath =  'assets/money-icon.jpg';
-let miningShipIconPath =  'assets/money-icon.jpg';
-let warShipIconPath =  'assets/money-icon.jpg';
-let explorationShipIconPath =  'assets/money-icon.jpg';
+let transportShipIconPath =  'assets/transportship-icon.jpg';
+let miningShipIconPath =  'assets/miningship-icon.jpg';
+let warShipIconPath =  'assets/warship-icon.jpg';
+let explorationShipIconPath =  'assets/explorationship-icon.jpg';
 
 //Other paths
 let exitButtonIconPath = 'assets/exit-icon.jpg';
+let shipOnMissionIconPath = 'assets/exit-icon.jpg';
 
 
 
 
-//_____________________________________________________________________
-//Creating the Grid for the main menu. (not used, just for reference) 
-//Grid variables
-let tilesArr= [];
-let gridStartX=0;
-let gridStartY=0;
-let side = 100;
-let gridX = window.innerWidth/side;    //length of the grid
-let gridY = window.innerHeight/side;   // height of the grid
+// //_____________________________________________________________________
+// //Creating the Grid for the main menu. (not used, just for reference) 
+// //Grid variables
+// let tilesArr= [];
+// let gridStartX=0;
+// let gridStartY=0;
+// let side = 100;
+// let gridX = window.innerWidth/side;    //length of the grid
+// let gridY = window.innerHeight/side;   // height of the grid
 
-function createGrid(){
-  for (r=gridStartX; r<gridX+gridStartX;r++){
-    tilesArr[r]= [];
-    for(c=gridStartY; c<gridY+gridStartY; c++){
-      tilesArr[r][c] = new Tile (r, c, side,txt=``,255);    //to let tile numbers appear, insert into txt: ${r},${c} 
-    } 
-  } 
-}
+// function createGrid(){
+//   for (r=gridStartX; r<gridX+gridStartX;r++){
+//     tilesArr[r]= [];
+//     for(c=gridStartY; c<gridY+gridStartY; c++){
+//       tilesArr[r][c] = new Tile (r, c, side,txt=``,255);    //to let tile numbers appear, insert into txt: ${r},${c} 
+//     } 
+//   } 
+// }
 
-function drawGrid(){
-  for (r=gridStartX; r<gridX+gridStartX;r++)
-    for(c=gridStartY; c<gridY+gridStartY; c++){
-      tilesArr[r][c].drawCharacter();
-  }
-}
+// function drawGrid(){
+//   for (r=gridStartX; r<gridX+gridStartX;r++)
+//     for(c=gridStartY; c<gridY+gridStartY; c++){
+//       tilesArr[r][c].drawCharacter();
+//   }
+// }
 
 
 
@@ -98,9 +99,12 @@ function loginScreen(){
   registerBtn = new Button(rx,ry+130,120,30,'Register as new Player',255,0,10);
   
 
-  InputName = createInput('Name').position(rx-100, ry-60);
-  InputPass = createInput('Password').position(rx-100, ry);
+  InputName = createInput('').position(rx-100, ry-60);
+  InputPass = createInput('', 'password').position(rx-100, ry);
   
+  InputPass.attribute('placeholder','Password');
+  InputName.attribute('placeholder','Username');
+
    //Draw Buttons
    rectMode(CENTER);
    loginBtn.drawButton();
@@ -128,8 +132,11 @@ function registerScreen(){
     rw= 600;
     rh= 500;   
 
-    InputPassTwo = createInput('Repeat Password').position(rx-100, ry+30);
-    InputEmail = createInput('Email').position(rx-100, ry-30);
+    InputPassTwo = createInput('', 'password').position(rx-100, ry+30);
+    InputEmail = createInput('').position(rx-100, ry-30);
+    
+    InputPassTwo.attribute('placeholder','Repeat Password');
+    InputEmail.attribute('placeholder','Email');
     
 
     //disable Loginbutton and Register player button
@@ -149,11 +156,13 @@ function registerScreen(){
 
 
 
+
+
+
 //__________________________________________________
 //Creating and drawing main Menu.
 //Variables:
 let gameStatus= false;
-
 function createGame(){
 
   gameStatus = true;
@@ -162,12 +171,17 @@ function createGame(){
   InputPass.remove();
   background(220);
   
+
   createResourceBar();
   createButtons();
-
-  //sendPlayerId_toServer();
-  
+  createGrid();
+  //createships();
+  //loop();
 }
+
+
+
+
 
 
 
@@ -183,6 +197,15 @@ let marketplaceButton;
 function createButtons(){
 missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
 missionButton.drawButton();
+
+  //btn for the ship yard
+  shipFleetButton = new Button(width-1250,height-200,200,50,'Ship Fleet',0,255,20);
+  shipFleetButton.drawButton();
+  
+  //btn for the station upgrades
+  stationButton = new Button(width-1250,height-300,200,50,'Station Upgrades',0,255,20);
+  stationButton.drawButton();
+
 }
 
 
@@ -266,6 +289,208 @@ function drawResourceValues(){
 
 
 
+//_________________________________________________________________________________________________
+//ship fleet grid
+let tilesArr= [];
+let gridStartX= window.innerWidth/3 /100;  
+let gridStartY= (window.innerHeight-100)/100;
+let side = 100;
+let gridX = 5;    //length of the grid
+let gridY = 1;   // height of the grid
+
+function createGrid(){
+  if(cur_status === 'status_play'){
+    for (r=gridStartX; r<gridX+gridStartX;r++){
+      tilesArr[r]= [];
+      for(c=gridStartY; c<gridY+gridStartY; c++){
+        tilesArr[r][c] = new Tile (r, c, side, txt='', 200);    //to let tile numbers appear, insert into txt: ${r},${c} 
+      } 
+    } 
+  }
+}
+
+function drawGrid(){
+  if(cur_status === 'status_play'){
+    for (let r=gridStartX; r<gridX+gridStartX; r++){
+      for(let c=gridStartY; c<gridY+gridStartY; c++){
+        tilesArr[r][c].draw_tile();
+      }
+    }
+  }
+}
+
+
+
+//____________________________________________________________
+// Create ships and draw them 
+let ships=[];   //array of all ship-rows in the ship fleet table (from DB every 30 seconds)
+
+let availableShips = []; //array of all ship objects, that are available in shipfleet
+let blockedShips = [];   //array of all ship objects, that are blocked ships in shipfleet
+let shipList=[];  //array of all ship objects, that are created in createships for drawing (blocked and available)
+
+
+
+function createships(){
+
+ 
+  
+  if(cur_status === 'status_play'){
+
+  shipList = [];
+  for (let i=0; i<ships.length; i++){
+      
+    let ship = new Ship(ships[i].Ship_Fleet_ID, ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,i, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
+
+      //assign blocked and available ships
+      if(ship.Ship_on_Mission === 0){
+        availableShips.push(ship);
+      } else if (ship.Ship_on_Mission === 1){
+        blockedShips.push(ship);
+        ship.blockShip();
+      }
+
+      shipList.push(ship);
+
+    }
+  }
+  // print('ships '+ships);
+  // console.log('shipList '+shipList);
+  // console.log('available Ships '+availableShips);
+  // console.log('blocked Ships '+blockedShips);
+}
+
+
+
+function drawShips(){
+  if(cur_status === 'status_play' && missionMenuEnable === false){
+    for(let i=0; i<shipList.length; i++){
+      for (r=gridStartX; r<gridX+gridStartX;r++){
+        for(c=gridStartY; c<gridY+gridStartY; c++){
+          shipList[i].drawShip();
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+//_________________________________________________________________________________________________
+//create ship fleet frame
+let shipFleetEnable = false;
+
+let shipfleetFrame;
+let shipfleetExitBtn;
+let buildWarshipBtn;
+let buildTransportshipBtn;
+let buildMiningtshipBtn;
+let buildExplorationshipBtn;
+//btns
+let btnW=250;
+let btnH=50;
+let btnclr=0;
+let txtclr=255;
+
+let spaceshipid;
+
+function createShipFleetInterface(){
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+  shipfleetFrame = new OnScreenFrame(rx, ry, rw, rh);
+  shipfleetFrame.drawScreen();
+
+  shipfleetExitBtn = new ExitButton(rx+rw/2-exitbtnW, ry-rh/2,exitbtnW,exitbtnH);
+  shipfleetExitBtn.drawExitButton();
+
+  buildWarshipBtn = new Button(rx,ry-(rh/2-250),btnW,btnH,'Build War Ship',btnclr,txtclr,20);
+  buildWarshipBtn.drawButton();
+
+  buildTransportshipBtn = new Button(rx,ry-(rh/2-350),btnW,btnH,'Build Transport Ship',btnclr,txtclr,20);
+  buildTransportshipBtn.drawButton();
+
+  buildMiningtshipBtn = new Button(rx,ry-(rh/2-450),btnW,btnH,'Build Mining Ship',btnclr,txtclr,20);
+  buildMiningtshipBtn.drawButton();
+
+  buildExplorationshipBtn = new Button(rx,ry-(rh/2-550),btnW,btnH,'Build Exploration Ship',btnclr,txtclr,20);
+  buildExplorationshipBtn.drawButton();
+
+  //if(buildWarshipBtn.isClicked()){
+    //spaceshipid=3;
+  //}else if(buildTransportshipBtn.isClicked()){
+    //spaceshipid=5;
+  //}else if(buildMiningtshipBtn.isClicked()){
+    //spaceshipid=4;
+  //}else if(buildExplorationshipBtn.isClicked()){
+    //spaceshipid=5;
+  //}else{
+    //spaceshipid=0;
+  //}
+}
+
+
+
+//_________________________________________________________________________________________________
+//create station upgrades frame
+let stationUpgradeEnable = false;
+
+let stationFrame;
+let stationExitBtn;
+let exitbtnW=30;
+let exitbtnH=30;
+let buildDome1Btn;
+let buildDome2Btn;
+let buildDome3Btn;
+let buildStorage1Btn;
+let buildStorage2Btn;
+let buildStorage3Btn;
+
+function createStationUpgradesInterface(){
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+  let rank1;
+  let rank2;
+  let rank3;
+  let btnrank1posY = ry-(rh/2-200);
+  let btnrank2posY = ry-(rh/2-450);
+  let btnrank3posY = ry+(rh/2-50);
+  let btndomeposX = rx-rx/2+270;
+  let btnstorageposX = rx+200;
+
+  stationFrame = new OnScreenFrame(rx, ry, rw, rh);
+  stationFrame.drawScreen();
+
+  stationExitBtn = new ExitButton(rx+rw/2-exitbtnW, ry-rh/2,exitbtnW,exitbtnH);
+  stationExitBtn.drawExitButton();
+
+  buildDome1Btn = new Button(btndomeposX,btnrank1posY,btnW,btnH,'Build Dome Rank 1',btnclr,txtclr,20);
+  buildDome1Btn.drawButton();
+
+  buildDome2Btn = new Button(btndomeposX,btnrank2posY,btnW,btnH,'Build Dome Rank 2',btnclr,txtclr,20);
+  buildDome2Btn.drawButton();
+
+  buildDome3Btn = new Button(btndomeposX,btnrank3posY,btnW,btnH,'Build Dome Rank 3',btnclr,txtclr,20);
+  buildDome3Btn.drawButton();
+
+  buildStorage1Btn = new Button(btnstorageposX,btnrank1posY,btnW,btnH,'Build Storage Rank 1',btnclr,txtclr,20);
+  buildStorage1Btn.drawButton();
+
+  buildStorage2Btn = new Button(btnstorageposX,btnrank2posY,btnW,btnH,'Build Storage Rank 2',btnclr,txtclr,20);
+  buildStorage2Btn.drawButton();
+
+  buildStorage3Btn = new Button(btnstorageposX,btnrank3posY,btnW,btnH,'Build Storage Rank 3',btnclr,txtclr,20);
+  buildStorage3Btn.drawButton();
+}
+
+
 
 //________________________________
 // Creating and drawing Missions Interface 
@@ -295,96 +520,15 @@ let opensingleMissionsArr = []; //all open solo missions (reference by index of 
 
 let runningSoloMissions = []; // all running missions (reference by MissionId)
 
-//Mission1 Variables; 
-let singlemissionId;
-let singlemissionName;
-let singlemissionStory;
-let singlemissionTime;
-let singlemissionInputMoney;
-let singlemissionInputPeople;
-let singlemissionInputOre;
-let singlemissionInputWater;
-let singlemissionInputShips;
-let singlemissionRewardMoney;
-let singlemissionRewardPeople;
-let singlemissionRewardOre;
-let singlemissionRewardWater;
-let singlemissionRank;
-let singlemissionAcceptBtn;
+let runningSoloMissionsIndex = [];
 
-//Mission2 Variables;
-let singlemission2Id;
-let singlemission2Name;
-let singlemission2Story;
-let singlemission2Time;
-let singlemission2InputMoney;
-let singlemission2InputPeople;
-let singlemission2InputOre;
-let singlemission2InputWater;
-let singlemission2InputShips;
-let singlemission2RewardMoney;
-let singlemission2RewardPeople;
-let singlemission2RewardOre;
-let singlemission2RewardWater;
-let singlemission2Rank;
-let singlemission2AcceptBtn;
 
-//Mission3 Variables;
-let singlemission3Id;
-let singlemission3Name;
-let singlemission3Story;
-let singlemission3Time;
-let singlemission3InputMoney;
-let singlemission3InputPeople;
-let singlemission3InputOre;
-let singlemission3InputWater;
-let singlemission3InputShips;
-let singlemission3RewardMoney;
-let singlemission3RewardPeople;
-let singlemission3RewardOre;
-let singlemission3RewardWater;
-let singlemission3Rank;
-let singlemission3AcceptBtn;
-
-//Mission4 Variables;
-let singlemission4Id;
-let singlemission4Name;
-let singlemission4Story;
-let singlemission4Time;
-let singlemission4InputMoney;
-let singlemission4InputPeople;
-let singlemission4InputOre;
-let singlemission4InputWater;
-let singlemission4InputShips;
-let singlemission4RewardMoney;
-let singlemission4RewardPeople;
-let singlemission4RewardOre;
-let singlemission4RewardWater;
-let singlemission4Rank;
-let singlemission4AcceptBtn;
-
-//Mission5 Variables;
-let singlemission5Id;
-let singlemission5Name;
-let singlemission5Story;
-let singlemission5Time;
-let singlemission5InputMoney;
-let singlemission5InputPeople;
-let singlemission5InputOre;
-let singlemission5InputWater;
-let singlemission5InputShips;
-let singlemission5RewardMoney;
-let singlemission5RewardPeople;
-let singlemission5RewardOre;
-let singlemission5RewardWater;
-let singlemission5Rank;
-let singlemission5AcceptBtn;
 
 
 //Create AND draw Missions Interface
- function createMissionInterface(){
+ function createMissions(){
+  if (missionMenuEnable === true){
 
-  missionMenuEnable = true;
 
     rx= width*0.5;
     ry= height*0.5;
@@ -393,35 +537,15 @@ let singlemission5AcceptBtn;
 
     //Frame, title and buttons of Mission Interface;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
-    missionFrame.drawScreen();
 
     singleMissionsBtn = new Button(rx-rx/2+220,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
-    singleMissionsBtn.drawButton();
 
     multiMissionsBtn = new Button(rx+150,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
-    multiMissionsBtn.drawButton();
-
-    runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
-    runningMissionsBtn.drawButton();
-
-    missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
-    missionExitBtn.drawExitButton();
- 
-    push();
-    fill(0);
-    textAlign(CENTER, CENTER);
-    textSize(30);
-    text("Missions", rx, ry-rh/2.2);
-    textSize(15);
-    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
-    fill('purple');
-    textStyle(BOLD);
-    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
-    pop();
     
-
-
-
+    runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
+    
+    missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
+    
 
     //___________________________________________________________________
     //Mission boxes and Input;
@@ -435,33 +559,70 @@ let singlemission5AcceptBtn;
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-    
+  
 
-    console.log(runningSoloMissions);
-
-
-    //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr
-  	 for (let i=0; i<singleMissionsArr.length; i++){
+    //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr (this needs to stay on here, because otherwise it will create a bugg, whenver we are opening the missions interface again with a recently accepted mission --> it will not show then)
+  	runningSoloMissionsIndex = []; 
+    for (let i=0; i<singleMissionsArr.length; i++){
        for (let j=0; j<runningSoloMissions.length; j++){
         if(singleMissionsArr[i].missionId === runningSoloMissions[j]){
           singleMissionsArr[i].acceptedMission();
-          runningSoloMissions[j] = i;
+          runningSoloMissionsIndex.push(i); 
         } 
       }
      }
 
+
+
+
      //assign openMissions array
      let dummyArray = [0,1,2,3,4];
 
-     opensingleMissionsArr = dummyArray.filter(function(el){ return !runningSoloMissions.includes(el);});
+    opensingleMissionsArr = dummyArray.filter(el => !runningSoloMissionsIndex.includes(el));
 
 
-     console.log('MissionsArr '+ singleMissionsArr);
-     console.log('open Missions Index '+ opensingleMissionsArr);
-     console.log('runningSoloMissions Index '+ runningSoloMissions);
+     //print arrays
+    //  console.log('open Missions Index '+ opensingleMissionsArr);
+    //  console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
+    //  console.log('running missions unindexed '+runningSoloMissions);
+     //console.log('Assigned missions '+singleMissionsArr.length);
+    }
+}
 
 
-     
+
+
+//Draw Missions Interface
+
+function drawSoloMissions(){
+  if (missionMenuEnable === true){
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+
+  missionFrame.drawScreen();
+  singleMissionsBtn.drawButton();
+  multiMissionsBtn.drawButton();
+  runningMissionsBtn.drawButton();
+  missionExitBtn.drawExitButton();
+
+
+  push();
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("Missions", rx, ry-rh/2.2);
+    textSize(15);
+    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
+    fill('purple');
+    textStyle(BOLD);
+    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
+    pop();
+
+
     push()
     fill(255);
     stroke(5);
@@ -472,15 +633,19 @@ let singlemission5AcceptBtn;
     singlemission5.drawBox();
     pop();
 
-  
-    
+  }
+}
 
-  
 
-  
 
+//________________________________________________________
+//Create and Draw Running Missions Interface
+
+
+function createRunningMissionInterface(){
 
 }
+
 
 
 
