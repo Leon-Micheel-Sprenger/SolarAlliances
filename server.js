@@ -443,16 +443,27 @@ app.post('/getCompletedMissions', (req, res)=> {
             
           })
 
-        
-          //send confirmation message to the client
-
-          //change confirmation sent to 1 in accepted missions
-
       })
     }
     else res.send(result);
   })
 })
+
+
+
+
+//Get Multiplayer Missions!
+app.get('/getMMissions', (req, res)=> {
+
+  let sql = 'SELECT * FROM multiplayer_missions;';
+
+  db.query(sql, (err, result)=> {
+    if (err) throw err;
+    res.send(result);
+  })
+
+})
+
 
 
 

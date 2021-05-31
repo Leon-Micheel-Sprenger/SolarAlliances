@@ -99,8 +99,8 @@ function loginScreen(){
   registerBtn = new Button(rx,ry+130,120,30,'Register as new Player',255,0,10);
   
 
-  InputName = createInput('').position(rx-100, ry-60);
-  InputPass = createInput('', 'password').position(rx-100, ry);
+  InputName = createInput('Name').position(rx-100, ry-60);
+  InputPass = createInput('Password', 'password').position(rx-100, ry);
   
   InputPass.attribute('placeholder','Password');
   InputName.attribute('placeholder','Username');
@@ -310,7 +310,7 @@ function createGrid(){
 }
 
 function drawGrid(){
-  if(cur_status === 'status_play'){
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false){
     for (let r=gridStartX; r<gridX+gridStartX; r++){
       for(let c=gridStartY; c<gridY+gridStartY; c++){
         tilesArr[r][c].draw_tile();
@@ -363,7 +363,7 @@ function createships(){
 
 
 function drawShips(){
-  if(cur_status === 'status_play' && missionMenuEnable === false){
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false){
     for(let i=0; i<shipList.length; i++){
       for (r=gridStartX; r<gridX+gridStartX;r++){
         for(c=gridStartY; c<gridY+gridStartY; c++){
@@ -538,9 +538,9 @@ let runningSoloMissionsIndex = [];
     //Frame, title and buttons of Mission Interface;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
 
-    singleMissionsBtn = new Button(rx-rx/2+220,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
+    singleMissionsBtn = new Button(rx-rx/2+rx/4,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
 
-    multiMissionsBtn = new Button(rx+150,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
+    multiMissionsBtn = new Button(rx*1.25,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
     
     runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
     
@@ -595,13 +595,12 @@ let runningSoloMissionsIndex = [];
 //Draw Missions Interface
 
 function drawSoloMissions(){
-  if (missionMenuEnable === true){
-
   rx= width*0.5;
   ry= height*0.5;
   rw= 700;
   rh= 750;
 
+  if (missionMenuEnable === true){
 
   missionFrame.drawScreen();
   singleMissionsBtn.drawButton();
@@ -644,6 +643,42 @@ function drawSoloMissions(){
 
 function createRunningMissionInterface(){
 
+}
+
+
+
+
+//_________________________________________________________________
+//Create Multiplayer Missions
+
+mmissionEnable = false;
+
+multiplayerMissions = [];
+
+
+function createMultiplayerMissions(){
+  //create instances of multiplayer missions class in a loop depending on multiplayermissions array. 
+}
+
+
+//_______________________________________________________________
+//Draw Multiplayer Missions Interface
+
+function drawMultiplayerMissions(){
+  
+    console.log('click');
+  if (mmissionEnable === true){
+
+     missionFrame.drawScreen();
+     singleMissionsBtn.drawButton();
+     multiMissionsBtn.drawButton();
+     missionExitBtn.drawExitButton();
+
+     //draw missions here!
+
+  }
+  
+  
 }
 
 

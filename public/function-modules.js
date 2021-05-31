@@ -5,6 +5,7 @@
 //_______________________________________________________
 // Mouse Pressed Function starts here
 function mousePressed(){
+  
 
 //Login Button clicked
     if (loginBtn.isClicked(mouseX, mouseY) && cur_status==='status_login'){
@@ -36,6 +37,7 @@ function mousePressed(){
     if (cur_status === 'status_play'){
       if(missionButton.isClicked(mouseX, mouseY)){
         missionMenuEnable = true;
+        missionButton.disable();
         createMissions();
         drawSoloMissions();
         //loop();
@@ -53,14 +55,29 @@ function mousePressed(){
       }
     }
 
-//Solo Mission Exit Button clicked
-    if(cur_status === 'status_play' && missionMenuEnable){
+//Mission Exit Button clicked
+    if(cur_status === 'status_play'){
       if (missionExitBtn.isClicked(mouseX, mouseY)){
         missionMenuEnable = false;
+        mmissionEnable = false;
         createGame();
         loop();
       }
     }
+
+
+//Click Collaborative Missions Button
+if (cur_status === 'status_play' && missionMenuEnable){
+  if (multiMissionsBtn.isClicked(mouseX, mouseY)){
+    missionMenuEnable = false;
+    mmissionEnable = true;
+    createGame();
+    loop();
+  }
+}
+
+
+
 
 
 
@@ -177,7 +194,8 @@ if (cur_status === 'status_play' && stationUpgradeEnable){
     loop();
   }
 }
-    
+   
+
 
    
     
@@ -301,16 +319,19 @@ if (cur_status=== 'status_login'){
     // Get player ships from ship-fleet
     loadPlayerShips();
 
+
+    //Load multiplayer missions:
+    loadMultiplayerMissions();
+
     
 
     // add all the loadJSON paths below: 
 
-    //ships
+ 
 
     //station upgrades
     
 
-    //Load Multiplayer Missions
 
 
 
@@ -698,7 +719,7 @@ setInterval(function(){
  
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
-  console.log(dataReceived);
+  //console.log(dataReceived);
  });
  
 

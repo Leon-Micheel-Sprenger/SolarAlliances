@@ -220,3 +220,17 @@ function loadPlayerShips(){
     //loop();
   }) 
 }
+
+
+
+//Get multiplayer Missions
+function loadMultiplayerMissions(){
+  loadJSON('/getMMissions', (dataReceived)=> {
+    console.log(dataReceived);
+    
+    for(let i=0; i<dataReceived.length; i++){
+      multiplayerMissions.push(dataReceived[0]);
+    }
+
+  })
+}

@@ -559,7 +559,11 @@ class SoloMissionBox {
 
 
 
+//__________________________________________________________________________
+//Multiplayer Missions
 
+class MultipiplayerMission  {
 
+}
 
 
