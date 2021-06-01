@@ -61,6 +61,7 @@ function mousePressed(){
         missionMenuEnable = false;
         mmissionEnable = false;
         createGame();
+        //createMultiplayerMissions();
         loop();
       }
     }

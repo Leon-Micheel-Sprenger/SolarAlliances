@@ -17,11 +17,13 @@ function setup() {
 
 
 function draw() {
+ 
   drawResourceValues();
   drawGrid();
   drawShips();
   drawSoloMissions();
   drawMultiplayerMissions();
+
   noLoop();
   //console.log(cur_status);
   

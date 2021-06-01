@@ -642,7 +642,7 @@ function drawSoloMissions(){
 
 
 function createRunningMissionInterface(){
-
+  //put it on main screen!
 }
 
 
@@ -651,13 +651,64 @@ function createRunningMissionInterface(){
 //_________________________________________________________________
 //Create Multiplayer Missions
 
-mmissionEnable = false;
+let mmissionEnable = false;
 
-multiplayerMissions = [];
+let mmissionsData = [];     //data loaded from db
+
+let multiplayerMissions = [];    //instances of mmissions created.
+
+let mmissionPages = [0];
 
 
 function createMultiplayerMissions(){
+
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+  //fixed 6 positions to display multiplayer missions.
+  let positions = [{rx:  rx-rx/2.5, ry: ry-ry/3}, {rx:  rx, ry: ry-ry/3}, {rx:  rx+rx/2.5, ry: ry-ry/3}, {rx:  rx-rx/2.5, ry: ry+ry/3}, {rx:  rx, ry: ry+ry/3}, {rx:  rx+rx/2.5, ry: ry+ry/3}
+  ];
+
+  let positionCounter; 
+
+  	
+
   //create instances of multiplayer missions class in a loop depending on multiplayermissions array. 
+
+  for (let i=0; i< mmissionsData.length; i++){
+
+    
+
+   
+    if (multiplayerMissions.length % 6 === 0){
+      
+      //make a new page
+      mmissionPages.push[mmissionPages.length-1];
+      positionCounter = 0;
+
+      //initiate mission at position 0;
+      multiplayerMissions[i] = new MultipiplayerMission(positions[positionCounter].rx, positions[positionCounter].ry, mmissionPages[mmissionPages.length - 1], 175, 200, mmissionsData[i].MMissions_Id, mmissionsData[i].MMission_Name, mmissionsData[i].Story, mmissionsData[i].Time, mmissionsData[i].Ship_Id, mmissionsData[i].Reward_Water, mmissionsData[i].Reward_People, mmissionsData[i].Reward_Ore, mmissionsData[i].Reward_Money, mmissionsData[i].Input_Water, mmissionsData[i].Input_People, mmissionsData[i].Input_Ore, mmissionsData[i].Input_Money, mmissionsData[i].Ship_amount, mmissionsData[i].Minimum_Water, mmissionsData[i].Minimum_Money, mmissionsData[i].Minimum_People, mmissionsData[i].Minimum_Ore, mmissionsData[i].Rank, mmissionsData[i].Faction);
+     
+    }
+    else {
+      
+      positionCounter ++;
+
+      //create new instance of a mission object in multiplayerMissions. 
+
+      multiplayerMissions[i] = new MultipiplayerMission(positions[positionCounter].rx, positions[positionCounter].ry, mmissionPages[mmissionPages.length - 1], 175, 200, mmissionsData[i].MMissions_Id, mmissionsData[i].MMission_Name, mmissionsData[i].Story, mmissionsData[i].Time, mmissionsData[i].Ship_Id, mmissionsData[i].Reward_Water, mmissionsData[i].Reward_People, mmissionsData[i].Reward_Ore, mmissionsData[i].Reward_Money, mmissionsData[i].Input_Water, mmissionsData[i].Input_People, mmissionsData[i].Input_Ore, mmissionsData[i].Input_Money, mmissionsData[i].Ship_amount, mmissionsData[i].Minimum_Water, mmissionsData[i].Minimum_Money, mmissionsData[i].Minimum_People, mmissionsData[i].Minimum_Ore, mmissionsData[i].Rank, mmissionsData[i].Faction);
+     
+    }
+
+
+  }
+
+  console.log(multiplayerMissions);
+  console.log('pages '+ mmissionPages);
+
 }
 
 
@@ -665,21 +716,46 @@ function createMultiplayerMissions(){
 //Draw Multiplayer Missions Interface
 
 function drawMultiplayerMissions(){
+
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
   
-    console.log('click');
+  
   if (mmissionEnable === true){
+
+    
 
      missionFrame.drawScreen();
      singleMissionsBtn.drawButton();
      multiMissionsBtn.drawButton();
      missionExitBtn.drawExitButton();
 
-     //draw missions here!
+
+     //draw Multiplayer missions!
+     for (let i=0; i<multiplayerMissions.length; i++){
+
+      multiplayerMissions[i].drawMission();
+
+     }
+
 
   }
   
   
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -564,6 +564,64 @@ class SoloMissionBox {
 
 class MultipiplayerMission  {
 
+  constructor(rx, ry, page, rw, rh,missions_Id, Name, Story, Time, InputShipId, RewardWater, RewardPeople, RewardOre, RewardMoney, InputWater, InputPeople, InputOre, InputMoney, ShipAmount, Minimum_Water, Minimum_Money, Minimum_People, Minimum_Ore, Rank, Faction){
+    this.rx=rx;
+    this.ry=ry;
+    this.page = page;
+    this.rw=rw;
+    this.rh=rh;
+
+
+    //Mission Input
+    this.missions_Id = missions_Id;
+    this.name = Name;
+    this.Story = Story;
+    this.time = Time;
+    this.InputMoney = InputMoney;
+    this.InputPeople = InputPeople;
+    this.InputOre = InputOre;
+    this.InputWater = InputWater;
+    this.InputShipId = InputShipId;           
+    this.RewardMoney = RewardMoney;
+    this.RewardPeople = RewardPeople;
+    this.RewardOre = RewardOre;
+    this.RewardWater = RewardWater;
+    this.Rank = Rank;
+    this.MinMoney = Minimum_Money;
+    this.MinWater = Minimum_Water;
+    this.MinOre = Minimum_Ore;
+    this.MinPeople = Minimum_People;
+    this.ShipAmount = ShipAmount;           //number of ships needed!
+    this.Faction = Faction;
+
+
+    this.openBtn;
+
+
+}
+
+createMission() {
+
+  //this.openBtn = new Button(rx)
+
+
+
 }
 
 
+drawMission() {
+
+
+  push();
+  fill(0);
+  rectMode(CENTER);
+  rect(this.rx, this.ry, this.rw, this.rh);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  text(`${this.name}`,rx-rx/2.5, ry-(rh/7))
+  pop();
+
+
+
+}
+}

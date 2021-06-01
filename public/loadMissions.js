@@ -226,11 +226,19 @@ function loadPlayerShips(){
 //Get multiplayer Missions
 function loadMultiplayerMissions(){
   loadJSON('/getMMissions', (dataReceived)=> {
-    console.log(dataReceived);
+    
+    mmissionPages = [0];
+    mmissionsData = [];
+    multiplayerMissions = [];
     
     for(let i=0; i<dataReceived.length; i++){
-      multiplayerMissions.push(dataReceived[0]);
+      mmissionsData.push(dataReceived[0]);
     }
+    
+    
+
+    createMultiplayerMissions();
+    loop();
 
   })
 }
