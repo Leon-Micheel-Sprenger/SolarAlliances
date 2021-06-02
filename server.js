@@ -1,8 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mysql = require('mysql');
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 app.use(express.static('public'));
 
@@ -113,8 +115,9 @@ app.post('/Register', (req, res)=> {
   let password = req.body.password;
   let email = req.body.email;
 
-
-  let sql = `SELECT * FROM player WHERE  Name = '${username}';`;
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+    
+    let sql = `SELECT * FROM player WHERE  Name = '${username}';`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -124,7 +127,7 @@ app.post('/Register', (req, res)=> {
     }
     else {
 
-      let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${password}', '${email}');`;
+      let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${hash}', '${email}');`;
 
      db.query(sql, (err, result)=> {
      if (err) throw err;
@@ -178,6 +181,7 @@ app.post('/Register', (req, res)=> {
   })
     }
   })
+});
 })
 
 
@@ -189,23 +193,44 @@ app.post('/Login', (req, res)=> {
 
   let username = req.body.username;
   let password = req.body.password;
- 
 
-  let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${password}';`;
 
-  db.query(sql, (err, result)=> {     
-    if (err) throw err;
+  let sql = `SELECT Password FROM player WHERE Name = '${username}';`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    hash = result[0].Password;
+
+    bcrypt.compare(password, hash, function(err, result) {
+
+      if (result === true){
+  
+      let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${hash}';`;
+  
+      db.query(sql, (err, result)=> {     
+      if (err) throw err;
+      
+      if (result.length<1){    //if user exists not
+        
+        res.send(result);
+        
+  
+          } else res.send(result);  
+       
+       console.log('new playerId sent to client');
+    })
+  }
+    else if (result === false){
+      res.send({message: 'Wrong password'});
+    }
+  });
+
+
     
-
-    if (result.length<1){    //if user exists not
-      
-      res.send(result);
-      
-
-        } else res.send(result);  
-     
-     console.log('new playerId sent to client');
   })
+
+ 
 });
 
 

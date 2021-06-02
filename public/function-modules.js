@@ -251,6 +251,10 @@ if (cur_status=== 'status_login'){
 
   username = InputName.value();
   password = InputPass.value();
+
+  if (username && password){
+
+  
   
   dataSent = {
     "username": username,
@@ -259,9 +263,10 @@ if (cur_status=== 'status_login'){
   
   //Login player and get Player ID
   httpPost('/Login', 'json', dataSent, (dataReceived)=>{
-    
-    if (dataReceived.length<1){
+    console.log(dataReceived);
+    if (dataReceived.message === 'Wrong password'){
       alert('Password or username is wrong');
+      console.log
     } else {
       playerId = dataReceived[0].Player_Id;
       console.log('playerId '+ playerId);
@@ -323,6 +328,11 @@ if (cur_status=== 'status_login'){
      })
      //loop();
     }
+    else {
+      alert('Please fill out the required fields');
+  }
+ 
+  }
   }
 
 
