@@ -755,10 +755,16 @@ drawMission() {
 
 drawOpenMission(x, y, width, height){
 
+  //draw box
   strokeWeight(1);
   rectMode(CENTER);
   fill('grey');
   rect(x, y+height/6, width*0.9, height*0.6);
+
+
+  //draw Submitted Resources
+
+  //draw
 
 
 
