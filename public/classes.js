@@ -1,6 +1,8 @@
 
 //Grid Tile
 
+
+
 //const { text } = require("body-parser");
 
 //const { text } = require("body-parser");
@@ -158,6 +160,10 @@ class OnScreenFrame {
     this.rw=rw;
     this.rh=rh;
 
+    this.backBtn = new Button(this.rx-this.rw/2+22.5,this.ry-this.rh/2+15,45,30,'Back',0,255, 0);
+
+  
+
   }
 
   drawScreen(){
@@ -165,8 +171,55 @@ class OnScreenFrame {
     rect(this.rx,this.ry,this.rw,this.rh);
   }
 
+  drawPageArrows(){
+
+    loadImage(arrowLeft, img => {
+      push();
+      imageMode(CENTER);
+      image(img, this.rx-this.rw/14, this.ry+this.rh/2.5, 50, 50);
+      pop();
+    })
+
+    loadImage(arrowRight, img => {
+      push();
+      imageMode(CENTER);
+      image(img, this.rx+this.rw/18, this.ry+this.rh/2.5, 50, 50);
+      pop();
+    })
+
+    push();
+    fill(0);
+    text(`${pageEnabled}`, this.rx+this.rw/2-30, this.ry+this.rh/2.3  )
+    pop();
+  }
+
+  arrowLeftIsClicked(x,y){
+    let d= dist(x, y, this.rx-this.rw/14, this.ry+this.rh/2.5);
+
+    if (d<25){
+      return true;
+    }
+    
+  }
+
+
+  arrowRightIsClicked(x,y){
+    let d= dist(x, y, this.rx+rw/18, this.ry+this.rh/2.5);
+
+    if (d<25){
+      return true;
+    }
+    
+  }
+
+ 
+
+
 
 }
+
+
+
 
 
 
@@ -595,33 +648,121 @@ class MultipiplayerMission  {
     this.Faction = Faction;
 
 
-    this.openBtn;
+    this.openBtn = new Button(this.rx,this.ry+this.rh/4,85,30,'Open',0,255,20) ;
+
+    this.factionImagePath1;
+    this.factionImagePath2;
+    this.factionImagePath3;
+
+    this.open = false;
+
+
+  // assign faction symbols based on the input given:
+
+  switch(this.Faction){
+    case 'MEB':
+      this.factionImagePath1 = marsIconPath;
+      this.factionImagePath2 = earthIconPath;
+      this.factionImagePath3 = beltIconPath;
+      break;
+    case 'M':
+      this.factionImagePath1 = emptyIconPath;
+      this.factionImagePath2 = marsIconPath;
+      this.factionImagePath3 = emptyIconPath;
+      break;
+    case 'B':
+      this.factionImagePath1 = emptyIconPath;
+      this.factionImagePath2 = beltIconPath;
+      this.factionImagePath3 = emptyIconPath;
+      break;
+    case 'E':
+      this.factionImagePath1 = emptyIconPath;
+      this.factionImagePath2 = earthIconPath;
+      this.factionImagePath3 = emptyIconPath;
+      break;
+    case 'ME':
+      this.factionImagePath1 = marsIconPath;
+      this.factionImagePath2 = emptyIconPath;
+      this.factionImagePath3 = earthIconPath;
+      break;
+    case 'MB':
+      this.factionImagePath1 = marsIconPath;
+      this.factionImagePath2 = emptyIconPath;
+      this.factionImagePath3 = beltIconPath;
+      break;
+    case 'EB':
+      this.factionImagePath1 = earthIconPath;
+      this.factionImagePath2 = emptyIconPath;
+      this.factionImagePath3 = beltIconPath;
+      break;
+
+  }
 
 
 }
 
-createMission() {
 
-  //this.openBtn = new Button(rx)
-
-
-
-}
 
 
 drawMission() {
-
-
+  //Draw Mission Cards
+  if (this.page === pageEnabled){
   push();
-  fill(0);
+  strokeWeight(2);
+  fill('rgb(186, 170, 101)');
   rectMode(CENTER);
   rect(this.rx, this.ry, this.rw, this.rh);
-  fill(255);
+  fill(0);
   textAlign(CENTER, CENTER);
-  text(`${this.name}`,rx-rx/2.5, ry-(rh/7))
+  
+  textSize(20);
+  textStyle(BOLD);
+  text(`${this.name}`,this.rx, this.ry -(this.rh/3), this.rw*0.8, this.rh)
   pop();
+
+
+  //draw faction symbols
+
+  loadImage(this.factionImagePath1, img => {
+    push();
+    imageMode(CENTER);
+    image(img, this.rx-this.rw/3, this.ry, 35, 25);
+    pop();
+  })
+
+  loadImage(this.factionImagePath2, img => {
+    push();
+    imageMode(CENTER);
+    image(img, this.rx, this.ry, 35, 25);
+    pop();
+  })
+
+  loadImage(this.factionImagePath3, img => {
+    push();
+    imageMode(CENTER);
+    image(img, this.rx+this.rw/3, this.ry, 35, 25);
+    pop();
+  })
+
+
+  //Draw Open Button
+  push();
+  this.openBtn.drawButton();
+  pop();
+  }
+
+}
+
+drawOpenMission(x, y, width, height){
+
+  strokeWeight(1);
+  rectMode(CENTER);
+  fill('grey');
+  rect(x, y+height/6, width*0.9, height*0.6);
 
 
 
 }
+
+
 }

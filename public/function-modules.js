@@ -60,12 +60,35 @@ function mousePressed(){
       if (missionExitBtn.isClicked(mouseX, mouseY)){
         missionMenuEnable = false;
         mmissionEnable = false;
+        openMissionEnable = false;
         createGame();
         //createMultiplayerMissions();
         loop();
       }
     }
 
+
+
+
+    //Click arrow Left of collaboratiive missions
+if (cur_status === 'status_play' && mmissionEnable){
+  if ( missionFrame.arrowLeftIsClicked(mouseX, mouseY)){
+    if(pageEnabled-1 >= 0){
+      pageEnabled --;
+      loop();
+    }
+  }
+}
+
+//Click arrow Right of collaboratiive missions
+if (cur_status === 'status_play' && mmissionEnable){
+  if (missionFrame.arrowRightIsClicked(mouseX, mouseY)){
+    if(pageEnabled+1 < mmissionPages.length){
+      pageEnabled ++;
+      loop();
+    }
+  };
+}
 
 //Click Collaborative Missions Button
 if (cur_status === 'status_play' && missionMenuEnable){
@@ -76,6 +99,51 @@ if (cur_status === 'status_play' && missionMenuEnable){
     loop();
   }
 }
+
+
+//Click Open Button on Collaborative Missions
+if (cur_status === 'status_play' && mmissionEnable){
+    for (let i=0; i<multiplayerMissions.length; i++){
+      if (multiplayerMissions[i].openBtn.isClicked(mouseX, mouseY)){
+        mmissionEnable = false;
+        openMissionEnable = true;
+        openMMission = multiplayerMissions[i];
+     }
+  }
+  loop();
+  
+}
+
+
+//open Mission Back Button clicked
+if(cur_status === 'status_play' && openMissionEnable){
+  if (missionFrame.backBtn.isClicked(mouseX, mouseY)){
+    mmissionEnable = true;
+    openMissionEnable = false;
+    createGame();
+    //createMultiplayerMissions();
+    loop();
+  }
+}
+
+
+
+
+//Click Single Player Missions Button 
+if (cur_status === 'status_play'){
+  if(singleMissionsBtn.isClicked(mouseX, mouseY)){
+    missionMenuEnable = true;
+    mmissionEnable = false;
+    openMissionEnable = false;
+    loop();
+  }
+}
+
+
+
+
+
+
 
 
 
@@ -708,7 +776,7 @@ function buildupgradestorage3(){
 
 
 //___________________________________________________________________________________
-//Ping function to get updated solo missions and completed running missions every 15 seconds. 
+//Ping function to get updated solo missions and completed running missions every 30 seconds. 
 
 setInterval(function(){
  if(cur_status === 'status_play'){
@@ -728,7 +796,8 @@ setInterval(function(){
   loadResources();
   loadPlayerShips(); 
   loadSoloMissions();
-  loadRunningMissions();      //get solomissions data from DB       
+  loadRunningMissions();      //get solomissions data from DB  
+  loadMultiplayerMissions();     
   //createMissions();           //assign data to missions
   
 
@@ -738,4 +807,4 @@ setInterval(function(){
                          
  
 }
-},15000);
+},30000);

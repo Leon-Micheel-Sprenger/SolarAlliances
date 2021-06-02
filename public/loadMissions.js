@@ -227,12 +227,12 @@ function loadPlayerShips(){
 function loadMultiplayerMissions(){
   loadJSON('/getMMissions', (dataReceived)=> {
     
-    mmissionPages = [0];
+    mmissionPages = [];
     mmissionsData = [];
     multiplayerMissions = [];
     
     for(let i=0; i<dataReceived.length; i++){
-      mmissionsData.push(dataReceived[0]);
+      mmissionsData.push(dataReceived[i]);
     }
     
     

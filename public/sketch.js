@@ -23,6 +23,7 @@ function draw() {
   drawShips();
   drawSoloMissions();
   drawMultiplayerMissions();
+  drawOpenMMission();
 
   noLoop();
   //console.log(cur_status);

@@ -2,9 +2,13 @@
 // In here, we are storing all available front-end components and designs of p5. 
 
 
+
+
+
+
 // To find backend functions and executing commands, go to function-modules.js
 let cur_status = 'status_login'; //status_login, status_register, status_play
-
+let mainMenuEnable = true;
 
 //Global Variables:
 
@@ -22,9 +26,18 @@ let miningShipIconPath =  'assets/miningship-icon.jpg';
 let warShipIconPath =  'assets/warship-icon.jpg';
 let explorationShipIconPath =  'assets/explorationship-icon.jpg';
 
+//Faction Icon Paths                 
+let marsIconPath = 'assets/money-icon.jpg'; //!!NEED DIMENSIONS 35px TO 25px!!
+let earthIconPath = 'assets/money-icon.jpg'; //!!NEED DIMENSIONS 35px TO 25px!!
+let beltIconPath = 'assets/money-icon.jpg'; //!!NEED DIMENSIONS 35px TO 25px!!
+
 //Other paths
 let exitButtonIconPath = 'assets/exit-icon.jpg';
+let backButtonIconPath = 'assets/exit-icon.jpg';
 let shipOnMissionIconPath = 'assets/exit-icon.jpg';
+let arrowLeft = 'assets/arrow-left.jpg';
+let arrowRight = 'assets/arrow-right.jpg';
+
 
 
 
@@ -166,6 +179,7 @@ let gameStatus= false;
 function createGame(){
 
   gameStatus = true;
+  mainMenuEnable = true;
   cur_status = 'status_play';
   InputName.remove();
   InputPass.remove();
@@ -310,7 +324,7 @@ function createGrid(){
 }
 
 function drawGrid(){
-  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false){
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false){
     for (let r=gridStartX; r<gridX+gridStartX; r++){
       for(let c=gridStartY; c<gridY+gridStartY; c++){
         tilesArr[r][c].draw_tile();
@@ -363,7 +377,7 @@ function createships(){
 
 
 function drawShips(){
-  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false){
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false){
     for(let i=0; i<shipList.length; i++){
       for (r=gridStartX; r<gridX+gridStartX;r++){
         for(c=gridStartY; c<gridY+gridStartY; c++){
@@ -538,9 +552,9 @@ let runningSoloMissionsIndex = [];
     //Frame, title and buttons of Mission Interface;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
 
-    singleMissionsBtn = new Button(rx-rx/2+rx/4,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
+    singleMissionsBtn = new Button(rx-rw/2+rw/4,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
 
-    multiMissionsBtn = new Button(rx*1.25,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
+    multiMissionsBtn = new Button(rx+rw/2-rw/4,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
     
     runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
     
@@ -600,7 +614,7 @@ function drawSoloMissions(){
   rw= 700;
   rh= 750;
 
-  if (missionMenuEnable === true){
+  if (missionMenuEnable === true && mmissionEnable === false){
 
   missionFrame.drawScreen();
   singleMissionsBtn.drawButton();
@@ -657,10 +671,14 @@ let mmissionsData = [];     //data loaded from db
 
 let multiplayerMissions = [];    //instances of mmissions created.
 
-let mmissionPages = [0];
+let mmissionPages = [];
+
+let pageEnabled = 0;  //currently enabled page!
 
 
 function createMultiplayerMissions(){
+
+  console.log(mmissionsData);
 
 
   rx= width*0.5;
@@ -669,7 +687,7 @@ function createMultiplayerMissions(){
   rh= 750;
 
   //fixed 6 positions to display multiplayer missions.
-  let positions = [{rx:  rx-rx/2.5, ry: ry-ry/3}, {rx:  rx, ry: ry-ry/3}, {rx:  rx+rx/2.5, ry: ry-ry/3}, {rx:  rx-rx/2.5, ry: ry+ry/3}, {rx:  rx, ry: ry+ry/3}, {rx:  rx+rx/2.5, ry: ry+ry/3}
+  let positions = [{rx:  rx-rw/3, ry: ry-ry/3}, {rx:  rx, ry: ry-ry/3}, {rx:  rx+rw/3, ry: ry-ry/3}, {rx:  rx-rw/3, ry: ry+ry/3}, {rx:  rx, ry: ry+ry/3}, {rx:  rx+rw/3, ry: ry+ry/3}
   ];
 
   let positionCounter; 
@@ -679,14 +697,14 @@ function createMultiplayerMissions(){
   //create instances of multiplayer missions class in a loop depending on multiplayermissions array. 
 
   for (let i=0; i< mmissionsData.length; i++){
-
-    
-
    
     if (multiplayerMissions.length % 6 === 0){
       
       //make a new page
-      mmissionPages.push[mmissionPages.length-1];
+     
+      mmissionPages.push(mmissionPages.length);
+      
+      
       positionCounter = 0;
 
       //initiate mission at position 0;
@@ -708,15 +726,18 @@ function createMultiplayerMissions(){
 
   console.log(multiplayerMissions);
   console.log('pages '+ mmissionPages);
+  console.log(multiplayerMissions[8].page);
 
 }
+
+
+
 
 
 //_______________________________________________________________
 //Draw Multiplayer Missions Interface
 
 function drawMultiplayerMissions(){
-
 
   rx= width*0.5;
   ry= height*0.5;
@@ -726,25 +747,60 @@ function drawMultiplayerMissions(){
   
   if (mmissionEnable === true){
 
-    
-
      missionFrame.drawScreen();
      singleMissionsBtn.drawButton();
      multiMissionsBtn.drawButton();
      missionExitBtn.drawExitButton();
 
+    missionFrame.drawPageArrows();
+
 
      //draw Multiplayer missions!
      for (let i=0; i<multiplayerMissions.length; i++){
-
       multiplayerMissions[i].drawMission();
-
      }
 
 
   }
   
   
+}
+
+
+//_______________________________________________________
+//Draw open Multiplayer Mission Screen
+
+let openMissionEnable = false; 
+let openMMission; 
+
+function drawOpenMMission(){
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+ if (openMissionEnable){
+  push();
+  missionFrame.drawScreen();
+  missionFrame.backBtn.drawButton();
+  missionExitBtn.drawExitButton();
+ 
+  fill(0);
+  textSize(35);
+  textStyle(BOLD);
+  text(`${openMMission.name}`, rx, ry-rh/2.5);
+
+  textSize(15);
+  textStyle(NORMAL);
+  text(`${openMMission.Story}`, rx, ry-rh/3);
+  pop();
+
+  //open mission class
+
+  openMMission.drawOpenMission(rx, ry, rw, rh);
+
+ }
 }
 
 
