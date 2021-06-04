@@ -24,6 +24,7 @@ function draw() {
   drawSoloMissions();
   drawMultiplayerMissions();
   drawOpenMMission();
+  drawContributionScene();
 
   noLoop();
   //console.log(cur_status);

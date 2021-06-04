@@ -3,6 +3,9 @@
 
 
 
+
+
+
 //const { text } = require("body-parser");
 
 //const { text } = require("body-parser");
@@ -67,17 +70,21 @@ class Button {
     this.txtSize= txtSize;
     this.corners= corners;
     this.enable = true;    //used to enable and disable buttons
+    this.borderClr = 'rgb(0,0,0)'; 
   }
 
 
   drawButton(){
+    push();
     fill(this.fillClr);
+    stroke(this.borderClr);
     rect(this.posX, this.posY, this.width, this.height, this.corners);
-
+    pop();
     textAlign(CENTER, CENTER);
     textSize(this.txtSize);
     fill(this.txtClr);
     text(this.txt, this.posX, this.posY);
+    
   }
 
 
@@ -103,6 +110,10 @@ class Button {
 
   enableButton(){
     this.enable = true;
+  }
+
+  setBorderClr(clr){
+    this.borderClr = clr;
   }
 
 
@@ -160,7 +171,7 @@ class OnScreenFrame {
     this.rw=rw;
     this.rh=rh;
 
-    this.backBtn = new Button(this.rx-this.rw/2+22.5,this.ry-this.rh/2+15,45,30,'Back',0,255, 0);
+    this.backBtn = new Button(this.rx-this.rw/2+22.5,this.ry-this.rh/2+15,45,30,'Back',0,255, 0, 0);
 
   
 
@@ -617,7 +628,7 @@ class SoloMissionBox {
 
 class MultipiplayerMission  {
 
-  constructor(rx, ry, page, rw, rh,missions_Id, Name, Story, Time, InputShipId, RewardWater, RewardPeople, RewardOre, RewardMoney, InputWater, InputPeople, InputOre, InputMoney, ShipAmount, Minimum_Water, Minimum_Money, Minimum_People, Minimum_Ore, Rank, Faction){
+  constructor(rx, ry, page, rw, rh,missions_Id, Name, Story, Time, InputShipId, RewardWater, RewardPeople, RewardOre, RewardMoney, InputWater, InputPeople, InputOre, InputMoney, ShipAmount, Minimum_Water, Minimum_Money, Minimum_People, Minimum_Ore, Submitted_Ore, Submitted_Water, Submitted_People, Submitted_Money, Submitted_Ships, Rank, Faction){
     this.rx=rx;
     this.ry=ry;
     this.page = page;
@@ -645,16 +656,56 @@ class MultipiplayerMission  {
     this.MinOre = Minimum_Ore;
     this.MinPeople = Minimum_People;
     this.ShipAmount = ShipAmount;           //number of ships needed!
+    this.SubmittedOre = Submitted_Ore;
+    this.SubmittedWater = Submitted_Water;
+    this.SubmittedPeople = Submitted_People;
+    this.SubmittedMoney = Submitted_Money;
+    this.SubmittedShips = Submitted_Ships;
     this.Faction = Faction;
 
 
     this.openBtn = new Button(this.rx,this.ry+this.rh/4,85,30,'Open',0,255,20) ;
+    this.openContributionBtn;
+
+    this.contributeToMissionBtn;
+    
 
     this.factionImagePath1;
     this.factionImagePath2;
     this.factionImagePath3;
 
     this.open = false;
+
+    //maximum of 1 input resource and 2 reward resources can be granted. 
+
+    this.InputResource; 
+    this.inputResourceIconPath; 
+
+    this.RewardResource1;
+    this.rewardResource1IconPath;
+
+    this.RewardResource2;
+    this.rewardResource2IconPath;
+
+    this.inputShipIconPath;
+
+    this.SubmittedResource;
+
+    this.MinResource;
+
+
+    //Contribution Variables
+
+    this.contributeMoney = 0;
+    this.contributePeople = 0;
+    this.contributeWater = 0;
+    this.contributeOre = 0;
+
+   
+    
+   
+
+
 
 
   // assign faction symbols based on the input given:
@@ -698,7 +749,131 @@ class MultipiplayerMission  {
 
   }
 
+   //_________________________________________________________________________
+   //check, which resources are there for input and Reward of the mission and change resource values and icon paths accordingly. 
+   let InputArr = [this.InputMoney,this.InputPeople, this.InputOre, this.InputWater];
+   let RewardArr = [this.RewardMoney, this.RewardPeople, this.RewardOre, this.RewardWater];
+   let SubmittedArr = [this.SubmittedMoney, this.SubmittedPeople, this.SubmittedOre, this.SubmittedWater];
+   let MinArr = [this.MinMoney, this.MinPeople, this.MinOre, this.MinWater];
 
+
+
+   //Assign the Input Resource and  Icons:
+   for (let i=0; i<InputArr.length; i++){
+    if(InputArr[i]){
+        
+          this.InputResource = InputArr[i];
+
+          switch (i){
+            case 0: 
+              this.inputResourceIconPath = moneyIconPath;
+              break;
+            case 1:
+              this.inputResourceIconPath = peopleIconPath;
+              break;
+            case 2:
+              this.inputResourceIconPath = oreIconPath;
+              break;
+            case 3:
+              this.inputResourceIconPath = waterIconPath;
+              break;
+            default:
+              this.inputResourceIconPath = emptyIconPath;
+              
+          }
+        }
+      }
+
+
+
+     //Assign the two Reward Resources and Icons:
+     for (let i=0; i<RewardArr.length; i++){
+      if(RewardArr[i]){
+          if(this.RewardResource1){
+            this.RewardResource2 = RewardArr[i];
+            switch (i){
+              case 0: 
+               this.rewardResource2IconPath = moneyIconPath;
+                break;
+              case 1:
+                this.rewardResource2IconPath = peopleIconPath;
+                break;
+              case 2:
+                this.rewardResource2IconPath = oreIconPath;
+                break;
+              case 3:
+                this.rewardResource2IconPath = waterIconPath;
+                break;
+              default:
+                this.rewardResource2IconPath = emptyIconPath;
+                
+            }
+
+          } else {
+            this.RewardResource1 = RewardArr[i];
+            switch (i){
+              case 0: 
+                this.rewardResource1IconPath = moneyIconPath;
+                break;
+              case 1:
+                this.rewardResource1IconPath = peopleIconPath;
+                break;
+              case 2:
+                this.rewardResource1IconPath = oreIconPath;
+                break;
+              case 3:
+                this.rewardResource1IconPath = waterIconPath;
+                break;
+              default:
+                this.rewardResource1IconPath = emptyIconPath;
+                
+            }
+          }
+      }
+    }
+
+
+     //Assign Input Ship Icon:
+     if (this.InputShipId){
+      switch( this.InputShipId){
+        case 3: 
+          this.inputShipIconPath = warShipIconPath;
+          break;
+        case 4:
+          this.inputShipIconPath = miningShipIconPath;
+          break;
+        case 5:
+          this.inputShipIconPath = transportShipIconPath;
+          break;
+        case 6:
+          this.inputShipIconPath = explorationShipIconPath;
+          break;
+        default:
+          this.inputShipIconPath = emptyIconPath;
+            
+      }
+    }
+
+    //Assign Submitted Resources;
+    for(let i=0; i<SubmittedArr.length; i++){
+      if (SubmittedArr[i]){
+        this.SubmittedResource = SubmittedArr[i];
+      }
+    }
+    if (!this.SubmittedResource){
+      this.SubmittedResource = 0;
+    }
+
+
+    //Assiging Minimum Resource;
+    for(let i=0; i<MinArr.length; i++){
+      if (MinArr[i]){
+        this.MinResource = MinArr[i];
+      } 
+    }
+    if (!this.MinResource){
+      this.MinResource = 0;
+    }
 }
 
 
@@ -706,7 +881,9 @@ class MultipiplayerMission  {
 
 drawMission() {
   //Draw Mission Cards
+  push();
   if (this.page === pageEnabled){
+  
   push();
   strokeWeight(2);
   fill('rgb(186, 170, 101)');
@@ -750,24 +927,178 @@ drawMission() {
   this.openBtn.drawButton();
   pop();
   }
-
+pop();
 }
 
-drawOpenMission(x, y, width, height){
 
+
+
+
+drawOpenMission(x, y, width, height){
+  
+push();
   //draw box
+  
   strokeWeight(1);
   rectMode(CENTER);
-  fill('grey');
+  fill(255);
   rect(x, y+height/6, width*0.9, height*0.6);
+  strokeWeight(2);
+  line(x, y-height/10, x, y+ height/2.5 );
+  
+
+
+  //create and draw Button
+  this.openContributionBtn = new Button(x, y-height/6, 200, 40, 'Contribute to this Mission', 0, 255, 15, 20);
+  push();
+  this.openContributionBtn.setBorderClr('rgb(160, 204, 102)')
+  strokeWeight(5)
+  this.openContributionBtn.drawButton();
+  pop();
+
+
 
 
   //draw Submitted Resources
+  
+  fill(0)
+  text('Submitted Resources', x-width/4, y-y/6);
 
-  //draw
+  
+  loadImage(this.inputResourceIconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x-width/2.7, y, 40, 64);
+    pop();
+  })
+  fill(0);
+  text(`${this.SubmittedResource}`,x-width/2.7+80, y);
+  console.log(this.SubmittedResource);
+
+
+  loadImage(this.inputShipIconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x-width/2.7, y+height/10, 40, 64);
+    pop();
+  })
+  fill(0);
+  text(''+this.SubmittedShips,x-width/2.7+80, y+height/10);
+
+  
+
+
+  //draw Required Resources
+  
+  fill(0);
+  text('Required Resources', x+width/4, y-y/6 );
+
+  loadImage(this.inputResourceIconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x+width/10, y, 40, 64);
+    pop();
+  })
+  fill(0);
+  text(this.InputResource,x+width/10+80, y);
+
+  loadImage(this.inputShipIconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x+width/10, y+height/10, 40, 64);
+    pop();
+  })
+  fill(0);
+  text(''+this.ShipAmount,x+width/10+80, y+height/10);
+
+ 
+
+
+  //draw Reward Resources
+  
+  fill(0);
+  text('Reward for Each Player', x+width/4, y+y/2.8 );
+
+  loadImage(this.rewardResource1IconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x+width/10, y+height/3.5, 40, 64);
+    pop();
+  })
+  fill('green');
+  textStyle(BOLD);
+  text('+'+this.RewardResource1,x+width/10+80, y+height/3.5);
+
+  loadImage(this.rewardResource2IconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x+width/10, y+height/2.7, 35, 58);
+    pop();
+  })
+  fill('green');
+  textStyle(BOLD);
+  text('+'+this.RewardResource2,x+width/10+80, y+height/2.7);
+
+  
+
+  
+  //Draw Minimum Contribution
+  
+  fill(0);
+  textStyle(NORMAL);
+  text('Minimum Contribution', x-width/4, y+y/2.8 );
+
+  loadImage(this.inputResourceIconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x-width/2.7, y+height/3.5, 40, 64);
+    pop();
+  })
+  fill(0);
+  textStyle(BOLD);
+  text(this.MinResource,x-width/2.7+80, y+height/3.5);
+
+
+  loadImage(this.inputShipIconPath, img => {
+    push();
+    imageMode(CENTER);
+    image(img, x-width/2.7, y+height/2.7, 40, 64);
+    pop();
+  })
+  fill(0);
+  textStyle(BOLD);
+  text('1',x-width/2.7+80, y+height/2.7);
+
+ 
+
+pop();
+  
+}
+
+drawContribution(x, y, width, height){
+  push();
+  strokeWeight(1);
+  rectMode(CENTER);
+  fill(255);
+  rect(x, y+height/6, width*0.9, height*0.6);
+  strokeWeight(2);
+ 
+
+  this.contributeToMissionBtn = new Button(x, y+height/2.5, 200, 40, 'Contribute Resources!', 0, 255, 15, 20);
+  this.contributeToMissionBtn.drawButton();
 
 
 
+  fill(0)
+  textAlign(CENTER);
+  textStyle(BOLD);
+  textSize(20);
+  text('Are you sure, you want to contribute to this Multiplayer Mission?', x, y-y/6);
+  textSize(15);
+  text('If you click Contribute Resources, the following Resources and Ships will be commited to this Mission. You wont be able to use your ship until this Multiplayer Mission is finished. The Mission starts, when the all the required resources have been submitted by players.', x, y+y/8, width*0.7, height);
+  fill('red');
+  text('NOTE, that all Multiplayer Missions run 10 Minutes by default. Your ship will be available again, after that time. ', x, y+height/4, width*0.7, height)
+  pop();
 }
 
 

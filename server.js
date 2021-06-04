@@ -42,6 +42,7 @@ db.connect(function(err) {
 setInterval(function(){
 
   //get mission ids from player_missions:
+  
 
   let sql = `SELECT * FROM player_missions;`;
   

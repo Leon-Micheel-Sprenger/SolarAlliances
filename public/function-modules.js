@@ -61,6 +61,7 @@ function mousePressed(){
         missionMenuEnable = false;
         mmissionEnable = false;
         openMissionEnable = false;
+        contributionSzeneEnable = false;
         createGame();
         //createMultiplayerMissions();
         loop();
@@ -115,16 +116,41 @@ if (cur_status === 'status_play' && mmissionEnable){
 }
 
 
-//open Mission Back Button clicked
-if(cur_status === 'status_play' && openMissionEnable){
+//open Mission 'Back' Button clicked
+if(cur_status === 'status_play' && openMissionEnable || contributionSzeneEnable){
   if (missionFrame.backBtn.isClicked(mouseX, mouseY)){
     mmissionEnable = true;
     openMissionEnable = false;
+    contributionSzeneEnable = false;
     createGame();
     //createMultiplayerMissions();
     loop();
   }
 }
+
+
+
+
+//'Contribute to this Mission' Button on Multiplayer Mission
+if(cur_status === 'status_play' && openMissionEnable){
+  if (openMMission.openContributionBtn.isClicked(mouseX, mouseY)){
+    // mmissionEnable = true;
+    openMissionEnable = false;
+    contributionSzeneEnable = true; 
+    loop();
+  }
+}
+
+//'Contribute Resources' Button on Multiplayer Mission
+if(cur_status === 'status_play' && contributionSzeneEnable){
+  if (openMMission.contributeToMissionBtn.isClicked(mouseX, mouseY)){
+    // mmissionEnable = true;
+    acceptMultiplayerMission(openMMission);
+    loop();
+  }
+}
+
+
 
 
 
@@ -769,6 +795,31 @@ function buildupgradestorage3(){
       alert('You dont have the resources to do this upgrade')
     }
   }
+}
+
+//_______________________________________________________________________________________
+//Accept a Multiplayer Mission function. Fires, when Contribution button is clicked!
+
+function acceptMultiplayerMission(acceptedMission){
+
+console.log('click click')
+
+
+//Verify, if player has resources and ship available for the mission. —> use existing function for that. 
+
+//Disable the contribution Button of the accepted Multiplayer Mission. 
+
+// Store accepted mission in accepted Multiplayer Missions of Player!
+
+// Grey out the accepted Multiplayer Misssion on the interface (change Open Button to Accepted and disable it)
+
+//Deduct the resources from the player resources and block the ship
+
+// send update to DB (resources, ship and stored multiplayer mission in accepted (multiplayer) Missions
+
+// display a message, that mission has been accepted successfully. (can also be used for solo Missions).
+
+
 }
 
 
