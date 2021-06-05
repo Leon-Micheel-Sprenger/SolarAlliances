@@ -370,8 +370,8 @@ function createships(){
   }
   // print('ships '+ships);
   // console.log('shipList '+shipList);
-  // console.log('available Ships '+availableShips);
-  // console.log('blocked Ships '+blockedShips);
+  console.log('available Ships '+availableShips);
+  console.log('blocked Ships '+blockedShips);
 }
 
 
@@ -671,6 +671,10 @@ let mmissionsData = [];     //data loaded from db
 
 let multiplayerMissions = [];    //instances of mmissions created.
 
+let acceptedMultiplayerMissions = [];   //accepted Multiplayer Missions (status 2 --> not runnign yet)
+
+let runningMultiplayerMissions = [];    //running Multiplayer Missions (status 1 --> running)
+
 let mmissionPages = [];
 
 let pageEnabled = 0;  //currently enabled page!
@@ -692,7 +696,7 @@ function createMultiplayerMissions(){
 
   let positionCounter; 
 
-  	
+  
 
   //create instances of multiplayer missions class in a loop depending on multiplayermissions array. 
 
@@ -720,9 +724,39 @@ function createMultiplayerMissions(){
       multiplayerMissions[i] = new MultipiplayerMission(positions[positionCounter].rx, positions[positionCounter].ry, mmissionPages[mmissionPages.length - 1], 175, 200, mmissionsData[i].MMissions_Id, mmissionsData[i].MMission_Name, mmissionsData[i].Story, mmissionsData[i].Time, mmissionsData[i].Ship_Id, mmissionsData[i].Reward_Water, mmissionsData[i].Reward_People, mmissionsData[i].Reward_Ore, mmissionsData[i].Reward_Money, mmissionsData[i].Input_Water, mmissionsData[i].Input_People, mmissionsData[i].Input_Ore, mmissionsData[i].Input_Money, mmissionsData[i].Ship_amount, mmissionsData[i].Minimum_Water, mmissionsData[i].Minimum_Money, mmissionsData[i].Minimum_People, mmissionsData[i].Minimum_Ore, mmissionsData[i].Submitted_Ore, mmissionsData[i].Submitted_Water, mmissionsData[i].Submitted_People, mmissionsData[i].Submitted_Money, mmissionsData[i].Submitted_Ships,  mmissionsData[i].Rank, mmissionsData[i].Faction);
      
     }
-
-
   }
+
+
+ 
+  //Change status of accepted and/or running Multiplayer Missions;
+  //YOU ARE ONLY STORING THE DATA OF THE SERVER CALL IN THOSE ARRAYS, and no actual missions. But you have to loop created missions for this to work.!
+  //or you could loo multiplayerMissions and see, which missions are in those arrays and then disable those
+
+  for (let i=0; i<multiplayerMissions.length; i++){
+    for(let j=0; j<acceptedMultiplayerMissions.length; j++){
+      if (acceptedMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].MMissions_Id){
+        multiplayerMissions[i].acceptMission(2);
+      }
+    
+  }
+}
+
+    for (let i=0; i<multiplayerMissions.length; i++){
+      for(let j=0; j<runningMultiplayerMissions.length; j++){
+        if (runningMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].MMissions_Id){
+          multiplayerMissions[i].acceptMission(2);
+        }
+      }
+    }
+
+  
+
+
+ 
+
+ 
+
+
 
   console.log(multiplayerMissions);
   console.log('pages '+ mmissionPages);
@@ -755,6 +789,8 @@ function drawMultiplayerMissions(){
     missionFrame.drawPageArrows();
 
 
+  
+
      //draw Multiplayer missions!
      for (let i=0; i<multiplayerMissions.length; i++){
       multiplayerMissions[i].drawMission();
@@ -781,6 +817,7 @@ function drawOpenMMission(){
   rh= 750;
 
  if (openMissionEnable){
+   
   push();
   missionFrame.drawScreen();
   missionFrame.backBtn.drawButton();

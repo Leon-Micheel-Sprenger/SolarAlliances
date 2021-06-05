@@ -230,10 +230,25 @@ function loadMultiplayerMissions(){
     mmissionPages = [];
     mmissionsData = [];
     multiplayerMissions = [];
+    acceptedMultiplayerMissions = [];
+    runningMultiplayerMissions = [];
     
     for(let i=0; i<dataReceived.length; i++){
       mmissionsData.push(dataReceived[i]);
+      if (dataReceived[i].amm_Id !== null){
+        if (dataReceived[i].Status === 2){
+          acceptedMultiplayerMissions.push(dataReceived[i]);
+          //mmissionsData[mmissionsData.length-1].acceptMission(2);
+        }
+        else if (dataReceived[i].Status === 1){
+          runningMultiplayerMissions.push(dataReceived[i]);
+          //mmissionsData[mmissionsData.length-1].acceptMission(1);
+        }
+        
+      }
     }
+    console.log('accepted Missions '+acceptedMultiplayerMissions);
+    console.log('running Missions '+runningMultiplayerMissions[0].MMissions_Id);
     
     
 

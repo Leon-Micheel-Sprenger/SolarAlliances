@@ -340,13 +340,16 @@ app.post('/updatePlayerResources', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
-    res.send(result);
+    if (result.affectedRows > 0){
+      res.send({message: "Your Resources have been updated"});
+    }
+    
   })
 
 })
 
 
-//Update Accepted Missions of Player, when Mission was accepted
+//Update Accepted Solo Missions of Player, when Mission was accepted
 app.post('/updateAcceptedMissions', (req, res)=> {
   
   let Player_Id = req.body.Player_Id;
@@ -372,6 +375,34 @@ app.post('/updateAcceptedMissions', (req, res)=> {
 })
 
 
+//Update Accepted Multiplayer Missions of Player, when Mission was accepted
+app.post('/updateAcceptedMultiplayerMissions', (req, res)=> {
+  
+  let Player_Id = req.body.Player_Id;
+  let Mission_Id = req.body.MMissions_Id;
+  let Ship_Fleet_ID = req.body.Ship_Fleet_ID;
+  
+
+  let sql = `SELECT Time from multiplayer_missions WHERE MMissions_Id = ${Mission_Id};`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    let time = result[0].Time; 
+    
+    let sql = `INSERT INTO accepted_multiplayer_missions (Player_Id, MMissions_Id, Mission_Time, Ship_Fleet_Id, Status) VALUES (${Player_Id}, ${Mission_Id}, '${time}', ${Ship_Fleet_ID}, 2);`
+
+    db.query(sql, (err, result)=> {
+      if(err) throw err;
+      if (result.affectedRows > 0){
+        res.send({message: "Mission successfully accepted!"});
+      }
+      
+           
+    })
+  })
+})
+
 
 
 
@@ -384,7 +415,9 @@ app.post('/updateShipFleet', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
-    res.send(result);
+    if (result.affectedRows>0){
+      res.send({message: "Your Ship has been blocked for a mission"});
+    }
   })
 
 })
@@ -456,7 +489,7 @@ app.post('/getCompletedMissions', (req, res)=> {
 //Get Multiplayer Missions!
 app.get('/getMMissions', (req, res)=> {
 
-  let sql = 'SELECT * FROM multiplayer_missions;';
+  let sql = 'SELECT * FROM multiplayer_missions a Left Outer Join accepted_multiplayer_missions  b ON a.MMissions_Id = b.MMissions_Id ;';
 
   db.query(sql, (err, result)=> {
     if (err) throw err;

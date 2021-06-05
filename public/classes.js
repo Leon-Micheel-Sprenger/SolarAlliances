@@ -6,6 +6,9 @@
 
 
 
+
+
+
 //const { text } = require("body-parser");
 
 //const { text } = require("body-parser");
@@ -665,6 +668,7 @@ class MultipiplayerMission  {
 
 
     this.openBtn = new Button(this.rx,this.ry+this.rh/4,85,30,'Open',0,255,20) ;
+    this.openBtnEnable = false;
     this.openContributionBtn;
 
     this.contributeToMissionBtn;
@@ -701,7 +705,10 @@ class MultipiplayerMission  {
     this.contributeWater = 0;
     this.contributeOre = 0;
 
-   
+
+    //Accepted Status
+    this.acceptedStatus = false;
+    this.status;
     
    
 
@@ -925,7 +932,18 @@ drawMission() {
   //Draw Open Button
   push();
   this.openBtn.drawButton();
+  this.openBtnEnable = true;
   pop();
+
+  if (this.acceptedStatus){
+    push();
+    fill(255, 70);
+    stroke('rgba(97, 237, 114, 0.8)');
+    strokeWeight(8);
+    rect(this.rx, this.ry, this.rw, this.rh);
+    pop();
+  }
+
   }
 pop();
 }
@@ -949,13 +967,21 @@ push();
 
 
   //create and draw Button
+  if (this.acceptedStatus === false){
   this.openContributionBtn = new Button(x, y-height/6, 200, 40, 'Contribute to this Mission', 0, 255, 15, 20);
   push();
   this.openContributionBtn.setBorderClr('rgb(160, 204, 102)')
   strokeWeight(5)
   this.openContributionBtn.drawButton();
   pop();
-
+  }
+  else if (this.acceptedStatus === true){
+    push();
+    fill('green');
+    textStyle(BOLD);
+    text('This mission has already been accepted by you!',x, y-height/6);
+    pop();
+  }
 
 
 
@@ -1083,9 +1109,19 @@ drawContribution(x, y, width, height){
   rect(x, y+height/6, width*0.9, height*0.6);
   strokeWeight(2);
  
-
+  if (this.acceptedStatus === false){
   this.contributeToMissionBtn = new Button(x, y+height/2.5, 200, 40, 'Contribute Resources!', 0, 255, 15, 20);
   this.contributeToMissionBtn.drawButton();
+  }
+  else if (this.acceptedStatus === true){
+    push();
+    this.contributeToMissionBtn.disable();
+    fill('green');
+    textStyle(BOLD);
+    text('Mission Accepted', x, y+height/2.5);
+    pop();
+  }
+
 
 
 
@@ -1101,5 +1137,11 @@ drawContribution(x, y, width, height){
   pop();
 }
 
+
+acceptMission(status){
+  this.acceptedStatus = true;
+  this.openContributionBtn.disable();
+  this.status = status;
+}
 
 }

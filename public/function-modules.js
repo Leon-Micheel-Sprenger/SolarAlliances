@@ -102,16 +102,18 @@ if (cur_status === 'status_play' && missionMenuEnable){
 }
 
 
-//Click Open Button on Collaborative Missions
+//Click 'Open' Button on Collaborative Missions
 if (cur_status === 'status_play' && mmissionEnable){
     for (let i=0; i<multiplayerMissions.length; i++){
-      if (multiplayerMissions[i].openBtn.isClicked(mouseX, mouseY)){
+      if (multiplayerMissions[i].openBtn.isClicked(mouseX, mouseY) && multiplayerMissions[i].openBtnEnable === true){
         mmissionEnable = false;
         openMissionEnable = true;
         openMMission = multiplayerMissions[i];
+        //createMultiplayerMissions();
+        loop();
      }
   }
-  loop();
+  
   
 }
 
@@ -530,16 +532,16 @@ function acceptSoloMission(missionIndex){
 //verify if enough resources are on the client.
 function missionResourcesVerified(acceptedMission){
 
-  if (money < acceptedMission.InputMoney){
+  if (money < acceptedMission.InputMoney || money < acceptedMission.MinMoney){
     return false;
   } 
-  else if (people < acceptedMission.InputPeople){
+  else if (people < acceptedMission.InputPeople || people < acceptedMission.MinPeople){
     return false;
   }
-  else if (ore < acceptedMission.InputOre){
+  else if (ore < acceptedMission.InputOre || ore < acceptedMission.MinOre){
     return false;
   }
-  else if (water < acceptedMission.InputWater){
+  else if (water < acceptedMission.InputWater || water < acceptedMission.MinWater){
     return false;
   }
 
@@ -551,14 +553,11 @@ function missionResourcesVerified(acceptedMission){
 
 
 
-
-
-
 //verify, if the required ship is in available ships.
 function missionShipVerified(acceptedMission){
 
   for (let i=0; i<availableShips.length; i++){
-    if (acceptedMission.InputShip === availableShips[i].shipId){
+    if (acceptedMission.InputShip === availableShips[i].shipId || acceptedMission.InputShipId === availableShips[i].shipId){
       return true;
     }
   }
@@ -802,26 +801,132 @@ function buildupgradestorage3(){
 
 function acceptMultiplayerMission(acceptedMission){
 
-console.log('click click')
 
 
-//Verify, if player has resources and ship available for the mission. —> use existing function for that. 
 
-//Disable the contribution Button of the accepted Multiplayer Mission. 
+//Verify, if player has resources and ship available for the mission. 
 
-// Store accepted mission in accepted Multiplayer Missions of Player!
+if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(acceptedMission)){
 
-// Grey out the accepted Multiplayer Misssion on the interface (change Open Button to Accepted and disable it)
 
-//Deduct the resources from the player resources and block the ship
 
+//CLIENT SIDE IMPLICATIONS
+//Disable the contribution Button of the accepted Multiplayer Mission. (on client)
+ acceptedMission.acceptMission(2);
+
+ //Deduct the resources from the player resources  (on client)
+  money -= acceptedMission.MinMoney;
+  ore -= acceptedMission.MinOre;
+  water -= acceptedMission.MinWater;
+  people -= acceptedMission.MinPeople;
+
+  //block ship (on client)
+  let missionShip;
+  for (let i=0; i<availableShips.length; i++){
+    if (acceptedMission.InputShipId === availableShips[i].shipId){
+      missionShip = availableShips[i];
+      missionShip.blockShip();
+      blockedShips.push(missionShip);
+      availableShips.splice(i,1);
+    }
+  }
+
+
+
+
+//DATABASE IMPLICATIONS
 // send update to DB (resources, ship and stored multiplayer mission in accepted (multiplayer) Missions
 
+//Update DB!
+dataSent = {
+  "Player_Id": playerId,
+  "Money": money,
+  "Water": water,
+  "Ore": ore,
+  "People": people,
+  "MMissions_Id":  acceptedMission.missions_Id,
+  "Ship_Fleet_ID": missionShip.ship_Fleet_ID
+}
+
+//update resources
+httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
+  if (dataReceived.length>0){
+    console.log(dataReceived)
+  }
+} )
+
+//put mission in accepted multiplayer missions on db
+httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
+  if (dataReceived.length>0){
+    console.log(dataReceived)
+  }
+  
+})
+
+
+//send updated Ships to DB:
+httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
+  if (dataReceived.length>0){
+    console.log(dataReceived)
+  }
+});
+
+
+
+
 // display a message, that mission has been accepted successfully. (can also be used for solo Missions).
+
+// Disable accepted multiplayer missions, when they are loaded.)
+
+
+createResourceBar();
+loop();
+
+}
+else {
+  alert('You dont have the resources or Ships to contribute to this Mission');
+}
+
+
+
+
 
 
 }
 
+
+
+//Verify Resources for Multiplayer mission
+function multiplayerMissionResourcesVerify(acceptedMission){
+  if (money < acceptedMission.MinMoney){
+    return false;
+  } 
+  else if (people < acceptedMission.MinPeople){
+    return false;
+  }
+  else if (ore < acceptedMission.MinOre){
+    return false;
+  }
+  else if (water < acceptedMission.MinWater){
+    return false;
+  }
+
+  else {
+    return true;
+  }
+}
+
+
+
+//verify, if the required ship is in available ships. (for multiplayer missions)
+function missionShipVerified(acceptedMission){
+
+  for (let i=0; i<availableShips.length; i++){
+    if (acceptedMission.InputShipId === availableShips[i].shipId){
+      return true;
+    }
+  }
+}
 
 
 
