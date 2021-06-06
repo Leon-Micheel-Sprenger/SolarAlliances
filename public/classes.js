@@ -9,6 +9,10 @@
 
 
 
+
+
+
+
 //const { text } = require("body-parser");
 
 //const { text } = require("body-parser");
@@ -669,7 +673,7 @@ class MultipiplayerMission  {
 
     this.openBtn = new Button(this.rx,this.ry+this.rh/4,85,30,'Open',0,255,20) ;
     this.openBtnEnable = false;
-    this.openContributionBtn;
+    this.openContributionBtn = new Button(width*0.5, height*0.35, 200, 40, 'Contribute to this Mission', 0, 255, 15, 20);
 
     this.contributeToMissionBtn;
     
@@ -935,10 +939,19 @@ drawMission() {
   this.openBtnEnable = true;
   pop();
 
-  if (this.acceptedStatus){
+  if (this.acceptedStatus === true){
     push();
+    
+    if (this.status === 2){
+      textSize(12);
+      stroke('rgba(97, 237, 114, 1)');
+      text(`Waiting for Submissions`, this.rx, this.ry+this.rh/2.5 )
+    }
+    else if (this.status === 1){
+      stroke('rgba(218, 66, 245, 1)');
+      text(`${this.time}`, this.rx, this.ry+this.rh/2.5 )
+    }
     fill(255, 70);
-    stroke('rgba(97, 237, 114, 0.8)');
     strokeWeight(8);
     rect(this.rx, this.ry, this.rw, this.rh);
     pop();
@@ -968,11 +981,11 @@ push();
 
   //create and draw Button
   if (this.acceptedStatus === false){
-  this.openContributionBtn = new Button(x, y-height/6, 200, 40, 'Contribute to this Mission', 0, 255, 15, 20);
   push();
   this.openContributionBtn.setBorderClr('rgb(160, 204, 102)')
   strokeWeight(5)
   this.openContributionBtn.drawButton();
+  console.log('draw button');
   pop();
   }
   else if (this.acceptedStatus === true){
@@ -982,6 +995,14 @@ push();
     text('This mission has already been accepted by you!',x, y-height/6);
     pop();
   }
+
+
+  push();
+  textSize(20);
+  textStyle(BOLD);
+  fill('purple');
+  text(`${this.time}`,x, y-height/4.5 );
+  pop();
 
 
 
@@ -1036,6 +1057,8 @@ push();
   })
   fill(0);
   text(''+this.ShipAmount,x+width/10+80, y+height/10);
+
+  
 
  
 
@@ -1131,9 +1154,9 @@ drawContribution(x, y, width, height){
   textSize(20);
   text('Are you sure, you want to contribute to this Multiplayer Mission?', x, y-y/6);
   textSize(15);
-  text('If you click Contribute Resources, the following Resources and Ships will be commited to this Mission. You wont be able to use your ship until this Multiplayer Mission is finished. The Mission starts, when the all the required resources have been submitted by players.', x, y+y/8, width*0.7, height);
+  text('If you click Contribute Resources, the following Resources and Ships will be commited to this Mission. You wont be able to use your ship until this Multiplayer Mission is finished.', x, y+y/8, width*0.7, height);
   fill('red');
-  text('NOTE, that all Multiplayer Missions run 10 Minutes by default. Your ship will be available again, after that time. ', x, y+height/4, width*0.7, height)
+  text(`NOTE, that the ${this.time} minutes will only start, after 100% of the required resources have been submitted by players`, x, y+height/4, width*0.7, height)
   pop();
 }
 

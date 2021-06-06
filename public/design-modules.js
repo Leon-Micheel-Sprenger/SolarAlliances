@@ -726,6 +726,8 @@ function createMultiplayerMissions(){
     }
   }
 
+  console.log(multiplayerMissions);
+
 
  
   //Change status of accepted and/or running Multiplayer Missions;
@@ -734,8 +736,9 @@ function createMultiplayerMissions(){
 
   for (let i=0; i<multiplayerMissions.length; i++){
     for(let j=0; j<acceptedMultiplayerMissions.length; j++){
-      if (acceptedMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].MMissions_Id){
+      if (acceptedMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].missions_Id){
         multiplayerMissions[i].acceptMission(2);
+        loop();
       }
     
   }
@@ -743,8 +746,10 @@ function createMultiplayerMissions(){
 
     for (let i=0; i<multiplayerMissions.length; i++){
       for(let j=0; j<runningMultiplayerMissions.length; j++){
-        if (runningMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].MMissions_Id){
-          multiplayerMissions[i].acceptMission(2);
+        if (runningMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].missions_Id){
+          multiplayerMissions[i].acceptMission(1);
+          console.log(multiplayerMissions[i]);
+          loop();
         }
       }
     }
@@ -756,9 +761,9 @@ function createMultiplayerMissions(){
 
  
 
+    //multiplayerMissions[0].acceptMission(2);
 
-
-  console.log(multiplayerMissions);
+  
   console.log('pages '+ mmissionPages);
   console.log(multiplayerMissions[8].page);
 
@@ -797,6 +802,11 @@ function drawMultiplayerMissions(){
      }
 
 
+     
+
+    
+
+
   }
   
   
@@ -824,9 +834,12 @@ function drawOpenMMission(){
   missionExitBtn.drawExitButton();
  
   fill(0);
-  textSize(35);
+  textSize(30);
   textStyle(BOLD);
   text(`${openMMission.name}`, rx, ry-rh/2.2);
+
+  
+
 
   textSize(15);
   textStyle(NORMAL);

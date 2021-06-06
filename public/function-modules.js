@@ -874,9 +874,10 @@ httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
 
 
 
-// display a message, that mission has been accepted successfully. (can also be used for solo Missions).
 
-// Disable accepted multiplayer missions, when they are loaded.)
+
+
+
 
 
 createResourceBar();
@@ -944,7 +945,15 @@ setInterval(function(){
  
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
-  //console.log(dataReceived);
+  
+    console.log(dataReceived);
+   
+ });
+
+ httpPost('/getCompletedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
+  
+    console.log(dataReceived);
+   
  });
  
 

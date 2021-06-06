@@ -226,6 +226,7 @@ function loadPlayerShips(){
 //Get multiplayer Missions
 function loadMultiplayerMissions(){
   loadJSON('/getMMissions', (dataReceived)=> {
+    console.log(dataReceived);
     
     mmissionPages = [];
     mmissionsData = [];
@@ -248,7 +249,7 @@ function loadMultiplayerMissions(){
       }
     }
     console.log('accepted Missions '+acceptedMultiplayerMissions);
-    console.log('running Missions '+runningMultiplayerMissions[0].MMissions_Id);
+    console.log('running Missions '+runningMultiplayerMissions);
     
     
 

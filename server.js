@@ -78,7 +78,7 @@ setInterval(function(){
 
 
 //_____________________________________________________________
-// Deduct 30 seconds from all running missions (accepted missions), every 30 seconds.
+// Deduct 30 seconds from all running solo missions (accepted missions), every 30 seconds.
 setInterval(function(){
 
     let sql = `Select * from accepted_solomissions`;
@@ -95,6 +95,31 @@ setInterval(function(){
 
       }
     })
+
+}, 30000);
+
+
+
+//_____________________________________________________________
+// Deduct 30 seconds from all running multiplayer missions (accepted missions), every 30 seconds.
+setInterval(function(){
+
+  
+
+  let sql = `Select * from accepted_multiplayer_missions`;
+
+  db.query(sql, (err, result)=> {
+
+    if (result.length>0){
+      
+  let sql = `UPDATE accepted_multiplayer_missions SET Mission_Time = subtime(Mission_Time, '00:00:30') WHERE Mission_Time > '00:00:00' AND Status = 1;`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+  })
+
+    }
+  })
 
 }, 30000);
 
@@ -383,14 +408,25 @@ app.post('/updateAcceptedMultiplayerMissions', (req, res)=> {
   let Ship_Fleet_ID = req.body.Ship_Fleet_ID;
   
 
-  let sql = `SELECT Time from multiplayer_missions WHERE MMissions_Id = ${Mission_Id};`;
+  let sql = `UPDATE multiplayer_missions
+             SET Submitted_Ore = Submitted_Ore + Minimum_Ore, Submitted_Water = Submitted_Water + Minimum_Water, Submitted_People = Submitted_People + Minimum_People, Submitted_Money = Submitted_Money + Minimum_Money, Submitted_Ships = Submitted_Ships + 1
+             WHERE MMissions_Id = '${Mission_Id}';`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+  let sql = `SELECT * FROM multiplayer_missions WHERE MMissions_Id = ${Mission_Id};`;
+
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
 
     let time = result[0].Time; 
+
+    //update status of accepted missions 1, when submitted resources are 100%
+
     
-    let sql = `INSERT INTO accepted_multiplayer_missions (Player_Id, MMissions_Id, Mission_Time, Ship_Fleet_Id, Status) VALUES (${Player_Id}, ${Mission_Id}, '${time}', ${Ship_Fleet_ID}, 2);`
+    let sql = `INSERT INTO accepted_multiplayer_missions (Player_Id, amm_MMissions_Id, Mission_Time, Ship_Fleet_Id, Status) VALUES (${Player_Id}, ${Mission_Id}, '${time}', ${Ship_Fleet_ID}, 2);`
 
     db.query(sql, (err, result)=> {
       if(err) throw err;
@@ -400,6 +436,7 @@ app.post('/updateAcceptedMultiplayerMissions', (req, res)=> {
       
            
     })
+  })
   })
 })
 
@@ -467,11 +504,11 @@ app.post('/getCompletedMissions', (req, res)=> {
           db.query(sql, (err, result)=> {
             if (err) throw err;
 
-            let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Ship_Fleet_ID = ${Ship_Fleet_IDs[0]};`
+            let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Solo_Mission_Id = ${completedMissions[0].Solo_Missions_Id};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
               res.send({message: 'mission completed successfully'});
-              console.log('mission completed successfully');
+              console.log('Solo mission completed successfully!');
             })
           })
             
@@ -489,13 +526,72 @@ app.post('/getCompletedMissions', (req, res)=> {
 //Get Multiplayer Missions!
 app.get('/getMMissions', (req, res)=> {
 
-  let sql = 'SELECT * FROM multiplayer_missions a Left Outer Join accepted_multiplayer_missions  b ON a.MMissions_Id = b.MMissions_Id ;';
+  let sql = 'SELECT * FROM multiplayer_missions a Left Outer Join accepted_multiplayer_missions  b ON a.MMissions_Id = b.amm_MMissions_Id;';
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
     res.send(result);
   })
 
+})
+
+
+
+
+//Get completed multiplayer Missions (fired by client ping every 30 seconds.)
+app.post('/getCompletedMultiplayerMissions', (req, res)=> {
+
+  let playerId = req.body.playerId;
+
+  let sql = `SELECT * FROM accepted_multiplayer_missions WHERE Player_Id = ${playerId} AND Mission_Time = '00:00:00' AND Status = 1;`;
+
+  db.query(sql, (err, result)=> {
+    if (err) throw err;
+
+    if (result.length>0){
+
+      //put it into these arrays
+      let completedMissions = [];
+      let Ship_Fleet_IDs = [];
+
+      for (let i=0; i<result.length; i++){
+        completedMissions.push(result[i]);
+        Ship_Fleet_IDs.push(result[i].Ship_Fleet_Id);
+      }
+
+
+      //get the mission inputs and rewards
+      let sql = `SELECT * FROM multiplayer_missions WHERE MMissions_Id = ${completedMissions[0].amm_MMissions_Id};`;
+
+      db.query(sql, (err, result)=> {
+        if (err) throw err;
+       
+        //give player the rewards of the completed mission && set ship back to not on a mission in ship_fleet
+        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People= People + ${result[0].Reward_People} WHERE Player_Id=${playerId};
+                   `;
+        
+      db.query(sql, (err, result)=> {
+          if (err) throw err;
+
+          let sql = `UPDATE ship_fleet SET Ship_on_Mission = 0 WHERE Player_Id= ${playerId} AND Ship_Fleet_ID = ${Ship_Fleet_IDs[0]};`; 
+
+          db.query(sql, (err, result)=> {
+            if (err) throw err;
+
+            let sql = `UPDATE accepted_multiplayer_missions SET Status = 0 WHERE Player_Id= ${playerId} AND amm_MMissions_Id = ${completedMissions[0].amm_MMissions_Id};`
+            db.query(sql, (err, result)=> {
+              if (err) throw err;
+              res.send({message: 'mission completed successfully'});
+              console.log('Collaborative mission completed successfully');
+            })
+          })
+            
+          })
+
+      })
+    }
+    else res.send(result);
+  })
 })
 
 
