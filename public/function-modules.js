@@ -418,6 +418,8 @@ if (cur_status=== 'status_login'){
 
 
     //Load multiplayer missions:
+    loadAcceptedMultiplayerMissions();
+    
     loadMultiplayerMissions();
 
     
@@ -860,8 +862,8 @@ httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=
   if (dataReceived.length>0){
     console.log(dataReceived)
   }
-  
 })
+
 
 
 //send updated Ships to DB:
@@ -962,7 +964,8 @@ setInterval(function(){
   loadPlayerShips(); 
   loadSoloMissions();
   loadRunningMissions();      //get solomissions data from DB  
-  loadMultiplayerMissions();     
+  loadMultiplayerMissions(); 
+  loadAcceptedMultiplayerMissions();    
   //createMissions();           //assign data to missions
   
 

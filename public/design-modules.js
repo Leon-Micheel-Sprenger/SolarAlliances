@@ -370,8 +370,8 @@ function createships(){
   }
   // print('ships '+ships);
   // console.log('shipList '+shipList);
-  console.log('available Ships '+availableShips);
-  console.log('blocked Ships '+blockedShips);
+  // console.log('available Ships '+availableShips);
+  // console.log('blocked Ships '+blockedShips);
 }
 
 
@@ -685,13 +685,14 @@ function createMultiplayerMissions(){
   console.log(mmissionsData);
 
 
+
   rx= width*0.5;
   ry= height*0.5;
   rw= 700;
   rh= 750;
 
   //fixed 6 positions to display multiplayer missions.
-  let positions = [{rx:  rx-rw/3, ry: ry-ry/3}, {rx:  rx, ry: ry-ry/3}, {rx:  rx+rw/3, ry: ry-ry/3}, {rx:  rx-rw/3, ry: ry+ry/3}, {rx:  rx, ry: ry+ry/3}, {rx:  rx+rw/3, ry: ry+ry/3}
+  let  positions= [{rx:  rx-rw/3, ry: ry-ry/3}, {rx:  rx, ry: ry-ry/3}, {rx:  rx+rw/3, ry: ry-ry/3}, {rx:  rx-rw/3, ry: ry+ry/3}, {rx:  rx, ry: ry+ry/3}, {rx:  rx+rw/3, ry: ry+ry/3}
   ];
 
   let positionCounter; 
@@ -736,7 +737,7 @@ function createMultiplayerMissions(){
 
   for (let i=0; i<multiplayerMissions.length; i++){
     for(let j=0; j<acceptedMultiplayerMissions.length; j++){
-      if (acceptedMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].missions_Id){
+      if (acceptedMultiplayerMissions[j].amm_MMissions_Id === multiplayerMissions[i].missions_Id){
         multiplayerMissions[i].acceptMission(2);
         loop();
       }
@@ -746,7 +747,7 @@ function createMultiplayerMissions(){
 
     for (let i=0; i<multiplayerMissions.length; i++){
       for(let j=0; j<runningMultiplayerMissions.length; j++){
-        if (runningMultiplayerMissions[j].MMissions_Id === multiplayerMissions[i].missions_Id){
+        if (runningMultiplayerMissions[j].amm_MMissions_Id === multiplayerMissions[i].missions_Id){
           multiplayerMissions[i].acceptMission(1);
           console.log(multiplayerMissions[i]);
           loop();
