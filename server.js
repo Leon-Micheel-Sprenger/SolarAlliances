@@ -191,7 +191,7 @@ app.post('/Register', (req, res)=> {
 
               db.query(sql, (err, result) => {
                 if (err) throw err;
-                console.log(result);
+               
 
                 let Mission1 = result[0].Solo_Missions_Id;
                 let Mission2 = result[1].Solo_Missions_Id;
@@ -587,7 +587,7 @@ app.post('/getCompletedMissions', (req, res)=> {
             db.query(sql, (err, result)=> {
               if (err) throw err;
               res.send({message: 'mission completed successfully'});
-              console.log('Solo mission completed successfully!');
+              
             })
           })
             
@@ -625,7 +625,7 @@ app.get('/getAcceptedMMissions/:playerId', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
-    console.log(result);
+    
     res.send(result);
   })
 })
