@@ -135,6 +135,22 @@ setInterval(function(){
 
 
 
+//_____________________________________________________________
+//Autogenerate people for players every 5 minutes
+setInterval(function() {
+
+  let sql = `Update player_resources 
+             Join player on player_resources.Player_Id = player.Player_Id
+             Set People = People + 10;`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+   
+  })
+
+
+}, 300000)
+
 //______________________________________________________________
 //Gets and Posts start here
 
