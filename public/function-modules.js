@@ -109,6 +109,7 @@ if (cur_status === 'status_play' && mmissionEnable){
         mmissionEnable = false;
         openMissionEnable = true;
         openMMission = multiplayerMissions[i];
+        openMMission.index = i;
         //createMultiplayerMissions();
         loop();
      }
@@ -456,15 +457,15 @@ function acceptSoloMission(missionIndex){
   let acceptedMission = singleMissionsArr[missionIndex];
   let missionShip;
 
+  console.log(acceptedMission);
+  console.log(availableShips);
+
 
   //Verify, if player has resources and ship available for the mission.
-  if (missionResourcesVerified(acceptedMission) && missionShipVerified(acceptedMission)){
+  if (missionResourcesVerified(acceptedMission) && solomissionShipVerified(acceptedMission)){
+    
 
-  console.log('inputResource1 '+acceptedMission.InputResource1);
-
-
-
-  console.log('Input Ship '+ acceptedMission.InputShip);
+  
 
   //Disable button of accepted mission and put it into running missions array on client
   acceptedMission.acceptedMission();
@@ -534,16 +535,16 @@ function acceptSoloMission(missionIndex){
 //verify if enough resources are on the client.
 function missionResourcesVerified(acceptedMission){
 
-  if (money < acceptedMission.InputMoney || money < acceptedMission.MinMoney){
+  if (money < acceptedMission.InputMoney){
     return false;
   } 
-  else if (people < acceptedMission.InputPeople || people < acceptedMission.MinPeople){
+  else if (people < acceptedMission.InputPeople){
     return false;
   }
-  else if (ore < acceptedMission.InputOre || ore < acceptedMission.MinOre){
+  else if (ore < acceptedMission.InputOre){
     return false;
   }
-  else if (water < acceptedMission.InputWater || water < acceptedMission.MinWater){
+  else if (water < acceptedMission.InputWater){
     return false;
   }
 
@@ -552,18 +553,19 @@ function missionResourcesVerified(acceptedMission){
   }
  }
 
-
-
-
 //verify, if the required ship is in available ships.
-function missionShipVerified(acceptedMission){
-
+function solomissionShipVerified(acceptedMission){
+  console.log('run');
   for (let i=0; i<availableShips.length; i++){
-    if (acceptedMission.InputShip === availableShips[i].shipId || acceptedMission.InputShipId === availableShips[i].shipId){
+    if (acceptedMission.InputShip === availableShips[i].shipId){
+      
       return true;
     }
+    
   }
 }
+
+
 
 
 //_______________________________________________________________________________________________
@@ -804,12 +806,15 @@ function buildupgradestorage3(){
 function acceptMultiplayerMission(acceptedMission){
 
 
-
+//console.log('index '+acceptedMission.index);
+let index = acceptedMission.index;
 
 //Verify, if player has resources and ship available for the mission. 
 
 if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(acceptedMission)){
 
+
+  
 
 
 //CLIENT SIDE IMPLICATIONS
@@ -833,6 +838,23 @@ if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(ac
     }
   }
 
+  //increase submitted resources of mission and make mission accepted/running on client:
+  multiplayerMissions[index].SubmittedResource +=  multiplayerMissions[index].MinResource;
+  multiplayerMissions[index].SubmittedShips += 1;
+
+  let SubmittedResource = multiplayerMissions[index].SubmittedResource ;
+  let InputResource = multiplayerMissions[index].InputResource;
+  let SubmittedShips =  multiplayerMissions[index].SubmittedShips;
+  let InputShips =  multiplayerMissions[index].ShipAmount;
+ 
+  console.log(multiplayerMissions[index]);
+  
+
+  if (SubmittedResource === InputResource && SubmittedShips === InputShips){
+    multiplayerMissions[index].acceptMission(1);
+  } else {
+    multiplayerMissions[index].acceptMission(2);
+  }
 
 
 
@@ -850,30 +872,26 @@ dataSent = {
   "Ship_Fleet_ID": missionShip.ship_Fleet_ID
 }
 
-//update resources
+//update resources on DB
 httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
-  if (dataReceived.length>0){
     console.log(dataReceived)
-  }
+  
 } )
 
 //put mission in accepted multiplayer missions on db
 httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
-  if (dataReceived.length>0){
+ 
     console.log(dataReceived)
-  }
+  
 })
-
 
 
 //send updated Ships to DB:
 httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
-  if (dataReceived.length>0){
+ 
     console.log(dataReceived)
-  }
+  
 });
-
-
 
 
 
@@ -964,15 +982,16 @@ setInterval(function(){
   loadPlayerShips(); 
   loadSoloMissions();
   loadRunningMissions();      //get solomissions data from DB  
+  loadAcceptedMultiplayerMissions(); 
   loadMultiplayerMissions(); 
-  loadAcceptedMultiplayerMissions();    
+     
   //createMissions();           //assign data to missions
   
 
 
-  //draw 
+
   //loop();
                          
  
 }
-},30000);
+},10000);

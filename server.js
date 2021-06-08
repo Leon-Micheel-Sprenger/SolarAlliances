@@ -44,15 +44,20 @@ setInterval(function(){
   //get mission ids from player_missions:
   
 
-  let sql = `SELECT * FROM player_missions;`;
+  let sql = `SELECT * FROM player_missions
+             INNER JOIN player ON player_missions.Player_Id = player.Player_Id;`;
   
   db.query(sql, (err, result)=> {
     if (err) throw err;
     //here you could use a for loop to make it for all players at the same time
-    let Missions = [result[0].Mission1, result[0].Mission2, result[0].Mission3, result[0].Mission4, result[0].Mission5 ];
-    let playerId = result[0].Player_Id;
 
-    let sql = `SELECT Solo_Missions_Id FROM solo_missions WHERE Rank=1 AND NOT Solo_Missions_Id IN (${Missions[0]}, ${Missions[1]}, ${Missions[2]}, ${Missions[3]}) ORDER BY RAND() LIMIT 1`;
+    for (let i=0; i<result.length; i++){
+    let Missions = [result[i].Mission1, result[i].Mission2, result[i].Mission3, result[i].Mission4, result[i].Mission5 ];
+    let playerId = result[i].Player_Id;
+    let rank = result[i].Rank;
+    
+
+    let sql = `SELECT Solo_Missions_Id FROM solo_missions WHERE Rank=${rank} AND NOT Solo_Missions_Id IN (${Missions[0]}, ${Missions[1]}, ${Missions[2]}, ${Missions[3]}, ${Missions[4]} ) ORDER BY RAND() LIMIT 1`;
     
     db.query(sql, (err, result)=> {
       if (err) throw err;
@@ -66,9 +71,12 @@ setInterval(function(){
       })
 
     })
+    }
+
+    
   
   })
-  
+  console.log('updated solo missions');
 }, 300000);
 
 
@@ -425,7 +433,7 @@ app.post('/updateAcceptedMultiplayerMissions', (req, res)=> {
 
     let SubmittedArr = [result[0].Submitted_Money, result[0].Submitted_Ore, result[0].Submitted_People, result[0].Submitted_Water ];
     let InputArr = [result[0].Input_Money, result[0].Input_Ore, result[0].Input_People, result[0].Input_Water ];
-    let checkSubmissionArr = [];
+  
 
     let sql = `INSERT INTO accepted_multiplayer_missions (Player_Id, amm_MMissions_Id, Mission_Time, Ship_Fleet_Id, Status) VALUES (${Player_Id}, ${Mission_Id}, '${time}', ${Ship_Fleet_ID}, 2);`
 
@@ -433,34 +441,49 @@ app.post('/updateAcceptedMultiplayerMissions', (req, res)=> {
       if(err) throw err;
       if (result.affectedRows > 0){
 
-        //update status of accepted missions 1, when submitted resources are 100%;
-  
+       
+        //update status of accepted missions 1, when submitted resources are 100% of input resources!;
+        let check;
         for (let i=0; i<SubmittedArr.length; i++){
-          for (let j=0; j<InputArr.length; j++){
-            if (SubmittedArr[i] === InputArr[j]){
-              checkSubmissionArr.push(SubmittedArr[i]);
-            }
+          if(SubmittedArr[i] !== InputArr[i]){
+            check = false;
+            break;
+          } else {
+            check = true;
           }
         }
+          
+          
+          if(check === false){
 
-        if (checkSubmissionArr === InputArr){
+            res.send({message: "Mission successfully accepted!"});
+            
+          } else if (check === true) {
 
-          let sql = `UPDATE accepted_multiplayer_missions 
+            let sql = `UPDATE accepted_multiplayer_missions 
                      SET Status = 1 
                      WHERE amm_MMissions_Id = ${Mission_Id};`;
 
           db.query(sql, (err, result)=> {
             if(err) throw err;
 
-            res.send({message: "Mission successfully accepted."})
+            if (result.affectedRows > 0){
+              res.send({message: "Mission Accepted and Running !"})
 
-            //message, that mission has started???
+            //message to all players, that mission has started???
 
+            }
           })
         }
-        else {
-          res.send({message: "Mission successfully accepted!"});
-        }
+        
+
+    
+
+        
+        
+
+  
+        
        
       }
       
@@ -565,6 +588,7 @@ app.get('/getMMissions', (req, res)=> {
   })
 
 })
+
 
 //Get accepted Multiplayer Missions! /getRespawnTimer/:playerId'
 

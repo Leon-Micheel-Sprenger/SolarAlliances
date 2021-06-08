@@ -413,7 +413,7 @@ class SoloMissionBox {
     //Assign the two Input Resources and their Icons:
     for (let i=0; i<InputArr.length; i++){
       if(InputArr[i]){
-          if(this.InputResource1){
+          if(this.InputResource1 && InputArr[i] !== this.InputResource1){
             this.InputResource2 = InputArr[i];
 
             switch (i){
@@ -483,7 +483,7 @@ class SoloMissionBox {
     //Assign the two Reward Resources and Icons:
     for (let i=0; i<RewardArr.length; i++){
       if(RewardArr[i]){
-          if(this.RewardResource1){
+          if(this.RewardResource1 && RewardArr[i] !== this.RewardResource1){
             this.RewardResource2 = RewardArr[i];
             switch (i){
               case 0: 

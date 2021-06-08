@@ -258,7 +258,7 @@ function loadAcceptedMultiplayerMissions(){
   for(let i=0; i<dataReceived.length; i++){
     if (dataReceived[i].Status === 2){
       acceptedMultiplayerMissions.push(dataReceived[i]);
-      console.log(acceptedMultiplayerMissions);
+     
     }
     else if (dataReceived[i].Status === 1){
       runningMultiplayerMissions.push(dataReceived[i]);
