@@ -2,9 +2,13 @@
 // In here, we are storing all available front-end components and designs of p5. 
 
 
+
+
+
+
 // To find backend functions and executing commands, go to function-modules.js
 let cur_status = 'status_login'; //status_login, status_register, status_play
-
+let mainMenuEnable = true;
 
 //Global Variables:
 
@@ -22,9 +26,18 @@ let miningShipIconPath =  'assets/miningship-icon.jpg';
 let warShipIconPath =  'assets/warship-icon.jpg';
 let explorationShipIconPath =  'assets/explorationship-icon.jpg';
 
+//Faction Icon Paths                 
+let marsIconPath = 'assets/money-icon.jpg'; //!!NEED DIMENSIONS 35px TO 25px!!
+let earthIconPath = 'assets/money-icon.jpg'; //!!NEED DIMENSIONS 35px TO 25px!!
+let beltIconPath = 'assets/money-icon.jpg'; //!!NEED DIMENSIONS 35px TO 25px!!
+
 //Other paths
 let exitButtonIconPath = 'assets/exit-icon.jpg';
+let backButtonIconPath = 'assets/exit-icon.jpg';
 let shipOnMissionIconPath = 'assets/exit-icon.jpg';
+let arrowLeft = 'assets/arrow-left.jpg';
+let arrowRight = 'assets/arrow-right.jpg';
+
 
 
 
@@ -99,8 +112,8 @@ function loginScreen(){
   registerBtn = new Button(rx,ry+130,120,30,'Register as new Player',255,0,10);
   
 
-  InputName = createInput('').position(rx-100, ry-60);
-  InputPass = createInput('', 'password').position(rx-100, ry);
+  InputName = createInput('Name').position(rx-100, ry-60);
+  InputPass = createInput('Password', 'password').position(rx-100, ry);
   
   InputPass.attribute('placeholder','Password');
   InputName.attribute('placeholder','Username');
@@ -166,6 +179,7 @@ let gameStatus= false;
 function createGame(){
 
   gameStatus = true;
+  mainMenuEnable = true;
   cur_status = 'status_play';
   InputName.remove();
   InputPass.remove();
@@ -310,7 +324,7 @@ function createGrid(){
 }
 
 function drawGrid(){
-  if(cur_status === 'status_play'){
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false && contributionSzeneEnable === false){
     for (let r=gridStartX; r<gridX+gridStartX; r++){
       for(let c=gridStartY; c<gridY+gridStartY; c++){
         tilesArr[r][c].draw_tile();
@@ -363,7 +377,7 @@ function createships(){
 
 
 function drawShips(){
-  if(cur_status === 'status_play' && missionMenuEnable === false){
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false && contributionSzeneEnable === false){
     for(let i=0; i<shipList.length; i++){
       for (r=gridStartX; r<gridX+gridStartX;r++){
         for(c=gridStartY; c<gridY+gridStartY; c++){
@@ -538,9 +552,9 @@ let runningSoloMissionsIndex = [];
     //Frame, title and buttons of Mission Interface;
     missionFrame = new OnScreenFrame(rx, ry, rw, rh);
 
-    singleMissionsBtn = new Button(rx-rx/2+220,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
+    singleMissionsBtn = new Button(rx-rw/2+rw/4,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
 
-    multiMissionsBtn = new Button(rx+150,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
+    multiMissionsBtn = new Button(rx+rw/2-rw/4,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
     
     runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
     
@@ -595,13 +609,12 @@ let runningSoloMissionsIndex = [];
 //Draw Missions Interface
 
 function drawSoloMissions(){
-  if (missionMenuEnable === true){
-
   rx= width*0.5;
   ry= height*0.5;
   rw= 700;
   rh= 750;
 
+  if (missionMenuEnable === true && mmissionEnable === false){
 
   missionFrame.drawScreen();
   singleMissionsBtn.drawButton();
@@ -643,8 +656,250 @@ function drawSoloMissions(){
 
 
 function createRunningMissionInterface(){
+  //put it on main screen!
+}
+
+
+
+
+//_________________________________________________________________
+//Create Multiplayer Missions
+
+let mmissionEnable = false;
+
+let mmissionsData = [];     //data loaded from db
+
+let multiplayerMissions = [];    //instances of mmissions created.
+
+let acceptedMultiplayerMissions = [];   //accepted Multiplayer Missions (status 2 --> not runnign yet)
+
+let runningMultiplayerMissions = [];    //running Multiplayer Missions (status 1 --> running)
+
+let mmissionPages = [];
+
+let pageEnabled = 0;  //currently enabled page!
+
+
+function createMultiplayerMissions(){
+
+  console.log(mmissionsData);
+
+
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+  //fixed 6 positions to display multiplayer missions.
+  let  positions= [{rx:  rx-rw/3, ry: ry-ry/3}, {rx:  rx, ry: ry-ry/3}, {rx:  rx+rw/3, ry: ry-ry/3}, {rx:  rx-rw/3, ry: ry+ry/3}, {rx:  rx, ry: ry+ry/3}, {rx:  rx+rw/3, ry: ry+ry/3}
+  ];
+
+  let positionCounter; 
+
+  
+
+  //create instances of multiplayer missions class in a loop depending on multiplayermissions array. 
+
+  for (let i=0; i< mmissionsData.length; i++){
+   
+    if (multiplayerMissions.length % 6 === 0){
+      
+      //make a new page
+     
+      mmissionPages.push(mmissionPages.length);
+      
+      
+      positionCounter = 0;
+
+      //initiate mission at position 0;
+      multiplayerMissions[i] = new MultipiplayerMission(positions[positionCounter].rx, positions[positionCounter].ry, mmissionPages[mmissionPages.length - 1], 175, 200, mmissionsData[i].MMissions_Id, mmissionsData[i].MMission_Name, mmissionsData[i].Story, mmissionsData[i].Time, mmissionsData[i].Ship_Id, mmissionsData[i].Reward_Water, mmissionsData[i].Reward_People, mmissionsData[i].Reward_Ore, mmissionsData[i].Reward_Money, mmissionsData[i].Input_Water, mmissionsData[i].Input_People, mmissionsData[i].Input_Ore, mmissionsData[i].Input_Money, mmissionsData[i].Ship_amount, mmissionsData[i].Minimum_Water, mmissionsData[i].Minimum_Money, mmissionsData[i].Minimum_People, mmissionsData[i].Minimum_Ore, mmissionsData[i].Submitted_Ore, mmissionsData[i].Submitted_Water, mmissionsData[i].Submitted_People, mmissionsData[i].Submitted_Money, mmissionsData[i].Submitted_Ships, mmissionsData[i].Rank, mmissionsData[i].Faction);
+     
+    }
+    else {
+      
+      positionCounter ++;
+
+      //create new instance of a mission object in multiplayerMissions. 
+
+      multiplayerMissions[i] = new MultipiplayerMission(positions[positionCounter].rx, positions[positionCounter].ry, mmissionPages[mmissionPages.length - 1], 175, 200, mmissionsData[i].MMissions_Id, mmissionsData[i].MMission_Name, mmissionsData[i].Story, mmissionsData[i].Time, mmissionsData[i].Ship_Id, mmissionsData[i].Reward_Water, mmissionsData[i].Reward_People, mmissionsData[i].Reward_Ore, mmissionsData[i].Reward_Money, mmissionsData[i].Input_Water, mmissionsData[i].Input_People, mmissionsData[i].Input_Ore, mmissionsData[i].Input_Money, mmissionsData[i].Ship_amount, mmissionsData[i].Minimum_Water, mmissionsData[i].Minimum_Money, mmissionsData[i].Minimum_People, mmissionsData[i].Minimum_Ore, mmissionsData[i].Submitted_Ore, mmissionsData[i].Submitted_Water, mmissionsData[i].Submitted_People, mmissionsData[i].Submitted_Money, mmissionsData[i].Submitted_Ships,  mmissionsData[i].Rank, mmissionsData[i].Faction);
+     
+    }
+  }
+
+  console.log(multiplayerMissions);
+
+
+ 
+  //Change status of accepted and/or running Multiplayer Missions;
+  //YOU ARE ONLY STORING THE DATA OF THE SERVER CALL IN THOSE ARRAYS, and no actual missions. But you have to loop created missions for this to work.!
+  //or you could loo multiplayerMissions and see, which missions are in those arrays and then disable those
+
+  for (let i=0; i<multiplayerMissions.length; i++){
+    for(let j=0; j<acceptedMultiplayerMissions.length; j++){
+      if (acceptedMultiplayerMissions[j].amm_MMissions_Id === multiplayerMissions[i].missions_Id){
+        multiplayerMissions[i].acceptMission(2);
+        loop();
+      }
+    
+  }
+}
+
+    for (let i=0; i<multiplayerMissions.length; i++){
+      for(let j=0; j<runningMultiplayerMissions.length; j++){
+        if (runningMultiplayerMissions[j].amm_MMissions_Id === multiplayerMissions[i].missions_Id){
+          multiplayerMissions[i].acceptMission(1);
+          console.log(multiplayerMissions[i]);
+          loop();
+        }
+      }
+    }
+
+  
+
+
+ 
+
+ 
+
+    //multiplayerMissions[0].acceptMission(2);
+
+  
+  console.log('pages '+ mmissionPages);
+  console.log(multiplayerMissions[8].page);
 
 }
+
+
+
+
+
+//_______________________________________________________________
+//Draw Multiplayer Missions Interface
+
+function drawMultiplayerMissions(){
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+  
+  
+  if (mmissionEnable === true){
+
+     missionFrame.drawScreen();
+     singleMissionsBtn.drawButton();
+     multiMissionsBtn.drawButton();
+     missionExitBtn.drawExitButton();
+
+    missionFrame.drawPageArrows();
+
+
+  
+
+     //draw Multiplayer missions!
+     for (let i=0; i<multiplayerMissions.length; i++){
+      multiplayerMissions[i].drawMission();
+     }
+
+
+     
+
+    
+
+
+  }
+  
+  
+}
+
+
+//_______________________________________________________
+//Draw open Multiplayer Mission Screen
+
+let openMissionEnable = false; 
+let openMMission; 
+
+function drawOpenMMission(){
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+ if (openMissionEnable){
+   
+  push();
+  missionFrame.drawScreen();
+  missionFrame.backBtn.drawButton();
+  missionExitBtn.drawExitButton();
+ 
+  fill(0);
+  textSize(30);
+  textStyle(BOLD);
+  text(`${openMMission.name}`, rx, ry-rh/2.2);
+
+  
+
+
+  textSize(15);
+  textStyle(NORMAL);
+  text(`${openMMission.Story}`, rx, ry-rh/2.5);
+  pop();
+
+
+  //draw open mission class
+  openMMission.drawOpenMission(rx, ry, rw, rh);
+
+ }
+}
+
+
+
+//_________________________________________________________________________
+// Draw Contribution screen of open Multiplayer Mission
+
+let contributionSzeneEnable = false;
+
+function drawContributionScene(){
+
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+
+  if(contributionSzeneEnable === true){
+    
+    push();
+    missionFrame.drawScreen();
+    missionFrame.backBtn.drawButton();
+    missionExitBtn.drawExitButton();
+   
+    fill(0);
+    textSize(35);
+    textStyle(BOLD);
+    text(`${openMMission.name}`, rx, ry-rh/2.2);
+  
+    textSize(15);
+    textStyle(NORMAL);
+    text(`${openMMission.Story}`, rx, ry-rh/2.5);
+    pop();
+    
+    openMMission.drawContribution(rx, ry, rw, rh);
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

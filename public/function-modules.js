@@ -5,6 +5,7 @@
 //_______________________________________________________
 // Mouse Pressed Function starts here
 function mousePressed(){
+  
 
 //Login Button clicked
     if (loginBtn.isClicked(mouseX, mouseY) && cur_status==='status_login'){
@@ -36,6 +37,7 @@ function mousePressed(){
     if (cur_status === 'status_play'){
       if(missionButton.isClicked(mouseX, mouseY)){
         missionMenuEnable = true;
+        missionButton.disable();
         createMissions();
         drawSoloMissions();
         //loop();
@@ -53,14 +55,127 @@ function mousePressed(){
       }
     }
 
-//Solo Mission Exit Button clicked
-    if(cur_status === 'status_play' && missionMenuEnable){
+//Mission Exit Button clicked
+    if(cur_status === 'status_play'){
       if (missionExitBtn.isClicked(mouseX, mouseY)){
         missionMenuEnable = false;
+        mmissionEnable = false;
+        openMissionEnable = false;
+        contributionSzeneEnable = false;
         createGame();
+        //createMultiplayerMissions();
         loop();
       }
     }
+
+
+
+
+    //Click arrow Left of collaboratiive missions
+if (cur_status === 'status_play' && mmissionEnable){
+  if ( missionFrame.arrowLeftIsClicked(mouseX, mouseY)){
+    if(pageEnabled-1 >= 0){
+      pageEnabled --;
+      loop();
+    }
+  }
+}
+
+//Click arrow Right of collaboratiive missions
+if (cur_status === 'status_play' && mmissionEnable){
+  if (missionFrame.arrowRightIsClicked(mouseX, mouseY)){
+    if(pageEnabled+1 < mmissionPages.length){
+      pageEnabled ++;
+      loop();
+    }
+  };
+}
+
+//Click Collaborative Missions Button
+if (cur_status === 'status_play' && missionMenuEnable){
+  if (multiMissionsBtn.isClicked(mouseX, mouseY)){
+    missionMenuEnable = false;
+    mmissionEnable = true;
+    createGame();
+    loop();
+  }
+}
+
+
+//Click 'Open' Button on Collaborative Missions
+if (cur_status === 'status_play' && mmissionEnable){
+    for (let i=0; i<multiplayerMissions.length; i++){
+      if (multiplayerMissions[i].openBtn.isClicked(mouseX, mouseY) && multiplayerMissions[i].openBtnEnable === true){
+        mmissionEnable = false;
+        openMissionEnable = true;
+        openMMission = multiplayerMissions[i];
+        openMMission.index = i;
+        //createMultiplayerMissions();
+        loop();
+     }
+  }
+  
+  
+}
+
+
+//open Mission 'Back' Button clicked
+if(cur_status === 'status_play' && openMissionEnable || contributionSzeneEnable){
+  if (missionFrame.backBtn.isClicked(mouseX, mouseY)){
+    mmissionEnable = true;
+    openMissionEnable = false;
+    contributionSzeneEnable = false;
+    createGame();
+    //createMultiplayerMissions();
+    loop();
+  }
+}
+
+
+
+
+//'Contribute to this Mission' Button on Multiplayer Mission
+if(cur_status === 'status_play' && openMissionEnable){
+  if (openMMission.openContributionBtn.isClicked(mouseX, mouseY)){
+    // mmissionEnable = true;
+    openMissionEnable = false;
+    contributionSzeneEnable = true; 
+    loop();
+  }
+}
+
+//'Contribute Resources' Button on Multiplayer Mission
+if(cur_status === 'status_play' && contributionSzeneEnable){
+  if (openMMission.contributeToMissionBtn.isClicked(mouseX, mouseY)){
+    // mmissionEnable = true;
+    acceptMultiplayerMission(openMMission);
+    loop();
+  }
+}
+
+
+
+
+
+
+//Click Single Player Missions Button 
+if (cur_status === 'status_play'){
+  if(singleMissionsBtn.isClicked(mouseX, mouseY)){
+    missionMenuEnable = true;
+    mmissionEnable = false;
+    openMissionEnable = false;
+    loop();
+  }
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -177,7 +292,8 @@ if (cur_status === 'status_play' && stationUpgradeEnable){
     loop();
   }
 }
-    
+   
+
 
    
     
@@ -306,16 +422,21 @@ if (cur_status=== 'status_login'){
     // Get player ships from ship-fleet
     loadPlayerShips();
 
+
+    //Load multiplayer missions:
+    loadAcceptedMultiplayerMissions();
+    
+    loadMultiplayerMissions();
+
     
 
     // add all the loadJSON paths below: 
 
-    //ships
+ 
 
     //station upgrades
     
 
-    //Load Multiplayer Missions
 
 
 
@@ -346,15 +467,15 @@ function acceptSoloMission(missionIndex){
   let acceptedMission = singleMissionsArr[missionIndex];
   let missionShip;
 
+  console.log(acceptedMission);
+  console.log(availableShips);
+
 
   //Verify, if player has resources and ship available for the mission.
-  if (missionResourcesVerified(acceptedMission) && missionShipVerified(acceptedMission)){
+  if (missionResourcesVerified(acceptedMission) && solomissionShipVerified(acceptedMission)){
+    
 
-  console.log('inputResource1 '+acceptedMission.InputResource1);
-
-
-
-  console.log('Input Ship '+ acceptedMission.InputShip);
+  
 
   //Disable button of accepted mission and put it into running missions array on client
   acceptedMission.acceptedMission();
@@ -442,21 +563,19 @@ function missionResourcesVerified(acceptedMission){
   }
  }
 
-
-
-
-
-
-
 //verify, if the required ship is in available ships.
-function missionShipVerified(acceptedMission){
-
+function solomissionShipVerified(acceptedMission){
+  console.log('run');
   for (let i=0; i<availableShips.length; i++){
     if (acceptedMission.InputShip === availableShips[i].shipId){
+      
       return true;
     }
+    
   }
 }
+
+
 
 
 //_______________________________________________________________________________________________
@@ -691,12 +810,160 @@ function buildupgradestorage3(){
   }
 }
 
+//_______________________________________________________________________________________
+//Accept a Multiplayer Mission function. Fires, when Contribution button is clicked!
+
+function acceptMultiplayerMission(acceptedMission){
+
+
+//console.log('index '+acceptedMission.index);
+let index = acceptedMission.index;
+
+//Verify, if player has resources and ship available for the mission. 
+
+if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(acceptedMission)){
+
+
+  
+
+
+//CLIENT SIDE IMPLICATIONS
+//Disable the contribution Button of the accepted Multiplayer Mission. (on client)
+ acceptedMission.acceptMission(2);
+
+ //Deduct the resources from the player resources  (on client)
+  money -= acceptedMission.MinMoney;
+  ore -= acceptedMission.MinOre;
+  water -= acceptedMission.MinWater;
+  people -= acceptedMission.MinPeople;
+
+  //block ship (on client)
+  let missionShip;
+  for (let i=0; i<availableShips.length; i++){
+    if (acceptedMission.InputShipId === availableShips[i].shipId){
+      missionShip = availableShips[i];
+      missionShip.blockShip();
+      blockedShips.push(missionShip);
+      availableShips.splice(i,1);
+    }
+  }
+
+  //increase submitted resources of mission and make mission accepted/running on client:
+  multiplayerMissions[index].SubmittedResource +=  multiplayerMissions[index].MinResource;
+  multiplayerMissions[index].SubmittedShips += 1;
+
+  let SubmittedResource = multiplayerMissions[index].SubmittedResource ;
+  let InputResource = multiplayerMissions[index].InputResource;
+  let SubmittedShips =  multiplayerMissions[index].SubmittedShips;
+  let InputShips =  multiplayerMissions[index].ShipAmount;
+ 
+  console.log(multiplayerMissions[index]);
+  
+
+  if (SubmittedResource === InputResource && SubmittedShips === InputShips){
+    multiplayerMissions[index].acceptMission(1);
+  } else {
+    multiplayerMissions[index].acceptMission(2);
+  }
+
+
+
+//DATABASE IMPLICATIONS
+// send update to DB (resources, ship and stored multiplayer mission in accepted (multiplayer) Missions
+
+//Update DB!
+dataSent = {
+  "Player_Id": playerId,
+  "Money": money,
+  "Water": water,
+  "Ore": ore,
+  "People": people,
+  "MMissions_Id":  acceptedMission.missions_Id,
+  "Ship_Fleet_ID": missionShip.ship_Fleet_ID
+}
+
+//update resources on DB
+httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
+    console.log(dataReceived)
+  
+} )
+
+//put mission in accepted multiplayer missions on db
+httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
+ 
+    console.log(dataReceived)
+  
+})
+
+
+//send updated Ships to DB:
+httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
+ 
+    console.log(dataReceived)
+  
+});
+
+
+
+
+
+
+
+
+createResourceBar();
+loop();
+
+}
+else {
+  alert('You dont have the resources or Ships to contribute to this Mission');
+}
+
+
+
+
+
+
+}
+
+
+
+//Verify Resources for Multiplayer mission
+function multiplayerMissionResourcesVerify(acceptedMission){
+  if (money < acceptedMission.MinMoney){
+    return false;
+  } 
+  else if (people < acceptedMission.MinPeople){
+    return false;
+  }
+  else if (ore < acceptedMission.MinOre){
+    return false;
+  }
+  else if (water < acceptedMission.MinWater){
+    return false;
+  }
+
+  else {
+    return true;
+  }
+}
+
+
+
+//verify, if the required ship is in available ships. (for multiplayer missions)
+function missionShipVerified(acceptedMission){
+
+  for (let i=0; i<availableShips.length; i++){
+    if (acceptedMission.InputShipId === availableShips[i].shipId){
+      return true;
+    }
+  }
+}
 
 
 
 
 //___________________________________________________________________________________
-//Ping function to get updated solo missions and completed running missions every 15 seconds. 
+//Ping function to get updated solo missions and completed running missions every 30 seconds. 
 
 setInterval(function(){
  if(cur_status === 'status_play'){
@@ -708,7 +975,15 @@ setInterval(function(){
  
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
-  console.log(dataReceived);
+  
+    console.log(dataReceived);
+   
+ });
+
+ httpPost('/getCompletedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
+  
+    console.log(dataReceived);
+   
  });
  
 
@@ -716,14 +991,17 @@ setInterval(function(){
   loadResources();
   loadPlayerShips(); 
   loadSoloMissions();
-  loadRunningMissions();      //get solomissions data from DB       
+  loadRunningMissions();      //get solomissions data from DB  
+  loadAcceptedMultiplayerMissions(); 
+  loadMultiplayerMissions(); 
+     
   //createMissions();           //assign data to missions
   
 
 
-  //draw 
+
   //loop();
                          
  
 }
-},15000);
+},10000);

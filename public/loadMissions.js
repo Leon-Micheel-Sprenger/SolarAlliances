@@ -220,3 +220,55 @@ function loadPlayerShips(){
     //loop();
   }) 
 }
+
+
+
+//Get multiplayer Missions
+function loadMultiplayerMissions(){
+  loadJSON('/getMMissions', (dataReceived)=> {
+    console.log(dataReceived);
+    
+    mmissionPages = [];
+    mmissionsData = [];
+    multiplayerMissions = [];
+    
+    
+    for(let i=0; i<dataReceived.length; i++){
+      mmissionsData.push(dataReceived[i]);
+    }
+  
+    
+    
+    createMultiplayerMissions();
+    loop();
+
+  })
+}
+
+
+
+//load accepted Multiplayer Missions
+
+function loadAcceptedMultiplayerMissions(){
+  loadJSON('/getAcceptedMMissions/'+playerId, (dataReceived)=> {
+    acceptedMultiplayerMissions = [];
+    runningMultiplayerMissions = [];
+   
+
+  for(let i=0; i<dataReceived.length; i++){
+    if (dataReceived[i].Status === 2){
+      acceptedMultiplayerMissions.push(dataReceived[i]);
+     
+    }
+    else if (dataReceived[i].Status === 1){
+      runningMultiplayerMissions.push(dataReceived[i]);
+      
+    }
+  }
+
+  console.log('accepted multiplayer missions '+acceptedMultiplayerMissions);
+  console.log('running multiplayer missions ' +runningMultiplayerMissions);
+
+  })
+
+}
