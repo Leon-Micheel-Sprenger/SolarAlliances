@@ -891,6 +891,27 @@ function drawContributionScene(){
 }
 
 
+//_________________________________________________________________
+// Draw Messages to the client: 
+
+let messages = [{message: "Welcome to your station commander!"}, {message: "Welcome to your station commander!"}];
+let messageObjects = [];
+//let messages = [];
+
+function drawMessages() {
+
+  for (let i=0; i<messages.length; i++ ){
+    messageObjects[i] = new Message(messages[0].message);
+    messages.splice(0, 1);
+  }
+
+  messageObjects[0].drawMessage();
+
+  console.log(messages);
+  console.log(messageObjects);
+  
+}
+
 
 
 

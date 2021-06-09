@@ -78,6 +78,8 @@ class Button {
     this.corners= corners;
     this.enable = true;    //used to enable and disable buttons
     this.borderClr = 'rgb(0,0,0)'; 
+
+
   }
 
 
@@ -107,6 +109,10 @@ class Button {
       }
       return false;
     }
+  }
+
+  isHovered(){
+    
   }
 
   disable(){
@@ -1166,5 +1172,51 @@ acceptMission(status){
   this.openContributionBtn.disable();
   this.status = status;
 }
+
+}
+
+
+
+class Message {
+
+  constructor(message){
+    this.message = message;
+
+    this.x = width*0.55;
+    this.y = height *0.3; 
+    this.rw = 250;
+    this.rh = 150;
+
+    this.dismissBtn = new Button(this.x, this.y+this.rh/3, 50, 30, 'Dismiss', 0, 255, 10, 10);
+  }
+
+  drawMessage(){
+   
+    if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false && contributionSzeneEnable === false){
+      if (messages.length>0){
+        push();
+        
+       
+        fill('rgba(255, 255, 255, 0.5)');
+        rectMode(CENTER);
+        rect(this.x,this.y, this.rw, this.rh , 20);
+  
+        circle(this.x+this.rw/2+10, this.y+this.rh/2, 20);
+        circle(this.x+this.rw/2+40, this.y+this.rh/2 + 30, 20);
+
+        fill(0);
+        textAlign(CENTER, CENTER);
+        textSize(15);
+        text(this.message, this.x, this.y-this.rh/3, this.rw*0.8, this.rh*0.7);
+
+        this.dismissBtn.drawButton();
+        pop();
+      }
+    }
+  }
+
+  dismissMessage(){
+    messageObjects.splice(0, 1);
+  }
 
 }

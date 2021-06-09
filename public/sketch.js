@@ -17,10 +17,11 @@ function setup() {
 
 
 function draw() {
- 
+  
   drawResourceValues();
   drawGrid();
   drawShips();
+  drawMessages();
   drawSoloMissions();
   drawMultiplayerMissions();
   drawOpenMMission();

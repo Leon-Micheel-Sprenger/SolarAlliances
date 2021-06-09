@@ -57,15 +57,18 @@ function mousePressed(){
 
 //Mission Exit Button clicked
     if(cur_status === 'status_play'){
-      if (missionExitBtn.isClicked(mouseX, mouseY)){
-        missionMenuEnable = false;
-        mmissionEnable = false;
-        openMissionEnable = false;
-        contributionSzeneEnable = false;
-        createGame();
-        //createMultiplayerMissions();
-        loop();
+      if(missionMenuEnable || mmissionEnable || openMissionEnable || contributionSzeneEnable){
+        if (missionExitBtn.isClicked(mouseX, mouseY)){
+          missionMenuEnable = false;
+          mmissionEnable = false;
+          openMissionEnable = false;
+          contributionSzeneEnable = false;
+          createGame();
+          //createMultiplayerMissions();
+          loop();
+        }
       }
+      
     }
 
 
@@ -291,6 +294,20 @@ if (cur_status === 'status_play' && stationUpgradeEnable){
     buildupgradestorage3();
     loop();
   }
+}
+
+
+
+//"Dismiss" Button on Message is clicked
+if (cur_status === 'status_play' && messageObjects.length>0){
+  for (let i=0; i<messageObjects.length; i++){
+    if(messageObjects[i].dismissBtn.isClicked(mouseX, mouseY)){
+      messageObjects[i].dismissMessage();
+      loop();
+      
+    }
+  }
+ 
 }
    
 
