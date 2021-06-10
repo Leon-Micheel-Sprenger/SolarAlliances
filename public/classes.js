@@ -1179,7 +1179,7 @@ acceptMission(status){
 
 class Message {
 
-  constructor(message){
+  constructor(message, index){
     this.message = message;
 
     this.x = width*0.55;
@@ -1187,12 +1187,14 @@ class Message {
     this.rw = 250;
     this.rh = 150;
 
+    this.index = index;
+
     this.dismissBtn = new Button(this.x, this.y+this.rh/3, 50, 30, 'Dismiss', 0, 255, 10, 10);
   }
 
   drawMessage(){
    
-    if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false && contributionSzeneEnable === false){
+    
       if (messages.length>0){
         push();
         
@@ -1207,16 +1209,17 @@ class Message {
         fill(0);
         textAlign(CENTER, CENTER);
         textSize(15);
-        text(this.message, this.x, this.y-this.rh/3, this.rw*0.8, this.rh*0.7);
+        text(`${this.message}`, this.x, this.y-this.rh/3, this.rw*0.8, this.rh*0.7);
 
         this.dismissBtn.drawButton();
         pop();
+      } else {
+        console.log('no messages');
       }
-    }
   }
 
   dismissMessage(){
-    messageObjects.splice(0, 1);
+    messageObjects.splice(this.index, 1);
   }
 
 }

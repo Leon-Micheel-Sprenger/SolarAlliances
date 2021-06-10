@@ -217,7 +217,7 @@ function loadPlayerShips(){
     createships();
     drawGrid();
     drawShips();
-    //loop();
+    loop();
   }) 
 }
 

@@ -163,12 +163,14 @@ if(cur_status === 'status_play' && contributionSzeneEnable){
 
 //Click Single Player Missions Button 
 if (cur_status === 'status_play'){
+  if (missionMenuEnable || mmissionEnable){
   if(singleMissionsBtn.isClicked(mouseX, mouseY)){
     missionMenuEnable = true;
     mmissionEnable = false;
     openMissionEnable = false;
     loop();
   }
+}
 }
 
 
@@ -302,7 +304,8 @@ if (cur_status === 'status_play' && stationUpgradeEnable){
 if (cur_status === 'status_play' && messageObjects.length>0){
   for (let i=0; i<messageObjects.length; i++){
     if(messageObjects[i].dismissBtn.isClicked(mouseX, mouseY)){
-      messageObjects[i].dismissMessage();
+      messages.splice(0,1);
+      createGame();
       loop();
       
     }
@@ -505,13 +508,14 @@ function acceptSoloMission(missionIndex){
   water -= acceptedMission.InputWater;
 
 
-  //block ship for use of the player for time of mission (change status on DB): 
+  //block ship for use of the player for time of mission: 
  for (let i=0; i<availableShips.length; i++){
   if (acceptedMission.InputShip === availableShips[i].shipId){
     missionShip = availableShips[i];
     missionShip.blockShip();
     blockedShips.push(missionShip);
     availableShips.splice(i,1);
+    break;
   }
 }
 
@@ -992,32 +996,55 @@ setInterval(function(){
  
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
-  
+
+
+ 
+
+  if (dataReceived.message){
     console.log(dataReceived);
+    messages.push(dataReceived);
+
+   
+    loadPlayerShips(); 
+    
+
+    drawMessages(); 
+  }
+    
    
  });
 
  httpPost('/getCompletedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
   
+  if (dataReceived.message){
     console.log(dataReceived);
+    messages.push(dataReceived);
+
+    
+    loadPlayerShips(); 
+
+    drawMessages(); 
+  }
+  
    
  });
+
  
-
-
-  loadResources();
-  loadPlayerShips(); 
-  loadSoloMissions();
-  loadRunningMissions();      //get solomissions data from DB  
-  loadAcceptedMultiplayerMissions(); 
-  loadMultiplayerMissions(); 
-     
-  //createMissions();           //assign data to missions
-  
+ loadResources();
+ loadRunningMissions();
+ loadSoloMissions();
+ loadAcceptedMultiplayerMissions(); 
+ loadMultiplayerMissions();
+ loadPlayerShips(); 
 
 
 
-  //loop();
+  // loadResources();
+  // loadPlayerShips(); 
+  // loadSoloMissions();
+  // loadRunningMissions();      //get solomissions data from DB  
+  // loadAcceptedMultiplayerMissions(); 
+  // loadMultiplayerMissions(); 
                          
  
 }

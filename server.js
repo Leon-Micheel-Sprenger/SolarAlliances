@@ -599,7 +599,7 @@ app.post('/getCompletedMissions', (req, res)=> {
           db.query(sql, (err, result)=> {
             if (err) throw err;
 
-            let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Solo_Mission_Id = ${completedMissions[0].Solo_Missions_Id};`
+            let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Solo_Mission_Id = ${completedMissions[0].Solo_Mission_Id};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
               res.send({message: 'mission completed successfully'});

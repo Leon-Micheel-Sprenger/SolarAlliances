@@ -894,22 +894,36 @@ function drawContributionScene(){
 //_________________________________________________________________
 // Draw Messages to the client: 
 
-let messages = [{message: "Welcome to your station commander!"}, {message: "Welcome to your station commander!"}];
+let messages = [
+  {message: "Welcome to the station commander"},
+  {message: "a new mission has arrived"}, 
+  {message: "Your ship is back from a mission"}];
+
 let messageObjects = [];
 //let messages = [];
 
 function drawMessages() {
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false && contributionSzeneEnable === false){
+    if (messages[0]){
 
-  for (let i=0; i<messages.length; i++ ){
-    messageObjects[i] = new Message(messages[0].message);
-    messages.splice(0, 1);
-  }
+   
+    messageObjects = [];
+   
+    messageObjects[0] = new Message(messages[0].message, 0);
+  
 
-  messageObjects[0].drawMessage();
+  //  for (let i=0; i<messageObjects.length; i++){
+  //   messageObjects[i].drawMessage();
+  //  }
+
+    push();
+    messageObjects[0].drawMessage();
+    pop();
 
   console.log(messages);
   console.log(messageObjects);
-  
+}
+}
 }
 
 
