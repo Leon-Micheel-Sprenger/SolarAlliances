@@ -87,7 +87,17 @@ let singlemission5AcceptBtn;
 
 function loadSoloMissions() {
 
+   
+
     loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
+      if (singleMissionsArr){
+        previousMissions = singleMissionsArr;
+      } else {
+        previousMissions = [];
+      }
+      
+      singleMissionsArr = [];
+
         //assign all variables of mission1. 
         singlemissionId = dataReceived[0].Solo_Missions_Id;
         singlemissionName = dataReceived[0].Name;
@@ -209,15 +219,15 @@ function loadPlayerShips(){
     ships = [];
     availableShips = [];
     blockedShips = [];
+    Gridpages = [0];
     for(let i = 0; i<dataReceived.length; i++){
       ships.push(dataReceived[i]);
     }
-    shipsinputore = dataReceived[0].Input_Ore;
-    shipsinputpeople = dataReceived[0].Input_Crew;
-    createships();
+    
     drawGrid();
+    createships();
     drawShips();
-    //loop();
+    loop();
   }) 
 }
 
