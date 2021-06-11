@@ -519,6 +519,8 @@ function acceptSoloMission(missionIndex){
   }
 }
 
+
+
 // create and draw missions again.
 //loop();
  createMissions();
@@ -538,18 +540,32 @@ function acceptSoloMission(missionIndex){
     "Mission_Id":  acceptedMission.missionId,
     "Ship_Fleet_ID": missionShip.ship_Fleet_ID
   }
-  
-  //update resources
-  httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {} )
+
 
   //put mission in accepted missions on db
-  httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {})
+  httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {
+    //message to player:
+    let message = {message: `Commander, You accepted the mission ${acceptedMission.name}. Let's hope, everything goes as planned.`}
+    messages.push(message);
+ })
+
+  
+  //update resources
+  httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
+    //message to player:
+     let message = dataReceived[0];
+     messages.push(message);
+  } )
 
 
   //send updated Ships to DB:
-  httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {});
+  httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
+     //message to player:
+     let message = {message: "Commander, one of your ships has been deployed for a mission!"}
+     messages.push(message);
+  });
 
-
+  drawMessages();
 
   
   }
@@ -866,6 +882,7 @@ if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(ac
       missionShip.blockShip();
       blockedShips.push(missionShip);
       availableShips.splice(i,1);
+      break;
     }
   }
 
@@ -882,10 +899,20 @@ if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(ac
   
 
   if (SubmittedResource === InputResource && SubmittedShips === InputShips){
-    multiplayerMissions[index].acceptMission(1);
+    multiplayerMissions[index].acceptMission(1)
+    
+    //message to player:
+    let message = {message: `Commander, You are joining others on the glorious mission: ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune to a successful completion. `}
+    messages.push(message);
   } else {
     multiplayerMissions[index].acceptMission(2);
+    
+     //message to player:
+     let message = {message: `Commander, You are joining others on the glorious mission ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune and hopes to find other brave commanders to join.`}
+     messages.push(message);
   }
+
+
 
 
 
@@ -905,14 +932,18 @@ dataSent = {
 
 //update resources on DB
 httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
-    console.log(dataReceived)
+    console.log(dataReceived);
+     //message to player:
+     let message = {message: "Your Resources have been updated!"}
+     messages.push(message);
   
 } )
 
 //put mission in accepted multiplayer missions on db
 httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
  
-    console.log(dataReceived)
+    console.log(dataReceived);
+
   
 })
 
@@ -921,6 +952,10 @@ httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=
 httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
  
     console.log(dataReceived)
+     //message to player:
+     let message = {message: "Commaner, A ship from your ship fleet has been deployed for a mission."}
+     messages.push(message);
+
   
 });
 
@@ -998,20 +1033,16 @@ setInterval(function(){
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
 
 
- 
-
   if (dataReceived.message){
     console.log(dataReceived);
     messages.push(dataReceived);
 
    
     loadPlayerShips(); 
-    
-
     drawMessages(); 
-  }
-    
-   
+
+
+  }    
  });
 
  httpPost('/getCompletedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
@@ -1022,17 +1053,16 @@ setInterval(function(){
 
     
     loadPlayerShips(); 
-
     drawMessages(); 
   }
   
    
  });
 
- 
+ loadPlayerShips(); 
  loadResources();
- loadRunningMissions();
  loadSoloMissions();
+ loadRunningMissions();
  loadAcceptedMultiplayerMissions(); 
  loadMultiplayerMissions();
  loadPlayerShips(); 

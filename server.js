@@ -141,7 +141,8 @@ setInterval(function() {
 
   let sql = `Update player_resources 
              Join player on player_resources.Player_Id = player.Player_Id
-             Set People = People + 10;`;
+             Set People = People + 10
+             Where Max_People >= People + 10 ;`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
@@ -548,7 +549,7 @@ app.post('/updateShipFleet', (req, res)=> {
   db.query(sql, (err, result)=> {
     if(err) throw err;
     if (result.affectedRows>0){
-      res.send({message: "Your Ship has been blocked for a mission"});
+      res.send({message: "Commander, A ship from your Ship Fleet has been deployed to a mission"});
     }
   })
 
@@ -588,8 +589,22 @@ app.post('/getCompletedMissions', (req, res)=> {
         if (err) throw err;
        
         //give player the rewards of the completed mission && set ship back to not on a mission in ship_fleet
-        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People= People + ${result[0].Reward_People} WHERE Player_Id=${playerId};
-                   `;
+        let sql = `
+        UPDATE player_resources
+        SET Money = Money + ${result[0].Reward_Money}, 
+         Water = CASE
+              WHEN Max_Water >= Water+${result[0].Reward_Water} THEN Water + ${result[0].Reward_Water}
+              ELSE Max_Water
+              END,
+         Ore = CASE 
+          WHEN Max_Ore >= Ore+${result[0].Reward_Ore} THEN Ore + ${result[0].Reward_Ore}
+              ELSE Max_Ore
+              END,
+         People = CASE
+          WHEN Max_People >= People + ${result[0].Reward_People} THEN People + ${result[0].Reward_People}
+              ELSE Max_People
+              END
+      WHERE Player_Id=${playerId};`;
         
       db.query(sql, (err, result)=> {
           if (err) throw err;
@@ -602,7 +617,7 @@ app.post('/getCompletedMissions', (req, res)=> {
             let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Solo_Mission_Id = ${completedMissions[0].Solo_Mission_Id};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
-              res.send({message: 'mission completed successfully'});
+              res.send({message: 'Commander, a solo mission was copleted successfully.'});
               
             })
           })
@@ -677,8 +692,21 @@ app.post('/getCompletedMultiplayerMissions', (req, res)=> {
         if (err) throw err;
        
         //give player the rewards of the completed mission && set ship back to not on a mission in ship_fleet
-        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People= People + ${result[0].Reward_People} WHERE Player_Id=${playerId};
-                   `;
+        let sql = `UPDATE player_resources
+        SET Money = Money + ${result[0].Reward_Money}, 
+         Water = CASE
+              WHEN Max_Water >= Water+${result[0].Reward_Water} THEN Water + ${result[0].Reward_Water}
+              ELSE Max_Water
+              END,
+         Ore = CASE 
+          WHEN Max_Ore >= Ore+${result[0].Reward_Ore} THEN Ore + ${result[0].Reward_Ore}
+              ELSE Max_Ore
+              END,
+         People = CASE
+          WHEN Max_People >= People + ${result[0].Reward_People} THEN People + ${result[0].Reward_People}
+              ELSE Max_People
+              END
+      WHERE Player_Id=${playerId}; `;
         
       db.query(sql, (err, result)=> {
           if (err) throw err;
@@ -691,7 +719,7 @@ app.post('/getCompletedMultiplayerMissions', (req, res)=> {
             let sql = `UPDATE accepted_multiplayer_missions SET Status = 0 WHERE Player_Id= ${playerId} AND amm_MMissions_Id = ${completedMissions[0].amm_MMissions_Id};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
-              res.send({message: 'mission completed successfully'});
+              res.send({message: 'Commander, Your ships and crew have returned from a collaborative Mission!'});
               console.log('Collaborative mission completed successfully');
             })
           })

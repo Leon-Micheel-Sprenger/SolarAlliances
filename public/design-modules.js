@@ -183,7 +183,7 @@ function createGame(){
   cur_status = 'status_play';
   InputName.remove();
   InputPass.remove();
-  background(220);
+  background(255);
   
 
   createResourceBar();
@@ -528,7 +528,7 @@ let singlemission3;
 let singlemission4;
 let singlemission5;
 
-let singleMissionsArr = []; //all displayed Missions
+let singleMissionsArr; //all displayed Missions
 
 let opensingleMissionsArr = []; //all open solo missions (reference by index of singleMissionsArr)
 
@@ -536,12 +536,12 @@ let runningSoloMissions = []; // all running missions (reference by MissionId)
 
 let runningSoloMissionsIndex = [];
 
-
+let previousMissions;  //all five solo missions at last ping function!
 
 
 //Create AND draw Missions Interface
  function createMissions(){
-  if (missionMenuEnable === true){
+  
 
 
     rx= width*0.5;
@@ -573,7 +573,27 @@ let runningSoloMissionsIndex = [];
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-  
+    console.log(singleMissionsArr);
+    console.log(previousMissions);
+
+    //message to player, when missions have changed!
+    if (previousMissions.length === 0){
+      console.log('nothing');
+    }
+    else if (previousMissions[0].missionId === singleMissionsArr[0].missionId){
+      console.log('nothing');
+    } 
+    else if (previousMissions[0].missionId !== singleMissionsArr[0].missionId){
+      let message = {message: `Commander, a new Solo Mission is available!`}
+      messages.push(message);
+      drawMessages();
+    }
+    
+
+
+    
+    //empty previousMissions again!
+    previousMissions = [];
 
     //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr (this needs to stay on here, because otherwise it will create a bugg, whenver we are opening the missions interface again with a recently accepted mission --> it will not show then)
   	runningSoloMissionsIndex = []; 
@@ -600,7 +620,7 @@ let runningSoloMissionsIndex = [];
     //  console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
     //  console.log('running missions unindexed '+runningSoloMissions);
      //console.log('Assigned missions '+singleMissionsArr.length);
-    }
+    
 }
 
 
@@ -895,9 +915,7 @@ function drawContributionScene(){
 // Draw Messages to the client: 
 
 let messages = [
-  {message: "Welcome to the station commander"},
-  {message: "a new mission has arrived"}, 
-  {message: "Your ship is back from a mission"}];
+  {message: "Welcome back to your station Commander! "}];
 
 let messageObjects = [];
 //let messages = [];

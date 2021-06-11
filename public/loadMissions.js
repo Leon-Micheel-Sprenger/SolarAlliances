@@ -87,7 +87,17 @@ let singlemission5AcceptBtn;
 
 function loadSoloMissions() {
 
+   
+
     loadJSON('/getPlayerMissions/'+playerId, (dataReceived)=> {
+      if (singleMissionsArr){
+        previousMissions = singleMissionsArr;
+      } else {
+        previousMissions = [];
+      }
+      
+      singleMissionsArr = [];
+
         //assign all variables of mission1. 
         singlemissionId = dataReceived[0].Solo_Missions_Id;
         singlemissionName = dataReceived[0].Name;

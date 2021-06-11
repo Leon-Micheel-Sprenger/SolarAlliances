@@ -1209,7 +1209,7 @@ class Message {
         fill(0);
         textAlign(CENTER, CENTER);
         textSize(15);
-        text(`${this.message}`, this.x, this.y-this.rh/3, this.rw*0.8, this.rh*0.7);
+        text(`${this.message}`, this.x, this.y, this.rw*0.8, this.rh*0.7);
 
         this.dismissBtn.drawButton();
         pop();
