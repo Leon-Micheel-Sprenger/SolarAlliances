@@ -57,15 +57,18 @@ function mousePressed(){
 
 //Mission Exit Button clicked
     if(cur_status === 'status_play'){
-      if (missionExitBtn.isClicked(mouseX, mouseY)){
-        missionMenuEnable = false;
-        mmissionEnable = false;
-        openMissionEnable = false;
-        contributionSzeneEnable = false;
-        createGame();
-        //createMultiplayerMissions();
-        loop();
+      if(missionMenuEnable || mmissionEnable || openMissionEnable || contributionSzeneEnable){
+        if (missionExitBtn.isClicked(mouseX, mouseY)){
+          missionMenuEnable = false;
+          mmissionEnable = false;
+          openMissionEnable = false;
+          contributionSzeneEnable = false;
+          createGame();
+          //createMultiplayerMissions();
+          loop();
+        }
       }
+      
     }
 
 
@@ -90,6 +93,35 @@ if (cur_status === 'status_play' && mmissionEnable){
     }
   };
 }
+
+
+
+//Click arrow Right of Ships in grid
+if (cur_status === 'status_play' ){
+  if (gridArrowRightBtn.IsClicked(mouseX, mouseY)){
+    if(gridPageEnable+1 < Gridpages.length){
+     
+      gridPageEnable ++;
+      drawGrid();
+      drawShips();
+    }
+  };
+}
+
+//Click arrow Left of Ships in grid
+if (cur_status === 'status_play' ){
+  if (gridArrowLeftBtn.IsClicked(mouseX, mouseY)){
+    if(gridPageEnable-1 >= 0){
+    
+      gridPageEnable --;
+      drawGrid();
+      drawShips();
+    }
+  };
+}
+
+
+
 
 //Click Collaborative Missions Button
 if (cur_status === 'status_play' && missionMenuEnable){
@@ -160,12 +192,14 @@ if(cur_status === 'status_play' && contributionSzeneEnable){
 
 //Click Single Player Missions Button 
 if (cur_status === 'status_play'){
+  if (missionMenuEnable || mmissionEnable){
   if(singleMissionsBtn.isClicked(mouseX, mouseY)){
     missionMenuEnable = true;
     mmissionEnable = false;
     openMissionEnable = false;
     loop();
   }
+}
 }
 
 
@@ -292,6 +326,21 @@ if (cur_status === 'status_play' && stationUpgradeEnable){
     loop();
   }
 }
+
+
+
+//"Dismiss" Button on Message is clicked
+if (cur_status === 'status_play' && messageObjects.length>0){
+  for (let i=0; i<messageObjects.length; i++){
+    if(messageObjects[i].dismissBtn.isClicked(mouseX, mouseY)){
+      messages.splice(0,1);
+      createGame();
+      loop();
+      
+    }
+  }
+ 
+}
    
 
 
@@ -367,6 +416,10 @@ if (cur_status=== 'status_login'){
 
   username = InputName.value();
   password = InputPass.value();
+
+  if (username && password){
+
+  
   
   dataSent = {
     "username": username,
@@ -375,9 +428,10 @@ if (cur_status=== 'status_login'){
   
   //Login player and get Player ID
   httpPost('/Login', 'json', dataSent, (dataReceived)=>{
-    
-    if (dataReceived.length<1){
+    console.log(dataReceived);
+    if (dataReceived.message === 'Wrong password'){
       alert('Password or username is wrong');
+      console.log
     } else {
       playerId = dataReceived[0].Player_Id;
       console.log('playerId '+ playerId);
@@ -444,6 +498,11 @@ if (cur_status=== 'status_login'){
      })
      //loop();
     }
+    else {
+      alert('Please fill out the required fields');
+  }
+ 
+  }
   }
 
 
@@ -478,15 +537,18 @@ function acceptSoloMission(missionIndex){
   water -= acceptedMission.InputWater;
 
 
-  //block ship for use of the player for time of mission (change status on DB): 
+  //block ship for use of the player for time of mission: 
  for (let i=0; i<availableShips.length; i++){
   if (acceptedMission.InputShip === availableShips[i].shipId){
     missionShip = availableShips[i];
     missionShip.blockShip();
     blockedShips.push(missionShip);
     availableShips.splice(i,1);
+    break;
   }
 }
+
+
 
 // create and draw missions again.
 //loop();
@@ -507,18 +569,32 @@ function acceptSoloMission(missionIndex){
     "Mission_Id":  acceptedMission.missionId,
     "Ship_Fleet_ID": missionShip.ship_Fleet_ID
   }
-  
-  //update resources
-  httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {} )
+
 
   //put mission in accepted missions on db
-  httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {})
+  httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {
+    //message to player:
+    let message = {message: `Commander, You accepted the mission ${acceptedMission.name}. Let's hope, everything goes as planned.`}
+    messages.push(message);
+ })
+
+  
+  //update resources
+  httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
+    //message to player:
+     let message = dataReceived[0];
+     messages.push(message);
+  } )
 
 
   //send updated Ships to DB:
-  httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {});
+  httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
+     //message to player:
+     let message = {message: "Commander, one of your ships has been deployed for a mission!"}
+     messages.push(message);
+  });
 
-
+  drawMessages();
 
   
   }
@@ -835,6 +911,7 @@ if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(ac
       missionShip.blockShip();
       blockedShips.push(missionShip);
       availableShips.splice(i,1);
+      break;
     }
   }
 
@@ -851,10 +928,20 @@ if (multiplayerMissionResourcesVerify(acceptedMission) && missionShipVerified(ac
   
 
   if (SubmittedResource === InputResource && SubmittedShips === InputShips){
-    multiplayerMissions[index].acceptMission(1);
+    multiplayerMissions[index].acceptMission(1)
+    
+    //message to player:
+    let message = {message: `Commander, You are joining others on the glorious mission: ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune to a successful completion. `}
+    messages.push(message);
   } else {
     multiplayerMissions[index].acceptMission(2);
+    
+     //message to player:
+     let message = {message: `Commander, You are joining others on the glorious mission ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune and hopes to find other brave commanders to join.`}
+     messages.push(message);
   }
+
+
 
 
 
@@ -874,14 +961,18 @@ dataSent = {
 
 //update resources on DB
 httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
-    console.log(dataReceived)
+    console.log(dataReceived);
+     //message to player:
+     let message = {message: "Your Resources have been updated!"}
+     messages.push(message);
   
 } )
 
 //put mission in accepted multiplayer missions on db
 httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
  
-    console.log(dataReceived)
+    console.log(dataReceived);
+
   
 })
 
@@ -890,6 +981,10 @@ httpPost('/updateAcceptedMultiplayerMissions', 'json', dataSent, (dataReceived)=
 httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
  
     console.log(dataReceived)
+     //message to player:
+     let message = {message: "Commaner, A ship from your ship fleet has been deployed for a mission."}
+     messages.push(message);
+
   
 });
 
@@ -965,33 +1060,51 @@ setInterval(function(){
  
 
  httpPost('/getCompletedMissions', 'json', dataSent, (dataReceived)=> {
-  
+
+
+  if (dataReceived.message){
     console.log(dataReceived);
+    messages.push(dataReceived);
+
    
+    loadPlayerShips(); 
+    drawMessages(); 
+
+
+  }    
  });
 
  httpPost('/getCompletedMultiplayerMissions', 'json', dataSent, (dataReceived)=> {
   
+  if (dataReceived.message){
     console.log(dataReceived);
+    messages.push(dataReceived);
+
+    
+    loadPlayerShips(); 
+    drawMessages(); 
+  }
+  
    
  });
- 
 
-
-  loadResources();
-  loadPlayerShips(); 
-  loadSoloMissions();
-  loadRunningMissions();      //get solomissions data from DB  
-  loadAcceptedMultiplayerMissions(); 
-  loadMultiplayerMissions(); 
-     
-  //createMissions();           //assign data to missions
-  
+ loadPlayerShips(); 
+ loadResources();
+ loadSoloMissions();
+ loadRunningMissions();
+ loadAcceptedMultiplayerMissions(); 
+ loadMultiplayerMissions();
+ loadPlayerShips(); 
 
 
 
-  //loop();
+  // loadResources();
+  // loadPlayerShips(); 
+  // loadSoloMissions();
+  // loadRunningMissions();      //get solomissions data from DB  
+  // loadAcceptedMultiplayerMissions(); 
+  // loadMultiplayerMissions(); 
                          
  
 }
-},10000);
+},30000);

@@ -78,6 +78,8 @@ class Button {
     this.corners= corners;
     this.enable = true;    //used to enable and disable buttons
     this.borderClr = 'rgb(0,0,0)'; 
+
+
   }
 
 
@@ -107,6 +109,10 @@ class Button {
       }
       return false;
     }
+  }
+
+  isHovered(){
+    
   }
 
   disable(){
@@ -160,6 +166,37 @@ class ExitButton {
       return false;
     }
   }
+
+}
+
+
+class ImageButton {
+
+  constructor(rx,ry,rw,rh, IconPath){
+    this.rx=rx;
+    this.ry=ry;
+    this.rw=rw;
+    this.rh=rh;
+    this.enable=true;
+    this.IconPath = IconPath; 
+  }
+
+  drawImageButton(){
+    loadImage(this.IconPath, img => {
+      push();
+      imageMode(CENTER);
+      image(img, this.rx, this.ry, this.rw, this.rh);
+      pop();
+    })
+  }
+
+  IsClicked(x,y){
+    let d= dist(x, y, this.rx, this.ry);
+    if (d<this.rw){
+      return true;
+    }
+  }
+
 
 }
 
@@ -265,7 +302,7 @@ class Icon {
 //ship class
 class Ship {
 
-  constructor(ship_Fleet_ID, Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_Under_Construction, shipId, r, c,gridStartX, gridStartY, side, width, height, shipOnMissionIconPath){
+  constructor(ship_Fleet_ID, GridPage, Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_Under_Construction, shipId, r, c,gridStartX, gridStartY, side, width, height, shipOnMissionIconPath){
 
 
     this.ship_Fleet_ID = ship_Fleet_ID;
@@ -274,6 +311,7 @@ class Ship {
     this.Ship_Health = Ship_Health;
     this.Ship_Under_Construction = Ship_Under_Construction;
     this.shipId = shipId;
+    this.page = GridPage;
 
     this.iconpath;
     this.r = r;           //place in grid (number eg. 5,2,3)
@@ -294,6 +332,8 @@ class Ship {
 
   drawShip(){
 
+   if(this.page === gridPageEnable){
+
     switch (this.shipId) {
 
       case 3: 
@@ -312,7 +352,8 @@ class Ship {
         this.iconpath = emptyIconPath;
     }
 
-    
+ 
+
     loadImage(this.iconpath, img => {
       image(img, this.posX-(this.side/5), this.posY-(this.side/5), this.width, this.height);
     })
@@ -323,6 +364,7 @@ class Ship {
       image(img2, this.posX-this.side/2, this.posY-this.side/2, 20, 25);
     }) 
   }
+}
     
 }
 
@@ -1168,3 +1210,55 @@ acceptMission(status){
 }
 
 }
+
+
+
+class Message {
+
+  constructor(message, index){
+    this.message = message;
+
+    this.x = width*0.55;
+    this.y = height *0.3; 
+    this.rw = 250;
+    this.rh = 150;
+
+    this.index = index;
+
+    this.dismissBtn = new Button(this.x, this.y+this.rh/3, 50, 30, 'Dismiss', 0, 255, 10, 10);
+  }
+
+  drawMessage(){
+   
+    
+      if (messages.length>0){
+        push();
+        
+       
+        fill('rgba(255, 255, 255, 0.5)');
+        rectMode(CENTER);
+        rect(this.x,this.y, this.rw, this.rh , 20);
+  
+        circle(this.x+this.rw/2+10, this.y+this.rh/2, 20);
+        circle(this.x+this.rw/2+40, this.y+this.rh/2 + 30, 20);
+
+        fill(0);
+        textAlign(CENTER, CENTER);
+        textSize(15);
+        text(`${this.message}`, this.x, this.y, this.rw*0.8, this.rh*0.7);
+
+        this.dismissBtn.drawButton();
+        pop();
+      } else {
+        console.log('no messages');
+      }
+  }
+
+  dismissMessage(){
+    messageObjects.splice(this.index, 1);
+  }
+
+}
+
+
+

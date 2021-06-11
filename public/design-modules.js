@@ -112,8 +112,8 @@ function loginScreen(){
   registerBtn = new Button(rx,ry+130,120,30,'Register as new Player',255,0,10);
   
 
-  InputName = createInput('Name').position(rx-100, ry-60);
-  InputPass = createInput('Password', 'password').position(rx-100, ry);
+  InputName = createInput('Leon1').position(rx-100, ry-60);
+  InputPass = createInput('Password', 'Password').position(rx-100, ry);
   
   InputPass.attribute('placeholder','Password');
   InputName.attribute('placeholder','Username');
@@ -183,7 +183,7 @@ function createGame(){
   cur_status = 'status_play';
   InputName.remove();
   InputPass.remove();
-  background(220);
+  background(255);
   
 
   createResourceBar();
@@ -312,6 +312,10 @@ let side = 100;
 let gridX = 5;    //length of the grid
 let gridY = 1;   // height of the grid
 
+let gridArrowRightBtn;
+let gridArrowLeftBtn;  
+
+
 function createGrid(){
   if(cur_status === 'status_play'){
     for (r=gridStartX; r<gridX+gridStartX;r++){
@@ -320,6 +324,7 @@ function createGrid(){
         tilesArr[r][c] = new Tile (r, c, side, txt='', 200);    //to let tile numbers appear, insert into txt: ${r},${c} 
       } 
     } 
+   
   }
 }
 
@@ -330,6 +335,10 @@ function drawGrid(){
         tilesArr[r][c].draw_tile();
       }
     }
+    gridArrowLeftBtn = new ImageButton(tilesArr[gridStartX][gridStartY].posX-75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowLeft);
+    gridArrowRightBtn =  new ImageButton(tilesArr[gridStartX+4][gridStartY].posX+75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowRight);
+    gridArrowRightBtn.drawImageButton();
+    gridArrowLeftBtn.drawImageButton();
   }
 }
 
@@ -343,7 +352,8 @@ let availableShips = []; //array of all ship objects, that are available in ship
 let blockedShips = [];   //array of all ship objects, that are blocked ships in shipfleet
 let shipList=[];  //array of all ship objects, that are created in createships for drawing (blocked and available)
 
-
+let Gridpages = [0];
+let gridPageEnable = 0;
 
 function createships(){
 
@@ -352,9 +362,31 @@ function createships(){
   if(cur_status === 'status_play'){
 
   shipList = [];
+  let column = 0;
+  
+
   for (let i=0; i<ships.length; i++){
+    let ship;
+    
+
+      if (i % 5 === 0 && i !== 0){
+       column = 0;
+       Gridpages.push(Gridpages.length);
+       ship = new Ship(ships[i].Ship_Fleet_ID, Gridpages[Gridpages.length-1], ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,column, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
+       column ++;
+      } 
+      else {
+        ship = new Ship(ships[i].Ship_Fleet_ID, Gridpages[Gridpages.length-1], ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,column, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
+        column ++;
+      }
+
       
-    let ship = new Ship(ships[i].Ship_Fleet_ID, ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,i, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
+
+      
+
+      console.log(ship);
+      console.log('gridpages '+Gridpages);
+    
 
       //assign blocked and available ships
       if(ship.Ship_on_Mission === 0){
@@ -367,12 +399,17 @@ function createships(){
       shipList.push(ship);
 
     }
+
+    
+
   }
   // print('ships '+ships);
   // console.log('shipList '+shipList);
   // console.log('available Ships '+availableShips);
   // console.log('blocked Ships '+blockedShips);
 }
+
+
 
 
 
@@ -528,7 +565,7 @@ let singlemission3;
 let singlemission4;
 let singlemission5;
 
-let singleMissionsArr = []; //all displayed Missions
+let singleMissionsArr; //all displayed Missions
 
 let opensingleMissionsArr = []; //all open solo missions (reference by index of singleMissionsArr)
 
@@ -536,12 +573,12 @@ let runningSoloMissions = []; // all running missions (reference by MissionId)
 
 let runningSoloMissionsIndex = [];
 
-
+let previousMissions;  //all five solo missions at last ping function!
 
 
 //Create AND draw Missions Interface
  function createMissions(){
-  if (missionMenuEnable === true){
+  
 
 
     rx= width*0.5;
@@ -573,7 +610,27 @@ let runningSoloMissionsIndex = [];
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-  
+    console.log(singleMissionsArr);
+    console.log(previousMissions);
+
+    //message to player, when missions have changed!
+    if (previousMissions.length === 0){
+      console.log('nothing');
+    }
+    else if (previousMissions[0].missionId === singleMissionsArr[0].missionId){
+      console.log('nothing');
+    } 
+    else if (previousMissions[0].missionId !== singleMissionsArr[0].missionId){
+      let message = {message: `Commander, a new Solo Mission is available!`}
+      messages.push(message);
+      drawMessages();
+    }
+    
+
+
+    
+    //empty previousMissions again!
+    previousMissions = [];
 
     //Disable accepted missions and assign runningMissions and openMissions with index of singleMissionsArr (this needs to stay on here, because otherwise it will create a bugg, whenver we are opening the missions interface again with a recently accepted mission --> it will not show then)
   	runningSoloMissionsIndex = []; 
@@ -600,7 +657,7 @@ let runningSoloMissionsIndex = [];
     //  console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
     //  console.log('running missions unindexed '+runningSoloMissions);
      //console.log('Assigned missions '+singleMissionsArr.length);
-    }
+    
 }
 
 
@@ -890,6 +947,39 @@ function drawContributionScene(){
   }
 }
 
+
+//_________________________________________________________________
+// Draw Messages to the client: 
+
+let messages = [
+  {message: "Welcome back to your station Commander! "}];
+
+let messageObjects = [];
+//let messages = [];
+
+function drawMessages() {
+  if(cur_status === 'status_play' && missionMenuEnable === false && mmissionEnable === false && openMissionEnable === false && contributionSzeneEnable === false){
+    if (messages[0]){
+
+   
+    messageObjects = [];
+   
+    messageObjects[0] = new Message(messages[0].message, 0);
+  
+
+  //  for (let i=0; i<messageObjects.length; i++){
+  //   messageObjects[i].drawMessage();
+  //  }
+
+    push();
+    messageObjects[0].drawMessage();
+    pop();
+
+  console.log(messages);
+  console.log(messageObjects);
+}
+}
+}
 
 
 

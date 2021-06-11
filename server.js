@@ -1,8 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mysql = require('mysql');
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 app.use(express.static('public'));
 
@@ -133,6 +135,23 @@ setInterval(function(){
 
 
 
+//_____________________________________________________________
+//Autogenerate people for players every 5 minutes
+setInterval(function() {
+
+  let sql = `Update player_resources 
+             Join player on player_resources.Player_Id = player.Player_Id
+             Set People = People + 10
+             Where Max_People >= People + 10 ;`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+   
+  })
+
+
+}, 300000)
+
 //______________________________________________________________
 //Gets and Posts start here
 
@@ -147,8 +166,9 @@ app.post('/Register', (req, res)=> {
   let password = req.body.password;
   let email = req.body.email;
 
-
-  let sql = `SELECT * FROM player WHERE  Name = '${username}';`;
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+    
+    let sql = `SELECT * FROM player WHERE  Name = '${username}';`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -158,7 +178,7 @@ app.post('/Register', (req, res)=> {
     }
     else {
 
-      let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${password}', '${email}');`;
+      let sql = `INSERT INTO player (Name, Password, Email) VALUES ('${username}', '${hash}', '${email}');`;
 
      db.query(sql, (err, result)=> {
      if (err) throw err;
@@ -188,7 +208,7 @@ app.post('/Register', (req, res)=> {
 
               db.query(sql, (err, result) => {
                 if (err) throw err;
-                console.log(result);
+               
 
                 let Mission1 = result[0].Solo_Missions_Id;
                 let Mission2 = result[1].Solo_Missions_Id;
@@ -212,6 +232,7 @@ app.post('/Register', (req, res)=> {
   })
     }
   })
+});
 })
 
 
@@ -223,23 +244,44 @@ app.post('/Login', (req, res)=> {
 
   let username = req.body.username;
   let password = req.body.password;
- 
 
-  let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${password}';`;
 
-  db.query(sql, (err, result)=> {     
-    if (err) throw err;
+  let sql = `SELECT Password FROM player WHERE Name = '${username}';`;
+
+  db.query(sql, (err, result)=> {
+    if(err) throw err;
+
+    hash = result[0].Password;
+
+    bcrypt.compare(password, hash, function(err, result) {
+
+      if (result === true){
+  
+      let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${hash}';`;
+  
+      db.query(sql, (err, result)=> {     
+      if (err) throw err;
+      
+      if (result.length<1){    //if user exists not
+        
+        res.send(result);
+        
+  
+          } else res.send(result);  
+       
+       console.log('new playerId sent to client');
+    })
+  }
+    else if (result === false){
+      res.send({message: 'Wrong password'});
+    }
+  });
+
+
     
-
-    if (result.length<1){    //if user exists not
-      
-      res.send(result);
-      
-
-        } else res.send(result);  
-     
-     console.log('new playerId sent to client');
   })
+
+ 
 });
 
 
@@ -507,7 +549,7 @@ app.post('/updateShipFleet', (req, res)=> {
   db.query(sql, (err, result)=> {
     if(err) throw err;
     if (result.affectedRows>0){
-      res.send({message: "Your Ship has been blocked for a mission"});
+      res.send({message: "Commander, A ship from your Ship Fleet has been deployed to a mission"});
     }
   })
 
@@ -547,8 +589,22 @@ app.post('/getCompletedMissions', (req, res)=> {
         if (err) throw err;
        
         //give player the rewards of the completed mission && set ship back to not on a mission in ship_fleet
-        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People= People + ${result[0].Reward_People} WHERE Player_Id=${playerId};
-                   `;
+        let sql = `
+        UPDATE player_resources
+        SET Money = Money + ${result[0].Reward_Money}, 
+         Water = CASE
+              WHEN Max_Water >= Water+${result[0].Reward_Water} THEN Water + ${result[0].Reward_Water}
+              ELSE Max_Water
+              END,
+         Ore = CASE 
+          WHEN Max_Ore >= Ore+${result[0].Reward_Ore} THEN Ore + ${result[0].Reward_Ore}
+              ELSE Max_Ore
+              END,
+         People = CASE
+          WHEN Max_People >= People + ${result[0].Reward_People} THEN People + ${result[0].Reward_People}
+              ELSE Max_People
+              END
+      WHERE Player_Id=${playerId};`;
         
       db.query(sql, (err, result)=> {
           if (err) throw err;
@@ -558,11 +614,11 @@ app.post('/getCompletedMissions', (req, res)=> {
           db.query(sql, (err, result)=> {
             if (err) throw err;
 
-            let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Solo_Mission_Id = ${completedMissions[0].Solo_Missions_Id};`
+            let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Solo_Mission_Id = ${completedMissions[0].Solo_Mission_Id};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
-              res.send({message: 'mission completed successfully'});
-              console.log('Solo mission completed successfully!');
+              res.send({message: 'Commander, a solo mission was copleted successfully.'});
+              
             })
           })
             
@@ -600,7 +656,7 @@ app.get('/getAcceptedMMissions/:playerId', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
-    console.log(result);
+    
     res.send(result);
   })
 })
@@ -636,8 +692,21 @@ app.post('/getCompletedMultiplayerMissions', (req, res)=> {
         if (err) throw err;
        
         //give player the rewards of the completed mission && set ship back to not on a mission in ship_fleet
-        let sql = `UPDATE player_resources SET Money = Money + ${result[0].Reward_Money}, Water= Water+${result[0].Reward_Water}, Ore= Ore+${result[0].Reward_Ore}, People= People + ${result[0].Reward_People} WHERE Player_Id=${playerId};
-                   `;
+        let sql = `UPDATE player_resources
+        SET Money = Money + ${result[0].Reward_Money}, 
+         Water = CASE
+              WHEN Max_Water >= Water+${result[0].Reward_Water} THEN Water + ${result[0].Reward_Water}
+              ELSE Max_Water
+              END,
+         Ore = CASE 
+          WHEN Max_Ore >= Ore+${result[0].Reward_Ore} THEN Ore + ${result[0].Reward_Ore}
+              ELSE Max_Ore
+              END,
+         People = CASE
+          WHEN Max_People >= People + ${result[0].Reward_People} THEN People + ${result[0].Reward_People}
+              ELSE Max_People
+              END
+      WHERE Player_Id=${playerId}; `;
         
       db.query(sql, (err, result)=> {
           if (err) throw err;
@@ -650,7 +719,7 @@ app.post('/getCompletedMultiplayerMissions', (req, res)=> {
             let sql = `UPDATE accepted_multiplayer_missions SET Status = 0 WHERE Player_Id= ${playerId} AND amm_MMissions_Id = ${completedMissions[0].amm_MMissions_Id};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
-              res.send({message: 'mission completed successfully'});
+              res.send({message: 'Commander, Your ships and crew have returned from a collaborative Mission!'});
               console.log('Collaborative mission completed successfully');
             })
           })
