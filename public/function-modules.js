@@ -94,6 +94,35 @@ if (cur_status === 'status_play' && mmissionEnable){
   };
 }
 
+
+
+//Click arrow Right of Ships in grid
+if (cur_status === 'status_play' ){
+  if (gridArrowRightBtn.IsClicked(mouseX, mouseY)){
+    if(gridPageEnable+1 < Gridpages.length){
+     
+      gridPageEnable ++;
+      drawGrid();
+      drawShips();
+    }
+  };
+}
+
+//Click arrow Left of Ships in grid
+if (cur_status === 'status_play' ){
+  if (gridArrowLeftBtn.IsClicked(mouseX, mouseY)){
+    if(gridPageEnable-1 >= 0){
+    
+      gridPageEnable --;
+      drawGrid();
+      drawShips();
+    }
+  };
+}
+
+
+
+
 //Click Collaborative Missions Button
 if (cur_status === 'status_play' && missionMenuEnable){
   if (multiMissionsBtn.isClicked(mouseX, mouseY)){
@@ -1078,4 +1107,4 @@ setInterval(function(){
                          
  
 }
-},10000);
+},30000);

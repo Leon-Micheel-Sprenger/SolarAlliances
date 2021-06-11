@@ -219,13 +219,13 @@ function loadPlayerShips(){
     ships = [];
     availableShips = [];
     blockedShips = [];
+    Gridpages = [0];
     for(let i = 0; i<dataReceived.length; i++){
       ships.push(dataReceived[i]);
     }
-    shipsinputore = dataReceived[0].Input_Ore;
-    shipsinputpeople = dataReceived[0].Input_Crew;
-    createships();
+    
     drawGrid();
+    createships();
     drawShips();
     loop();
   }) 

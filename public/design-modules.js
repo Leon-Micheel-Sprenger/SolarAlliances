@@ -312,6 +312,10 @@ let side = 100;
 let gridX = 5;    //length of the grid
 let gridY = 1;   // height of the grid
 
+let gridArrowRightBtn;
+let gridArrowLeftBtn;  
+
+
 function createGrid(){
   if(cur_status === 'status_play'){
     for (r=gridStartX; r<gridX+gridStartX;r++){
@@ -320,6 +324,7 @@ function createGrid(){
         tilesArr[r][c] = new Tile (r, c, side, txt='', 200);    //to let tile numbers appear, insert into txt: ${r},${c} 
       } 
     } 
+   
   }
 }
 
@@ -330,6 +335,10 @@ function drawGrid(){
         tilesArr[r][c].draw_tile();
       }
     }
+    gridArrowLeftBtn = new ImageButton(tilesArr[gridStartX][gridStartY].posX-75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowLeft);
+    gridArrowRightBtn =  new ImageButton(tilesArr[gridStartX+4][gridStartY].posX+75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowRight);
+    gridArrowRightBtn.drawImageButton();
+    gridArrowLeftBtn.drawImageButton();
   }
 }
 
@@ -343,7 +352,8 @@ let availableShips = []; //array of all ship objects, that are available in ship
 let blockedShips = [];   //array of all ship objects, that are blocked ships in shipfleet
 let shipList=[];  //array of all ship objects, that are created in createships for drawing (blocked and available)
 
-
+let Gridpages = [0];
+let gridPageEnable = 0;
 
 function createships(){
 
@@ -352,9 +362,31 @@ function createships(){
   if(cur_status === 'status_play'){
 
   shipList = [];
+  let column = 0;
+  
+
   for (let i=0; i<ships.length; i++){
+    let ship;
+    
+
+      if (i % 5 === 0 && i !== 0){
+       column = 0;
+       Gridpages.push(Gridpages.length);
+       ship = new Ship(ships[i].Ship_Fleet_ID, Gridpages[Gridpages.length-1], ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,column, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
+       column ++;
+      } 
+      else {
+        ship = new Ship(ships[i].Ship_Fleet_ID, Gridpages[Gridpages.length-1], ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,column, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
+        column ++;
+      }
+
       
-    let ship = new Ship(ships[i].Ship_Fleet_ID, ships[i].Ship_on_Mission, ships[i].Ship_UnderRepair, ships[i].Ship_Health, ships[i].Ship_UnderConstruction, ships[i].Spaceships_Id, 0,i, gridStartX, gridStartY, side, 30, 40, shipOnMissionIconPath);
+
+      
+
+      console.log(ship);
+      console.log('gridpages '+Gridpages);
+    
 
       //assign blocked and available ships
       if(ship.Ship_on_Mission === 0){
@@ -367,12 +399,17 @@ function createships(){
       shipList.push(ship);
 
     }
+
+    
+
   }
   // print('ships '+ships);
   // console.log('shipList '+shipList);
   // console.log('available Ships '+availableShips);
   // console.log('blocked Ships '+blockedShips);
 }
+
+
 
 
 
