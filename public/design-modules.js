@@ -37,6 +37,14 @@ let backButtonIconPath = 'assets/exit-icon.jpg';
 let shipOnMissionIconPath = 'assets/exit-icon.jpg';
 let arrowLeft = 'assets/arrow-left.jpg';
 let arrowRight = 'assets/arrow-right.jpg';
+let tabletFrame = 'assets/tablet-frame.png';
+
+//Colors: 
+
+let Primary =  'rgb(157, 183, 224)';
+let Secondary = 'rgb(46, 51, 101)';
+let TimeClr = 'rgb(60, 253, 47)';
+
 
 
 
@@ -178,12 +186,14 @@ function registerScreen(){
 let gameStatus= false;
 function createGame(){
 
+ 
+
   gameStatus = true;
   mainMenuEnable = true;
   cur_status = 'status_play';
   InputName.remove();
   InputPass.remove();
-  background(255);
+  background(bg);
   
 
   createResourceBar();
@@ -571,7 +581,7 @@ let opensingleMissionsArr = []; //all open solo missions (reference by index of 
 
 let runningSoloMissions = []; // all running missions (reference by MissionId)
 
-let runningSoloMissionsIndex = [];
+let runningSoloMissionsIndex = [];  //all running missions by index of the singleMissionsArr
 
 let previousMissions;  //all five solo missions at last ping function!
 
@@ -587,7 +597,8 @@ let previousMissions;  //all five solo missions at last ping function!
     rh= 750;
 
     //Frame, title and buttons of Mission Interface;
-    missionFrame = new OnScreenFrame(rx, ry, rw, rh);
+    push();
+    missionFrame = new OnScreenFrame(rx, ry, rw, rh, tabletFrame, 'rgb(46, 51, 101)');
 
     singleMissionsBtn = new Button(rx-rw/2+rw/4,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
 
@@ -595,8 +606,8 @@ let previousMissions;  //all five solo missions at last ping function!
     
     runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
     
-    missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
-    
+    missionExitBtn = new ExitButton(rx+rw/2-42, ry-rh/2+12,30,30);
+    pop();
 
     //___________________________________________________________________
     //Mission boxes and Input;
@@ -680,16 +691,22 @@ function drawSoloMissions(){
   missionExitBtn.drawExitButton();
 
 
-  push();
-    fill(0);
+    push();
+    textFont(ftRetroGaming);
+    fill(255);
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Missions", rx, ry-rh/2.2);
     textSize(15);
-    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
-    fill('purple');
+    text("Time until new Mission: ", rx-rw/2+130, ry+rh/2-80);
     textStyle(BOLD);
-    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
+    fill(255, 1);
+    stroke(TimeClr)
+    rect(rx-rw/2+160, ry+rh/2-48, 100, 40);
+    fill(TimeClr);
+    noStroke();
+    text(`${missionRespawnTime}`, rx-rw/2+160, ry+rh/2-50 );
+    
     pop();
 
 
@@ -983,6 +1000,25 @@ function drawMessages() {
 
 
 
+
+//______________________________________________________________________
+//Create Running Missions Interface 
+
+
+//______________________________________________________________________
+//Draw Running Missions Interface 
+
+function drawRunningMissions(){
+
+
+  for (let i=0; i<runningSoloMissionsIndex.length; i++){
+
+    //use createed singlemission 
+
+  }
+
+
+}
 
 
 

@@ -573,28 +573,31 @@ function acceptSoloMission(missionIndex){
 
   //put mission in accepted missions on db
   httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {
-    //message to player:
-    let message = {message: `Commander, You accepted the mission ${acceptedMission.name}. Let's hope, everything goes as planned.`}
-    messages.push(message);
+  
  })
 
   
   //update resources
   httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
-    //message to player:
-     let message = dataReceived[0];
-     messages.push(message);
   } )
 
 
   //send updated Ships to DB:
   httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
-     //message to player:
-     let message = {message: "Commander, one of your ships has been deployed for a mission!"}
-     messages.push(message);
+     
   });
 
-  drawMessages();
+    //message to player:
+    let message1 = {message: `Commander, You accepted the mission ${acceptedMission.name}. Let's hope, everything goes as planned.`}
+    messages.push(message1);
+
+    let message2 = {message: "Commander, one of your ships has been deployed for a mission!"}
+    messages.push(message2);
+
+    let message3 = {message: "Resources were Deducted from the Storage."}
+    messages.push(message2);
+  
+    drawMessages();
 
   
   }

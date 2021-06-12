@@ -209,21 +209,39 @@ class ImageButton {
 
 class OnScreenFrame {
 
-  constructor(rx,ry,rw,rh){
+  constructor(rx,ry,rw,rh, frame, bckclr="white"){
     this.rx=rx;
     this.ry=ry;
     this.rw=rw;
     this.rh=rh;
 
-    this.backBtn = new Button(this.rx-this.rw/2+22.5,this.ry-this.rh/2+15,45,30,'Back',0,255, 0, 0);
+    this.backBtn = new Button(this.rx-this.rw/2+30,this.ry-this.rh/2+30,45,30,'Back',0,255, 0, 20);
 
+    this.frame = frame;
   
+    this.bckclr = bckclr;
 
   }
 
   drawScreen(){
+    
+
+    if (this.frame){
+    loadImage(this.frame, img => {
+      push();
+      imageMode(CENTER);
+      image(img, this.rx, this.ry, this.rw*1.15, this.rh*1.1);
+      pop();
+      })
+     }
+
+    push();
+      fill(this.bckclr);
+     
+
     rectMode(CENTER);
-    rect(this.rx,this.ry,this.rw,this.rh);
+    rect(this.rx,this.ry,this.rw,this.rh, 20);
+    pop();
   }
 
   drawPageArrows(){
@@ -441,6 +459,15 @@ class SoloMissionBox {
     this.acceptButton;
 
     this.accepted = false;
+
+
+    //Design: 
+   
+    this.font = ftRetroGaming;
+    this.backClr = 'rgb(157, 183, 224)';
+    this.AccetntClr = 'rgb(60, 253, 47)';
+    this.frameClr = 'rgb(46, 51, 101)';
+
   }
 
 
@@ -569,27 +596,37 @@ class SoloMissionBox {
     }
 
 
-
+    
     //Draw Frame of Mission Box
+    push();
     rectMode(CENTER);
+    fill(this.backClr);
+    stroke(255, 255, 255);
+    
     rect(this.rx,this.ry,this.rw,this.rh);
+    pop();
 
     //____________________________________
     // Draw Mission Info and Inputs
     push();
+    
 
     //Rank
     fill(0);
     rect(this.rx-this.rw/2+30, this.ry, 40, 60);
     textAlign(CENTER, CENTER);
     fill(255);
+    textFont(this.font);
     text(this.Rank, this.rx-this.rw/2+30, this.ry);
     
     //Mission Name
+    push();
     fill(0);
-    textSize(15);
-    text(this.name,this.rx-rw/4, this.ry );
-
+    textSize(18);
+    textFont(this.font);
+    noStroke();
+    text(this.name,this.rx-rw/5, this.ry, this.rw*0.3, this.rh*0.8 );
+    pop();
 
     //Input Resource 1 with icon
     loadImage(this.inputResource1IconPath, img => {
@@ -597,6 +634,7 @@ class SoloMissionBox {
     })
     push();
     fill('red');
+    textSize(15);
     text('-'+this.InputResource1,this.rx+30, this.ry-25/2);
     pop();
 
@@ -608,6 +646,8 @@ class SoloMissionBox {
       })
       push();
       fill('red');
+      textFont(this.font);
+      textSize(15);
       text('-'+this.InputResource2,this.rx+30, this.ry+10+25/2);
       pop();
     }
@@ -618,7 +658,9 @@ class SoloMissionBox {
       image(img, this.rx+90, this.ry-30, 22, 42)
     })
     push();
-    fill('purple');
+    fill(this.AccetntClr);
+    textFont(this.font);
+    textSize(15);
     text(this.time,this.rx+100, this.ry+10+25/2);
     pop();
     
@@ -629,6 +671,8 @@ class SoloMissionBox {
     })
     push();
     fill('green');
+    textFont(this.font);
+    textSize(15);
     text('+'+this.RewardResource1,this.rx+this.rw/2-60, this.ry-25);
     pop();
 
@@ -640,21 +684,26 @@ class SoloMissionBox {
       })
       push();
       fill('green');
+      textFont(this.font);
+      textSize(15);
       text('+'+this.RewardResource2,this.rx+this.rw/2-60, this.ry);
       pop();
     }
     
 
     //Accept Button
-    this.acceptButton = new Button(this.rx+this.rw/2-50,this.ry+30,75,30,'Accept',255,0,20);
+    this.acceptButton = new Button(this.rx+this.rw/2-50,this.ry+30,75,30,'Accept',0,255,15);
+    push();
+
     this.acceptButton.drawButton();
+    pop();
     
 
     //Accepted Mission changes (grey and accept button disabled)
     if(this.accepted === true){
       this.acceptButton.disable();
       push();
-      fill('rgba(148,148,148, 0.7)');
+      fill('rgba(242, 209, 41, 0.7)');
       rectMode(CENTER);
       rect(this.rx, this.ry, this.rw, this.rh);
       pop();
