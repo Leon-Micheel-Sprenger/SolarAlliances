@@ -30,6 +30,7 @@ function draw() {
   drawShips();
   drawMessages();
   drawSoloMissions();
+  drawRunningMissions();
   drawMultiplayerMissions();
   drawOpenMMission();
   drawContributionScene();

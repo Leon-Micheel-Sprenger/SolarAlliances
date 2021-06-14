@@ -13,6 +13,8 @@
 
 
 
+
+
 //const { text } = require("body-parser");
 
 //const { text } = require("body-parser");
@@ -699,7 +701,7 @@ class SoloMissionBox {
     pop();
     
 
-    //Accepted Mission changes (grey and accept button disabled)
+    //Accepted Mission changes (yellow and accept button disabled)
     if(this.accepted === true){
       this.acceptButton.disable();
       push();
@@ -1305,6 +1307,44 @@ class Message {
 
   dismissMessage(){
     messageObjects.splice(this.index, 1);
+  }
+
+}
+
+
+
+class RunningMission {
+
+  constructor(rx, ry, rw, rh, page, name, time, story){
+
+    this.rx = rx;
+    this.ry = ry;
+    this.rw = rw;
+    this.rh = rh;
+    this.page = page;
+    this.name = name;
+    this.time = time;
+    this.story = story;
+
+  }
+
+  drawRunningMission(){
+
+    if (this.page === runningMissionPageEnable){
+    push();
+    fill('rgba(242, 209, 41, 0.7)');
+    stroke(255);
+    rect(this.rx, this.ry, this.rw, this.rh);
+    fill(255);
+    noStroke();
+    text(this.name, this.rx, this.ry-this.rh/3);
+    fill(TimeClr)
+    text(this.time, this.rx, this.ry);
+    pop();
+
+    //countdown;
+
+    }
   }
 
 }

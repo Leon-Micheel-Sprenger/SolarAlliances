@@ -6,6 +6,9 @@
 
 
 
+
+
+
 // To find backend functions and executing commands, go to function-modules.js
 let cur_status = 'status_login'; //status_login, status_register, status_play
 let mainMenuEnable = true;
@@ -38,6 +41,7 @@ let shipOnMissionIconPath = 'assets/exit-icon.jpg';
 let arrowLeft = 'assets/arrow-left.jpg';
 let arrowRight = 'assets/arrow-right.jpg';
 let tabletFrame = 'assets/tablet-frame.png';
+let cortana = 'assets/cortana-transparent.png';
 
 //Colors: 
 
@@ -194,6 +198,7 @@ function createGame(){
   InputName.remove();
   InputPass.remove();
   background(bg);
+  drawAssistant();
   
 
   createResourceBar();
@@ -219,15 +224,27 @@ let marketplaceButton;
 
 
 function createButtons(){
-missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
+
+  rx = width*0.15;
+  ry = height*0.75;
+  rw = 250;
+  rh = 300;
+
+
+  push();
+  fill('rgba(255,255,255,0.4)')
+  rect(rx, ry, rw, rh, 20);
+  pop();
+
+missionButton = new Button(width*0.15,height-300,200,50,'Missions','rgb(117, 114, 110)','rgb(219, 112, 77)',20);
 missionButton.drawButton();
 
   //btn for the ship yard
-  shipFleetButton = new Button(width-1250,height-200,200,50,'Ship Fleet',0,255,20);
+  shipFleetButton = new Button(width*0.15,height-200,200,50,'Ship Fleet',Primary,Secondary,20);
   shipFleetButton.drawButton();
   
   //btn for the station upgrades
-  stationButton = new Button(width-1250,height-300,200,50,'Station Upgrades',0,255,20);
+  stationButton = new Button(width*0.15,height-100,200,50,'Station Upgrades',Secondary,Primary,20);
   stationButton.drawButton();
 
 }
@@ -260,22 +277,25 @@ let max_people;
 
 function createResourceBar(){
   if (gameStatus){
-    rx=width-650/2;
-    ry=20;
+    rx=0;
+    ry=0;
     rw=660;
     rh= 50;
   
     //create bar frame
     fill(255);
-    barFrame= new OnScreenFrame(rx, ry, rw, rh);
-    barFrame.drawScreen();
-    
+    // barFrame= new OnScreenFrame(rx, ry, rw, rh);
+    // barFrame.drawScreen();
+    push();
+    rectMode(CORNER);
+    rect(rx, ry, rw, rh, 20);
+    pop();
     // create Icons
-    moneyIcon = new Icon(moneyIconPath, rx-rw/2+5, ry-rh/3, 20, 32 );
-    waterIcon = new Icon(waterIconPath, rx-rw/2+95, ry-rh/3, 20, 32 );
-    oreIcon = new Icon(oreIconPath, rx-rw/2+195, ry-rh/3, 20, 32 );
-    peopleIcon = new Icon(peopleIconPath, rx-rw/2+295, ry-rh/3, 20, 32 );
-    rankIcon = new Icon(rankIconPath, rx-rw/2+495, ry-rh/3, 20, 32 );
+    moneyIcon = new Icon(moneyIconPath, rx+25, ry+10, 20, 32 );
+    waterIcon = new Icon(waterIconPath, rx+125, ry+10, 20, 32 );
+    oreIcon = new Icon(oreIconPath, rx+225, ry+10, 20, 32 );
+    peopleIcon = new Icon(peopleIconPath, rx+325, ry+10, 20, 32 );
+    rankIcon = new Icon(rankIconPath, rx+425, ry+10, 20, 32 );
 
   }
  
@@ -289,8 +309,8 @@ function drawResourceValues(){
   if (gameStatus){
 
    //Resource bar Coordinates;
-    rx=width-650/2;
-    ry=20;
+    rx=0;
+    ry=0;
     rw=660;
     rh= 50;
 
@@ -298,12 +318,13 @@ function drawResourceValues(){
 
   fill(0);
   textSize(12);
-  text(`${money}`,(rx-rw/2+5)+40, ry+5);
-  text(`${water}/${max_water}`,(rx-rw/2+5)+140, ry+5);
-  text(`${ore}/${max_ore}`,(rx-rw/2+5)+240, ry+5);
-  text(`${people}/${max_people}`,(rx-rw/2+5)+340, ry+5);
-  text(`${rank}`,rx-rw/2+520, ry+5);
-  text(`Year: ${gameDate}`,rx-rw/2+595, ry+5);
+  textAlign(CENTER, CENTER);
+  text(`${money}`,(rx+25)+40, ry+30);
+  text(`${water}/${max_water}`,(rx+125)+50, ry+30);
+  text(`${ore}/${max_ore}`,(rx+225)+50, ry+30);
+  text(`${people}/${max_people}`,(rx+325)+50,  ry+30);
+  text(`${rank}`,(rx+425)+50,  ry+30);
+  text(`Year: ${gameDate}`,(rx+590),  ry+30);
     
   pop();
 
@@ -394,8 +415,7 @@ function createships(){
 
       
 
-      console.log(ship);
-      console.log('gridpages '+Gridpages);
+     
     
 
       //assign blocked and available ships
@@ -589,7 +609,7 @@ let previousMissions;  //all five solo missions at last ping function!
 //Create AND draw Missions Interface
  function createMissions(){
   
-
+ 
 
     rx= width*0.5;
     ry= height*0.5;
@@ -621,15 +641,13 @@ let previousMissions;  //all five solo missions at last ping function!
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-    console.log(singleMissionsArr);
-    console.log(previousMissions);
 
     //message to player, when missions have changed!
     if (previousMissions.length === 0){
-      console.log('nothing');
+      
     }
     else if (previousMissions[0].missionId === singleMissionsArr[0].missionId){
-      console.log('nothing');
+      
     } 
     else if (previousMissions[0].missionId !== singleMissionsArr[0].missionId){
       let message = {message: `Commander, a new Solo Mission is available!`}
@@ -664,9 +682,9 @@ let previousMissions;  //all five solo missions at last ping function!
 
 
      //print arrays
-    //  console.log('open Missions Index '+ opensingleMissionsArr);
-    //  console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
-    //  console.log('running missions unindexed '+runningSoloMissions);
+     console.log('open Missions Index '+ opensingleMissionsArr);
+     console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
+     console.log('running missions ID '+runningSoloMissions);
      //console.log('Assigned missions '+singleMissionsArr.length);
     
 }
@@ -691,6 +709,8 @@ function drawSoloMissions(){
   missionExitBtn.drawExitButton();
 
 
+  console.log(missionRespawnTime);
+
     push();
     textFont(ftRetroGaming);
     fill(255);
@@ -699,14 +719,13 @@ function drawSoloMissions(){
     text("Missions", rx, ry-rh/2.2);
     textSize(15);
     text("Time until new Mission: ", rx-rw/2+130, ry+rh/2-80);
+    drawRespawnTimer(rx, ry, rw, rh);
     textStyle(BOLD);
     fill(255, 1);
     stroke(TimeClr)
     rect(rx-rw/2+160, ry+rh/2-48, 100, 40);
     fill(TimeClr);
     noStroke();
-    text(`${missionRespawnTime}`, rx-rw/2+160, ry+rh/2-50 );
-    
     pop();
 
 
@@ -720,6 +739,17 @@ function drawSoloMissions(){
     singlemission5.drawBox();
     pop();
 
+  }
+}
+
+
+//Draw missionRespawnTimer:
+
+function drawRespawnTimer(rx, ry, rw, rh){
+  if (missionMenuEnable === true && mmissionEnable === false){
+  push();
+    text(`${missionRespawnTime}`, rx-rw/2+160, ry+rh/2-50 );
+  pop();
   }
 }
 
@@ -823,7 +853,7 @@ function createMultiplayerMissions(){
       for(let j=0; j<runningMultiplayerMissions.length; j++){
         if (runningMultiplayerMissions[j].amm_MMissions_Id === multiplayerMissions[i].missions_Id){
           multiplayerMissions[i].acceptMission(1);
-          console.log(multiplayerMissions[i]);
+         
           loop();
         }
       }
@@ -840,7 +870,7 @@ function createMultiplayerMissions(){
 
   
   console.log('pages '+ mmissionPages);
-  console.log(multiplayerMissions[8].page);
+  
 
 }
 
@@ -1002,22 +1032,100 @@ function drawMessages() {
 
 
 //______________________________________________________________________
-//Create Running Missions Interface 
-
-
-//______________________________________________________________________
 //Draw Running Missions Interface 
 
+let fullRunningSoloMissions = [];       //Data from the accepted_solo_missions entity
+let runningMissionFrame;
+let runningMissionPageEnable = 0;   //enabled page on the interface
+
+let displayedRunningMissions;     //array of all created Running Mission to be displayed
+
+let runningArrowLeft;
+let runningArrowRight;
+let pages = [0];
+
 function drawRunningMissions(){
+  if (cur_status === 'status_play'){
+
+  rx = width*0.15;
+  ry = height*0.25;
+  rw = 300;
+  rh = 300;
+
+  let positions = [ry-rh*0.333, ry, ry+rh*0.333];
+  let displayedRunningMissions = [];
+  let positionIndex = 0;
+  pages = [0];
 
 
-  for (let i=0; i<runningSoloMissionsIndex.length; i++){
+  //Frame
+  runningMissionFrame = new OnScreenFrame(rx, ry, rw, rh, tabletFrame, 'rgb(46, 51, 101)' )
+  runningMissionFrame.drawScreen();
 
-    //use createed singlemission 
 
+  if (fullRunningSoloMissions.length>0){
+
+  for (let i=0; i<fullRunningSoloMissions.length; i++){
+
+    if (i % 3 === 0 && i!==0){
+      positionIndex = 0;
+      pages.push(pages.length);
+      displayedRunningMissions[i] = new RunningMission(rx, positions[positionIndex],rw, rh*0.33, pages[pages.length-1], fullRunningSoloMissions[i].Name, fullRunningSoloMissions[i].Mission_Time, fullRunningSoloMissions[i].Story);
+
+  }  else {
+    displayedRunningMissions[i] = new RunningMission(rx, positions[positionIndex],rw, rh*0.33, pages[pages.length-1], fullRunningSoloMissions[i].Name, fullRunningSoloMissions[i].Mission_Time, fullRunningSoloMissions[i].Story);
+    positionIndex ++;
+  }
+}
+
+  console.log(displayedRunningMissions);
+  for (let i=0; i<displayedRunningMissions.length; i++){
+    displayedRunningMissions[i].drawRunningMission();
   }
 
 
+
+  //Arrows
+  runningArrowLeft= new ImageButton(rx-25, ry+rh/1.75, 30, 30, arrowLeft);
+  runningArrowRight =  new ImageButton(rx+25, ry+rh/1.75, 30, 30, arrowRight);
+  
+  runningArrowLeft.drawImageButton();
+  runningArrowRight.drawImageButton();
+
+
+
+
+} else {
+  push();
+  fill(255);
+  text('No Solo Missions Running',rx, ry);
+  pop();
+}
+  
+
+  }
+}
+
+
+
+function drawAssistant(){
+
+  loadImage(cortana, img => {
+    image(img, width-500, height-600, 500, 600);
+    })
+  
+}
+
+
+
+
+function drawRegisteredScreen(){
+  push();
+  fill(0);
+  rect(width*0.5, height*0.7, 400, 300 );
+  fill(255);
+  text('You have successfully registered as a new Player. Please refresh this page and login again with your credentials.')
+  pop();
 }
 
 
