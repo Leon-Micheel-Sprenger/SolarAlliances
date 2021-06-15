@@ -45,12 +45,74 @@ let cortana = 'assets/cortana-transparent.png';
 
 //Colors: 
 
-let Primary =  'rgb(157, 183, 224)';
-let Secondary = 'rgb(46, 51, 101)';
+let Primary =  'rgb(159,177,217)';
+let Secondary = 'rgb(26,30,48)';
+//let Secondary = 'rgb(46, 51, 101)';
 let TimeClr = 'rgb(60, 253, 47)';
 
 
 
+
+//Load Images
+let ImageMoneyIcon;
+let ImageWaterIcon;
+let ImageOreIcon;
+let ImagePeopleIcon;
+let ImageRankIcon;
+
+let ImageAssistant;
+let ImageTabletFrame;
+let ImageExitButton;
+let ImageArrowLeft;
+let ImageArrowRight;
+let ImageShipOnMission;
+
+let ImageTransportShip;
+let ImageWarShip;
+let ImageExploarationShip;
+let ImageMiningShip;
+
+let ImageMarsFactionIcon;
+let ImageEarthFactionIcon;
+let ImageBeltFactionIcon;
+
+let ImageEmptyIcon;
+
+
+function loadImages(){
+
+  //Resources;
+  ImageMoneyIcon = loadImage(moneyIconPath);
+  ImageWaterIcon = loadImage(waterIconPath);
+  ImageOreIcon = loadImage(oreIconPath);
+  ImagePeopleIcon = loadImage(peopleIconPath);
+  ImageRankIcon = loadImage(rankIconPath);
+
+  //Assistant;
+  ImageAssistant = loadImage(cortana);
+
+  //Ships;
+   ImageTransportShip= loadImage(transportShipIconPath);
+   ImageWarShip= loadImage(warShipIconPath);
+   ImageExploarationShip= loadImage(explorationShipIconPath);
+   ImageMiningShip= loadImage(miningShipIconPath);
+
+   //Faction Icons: 
+   ImageMarsFactionIcon = loadImage(marsIconPath);
+   ImageEarthFactionIcon = loadImage(earthIconPath);
+   ImageBeltFactionIcon = loadImage(beltIconPath);
+
+  //Other
+  ImageTabletFrame = loadImage(tabletFrame);
+  ImageExitButton = loadImage(exitButtonIconPath);
+  ImageArrowLeft = loadImage(arrowLeft);
+  ImageArrowRight = loadImage(arrowRight);
+  ImageEmptyIcon = loadImage(emptyIconPath);
+  ImageShipOnMission = loadImage(shipOnMissionIconPath);
+
+
+
+}
 
 
 
@@ -279,23 +341,22 @@ function createResourceBar(){
   if (gameStatus){
     rx=0;
     ry=0;
-    rw=660;
+    rw=600;
     rh= 50;
   
     //create bar frame
-    fill(255);
-    // barFrame= new OnScreenFrame(rx, ry, rw, rh);
-    // barFrame.drawScreen();
+
     push();
     rectMode(CORNER);
+    fill(Secondary)
     rect(rx, ry, rw, rh, 20);
     pop();
     // create Icons
-    moneyIcon = new Icon(moneyIconPath, rx+25, ry+10, 20, 32 );
-    waterIcon = new Icon(waterIconPath, rx+125, ry+10, 20, 32 );
-    oreIcon = new Icon(oreIconPath, rx+225, ry+10, 20, 32 );
-    peopleIcon = new Icon(peopleIconPath, rx+325, ry+10, 20, 32 );
-    rankIcon = new Icon(rankIconPath, rx+425, ry+10, 20, 32 );
+    moneyIcon = new Icon(ImageMoneyIcon, rx+25, ry+10, 20, 32 );
+    waterIcon = new Icon(ImageWaterIcon, rx+125, ry+10, 20, 32 );
+    oreIcon = new Icon(ImageOreIcon, rx+225, ry+10, 20, 32 );
+    peopleIcon = new Icon(ImagePeopleIcon, rx+325, ry+10, 20, 32 );
+    rankIcon = new Icon(ImageRankIcon, rx+425, ry+10, 20, 32 );
 
   }
  
@@ -316,15 +377,15 @@ function drawResourceValues(){
 
   push();
 
-  fill(0);
+  fill(255);
   textSize(12);
   textAlign(CENTER, CENTER);
   text(`${money}`,(rx+25)+40, ry+30);
   text(`${water}/${max_water}`,(rx+125)+50, ry+30);
   text(`${ore}/${max_ore}`,(rx+225)+50, ry+30);
-  text(`${people}/${max_people}`,(rx+325)+50,  ry+30);
-  text(`${rank}`,(rx+425)+50,  ry+30);
-  text(`Year: ${gameDate}`,(rx+590),  ry+30);
+  text(`${people}/${max_people}`,(rx+325)+45,  ry+30);
+  text(`${rank}`,(rx+425)+30,  ry+30);
+  text(`Year: ${gameDate}`,(rx+530),  ry+30);
     
   pop();
 
@@ -366,8 +427,8 @@ function drawGrid(){
         tilesArr[r][c].draw_tile();
       }
     }
-    gridArrowLeftBtn = new ImageButton(tilesArr[gridStartX][gridStartY].posX-75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowLeft);
-    gridArrowRightBtn =  new ImageButton(tilesArr[gridStartX+4][gridStartY].posX+75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowRight);
+    gridArrowLeftBtn = new ImageButton(tilesArr[gridStartX][gridStartY].posX-75, tilesArr[gridStartX][gridStartY].posY, 30, 30, ImageArrowLeft);
+    gridArrowRightBtn =  new ImageButton(tilesArr[gridStartX+4][gridStartY].posX+75, tilesArr[gridStartX][gridStartY].posY, 30, 30, ImageArrowRight);
     gridArrowRightBtn.drawImageButton();
     gridArrowLeftBtn.drawImageButton();
   }
@@ -618,13 +679,11 @@ let previousMissions;  //all five solo missions at last ping function!
 
     //Frame, title and buttons of Mission Interface;
     push();
-    missionFrame = new OnScreenFrame(rx, ry, rw, rh, tabletFrame, 'rgb(46, 51, 101)');
+    missionFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary, 15);
 
-    singleMissionsBtn = new Button(rx-rw/2+rw/4,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
+    singleMissionsBtn = new Button(rx-rw/2+rw/4,ry-rh/2.6,250,50,'Single Player Missions',0,255,15,20, ftRetroGaming)
 
-    multiMissionsBtn = new Button(rx+rw/2-rw/4,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
-    
-    runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
+    multiMissionsBtn = new Button(rx+rw/2-rw/4,ry-rh/2.6,250,50,'Collaborative Missions',0,255,15,20, ftRetroGaming)
     
     missionExitBtn = new ExitButton(rx+rw/2-42, ry-rh/2+12,30,30);
     pop();
@@ -705,7 +764,6 @@ function drawSoloMissions(){
   missionFrame.drawScreen();
   singleMissionsBtn.drawButton();
   multiMissionsBtn.drawButton();
-  runningMissionsBtn.drawButton();
   missionExitBtn.drawExitButton();
 
 
@@ -898,8 +956,13 @@ function drawMultiplayerMissions(){
 
     missionFrame.drawPageArrows();
 
-
-  
+    push();
+    textFont(ftRetroGaming);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("Missions", rx, ry-rh/2.2);
+    pop();
 
      //draw Multiplayer missions!
      for (let i=0; i<multiplayerMissions.length; i++){
@@ -941,11 +1004,13 @@ function drawOpenMMission(){
   fill(0);
   textSize(30);
   textStyle(BOLD);
+  textFont(ftRetroGaming);
+  fill(255);
   text(`${openMMission.name}`, rx, ry-rh/2.2);
 
   
 
-
+  textFont(ftRetroGaming);
   textSize(15);
   textStyle(NORMAL);
   text(`${openMMission.Story}`, rx, ry-rh/2.5);
@@ -979,7 +1044,8 @@ function drawContributionScene(){
     missionFrame.backBtn.drawButton();
     missionExitBtn.drawExitButton();
    
-    fill(0);
+    fill(255);
+    textFont(ftRetroGaming);
     textSize(35);
     textStyle(BOLD);
     text(`${openMMission.name}`, rx, ry-rh/2.2);
@@ -1048,18 +1114,18 @@ function drawRunningMissions(){
   if (cur_status === 'status_play'){
 
   rx = width*0.15;
-  ry = height*0.25;
+  ry = height*0.3;
   rw = 300;
   rh = 300;
 
   let positions = [ry-rh*0.333, ry, ry+rh*0.333];
-  let displayedRunningMissions = [];
+  displayedRunningMissions = [];
   let positionIndex = 0;
   pages = [0];
 
 
   //Frame
-  runningMissionFrame = new OnScreenFrame(rx, ry, rw, rh, tabletFrame, 'rgb(46, 51, 101)' )
+  runningMissionFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary )
   runningMissionFrame.drawScreen();
 
 
@@ -1086,8 +1152,8 @@ function drawRunningMissions(){
 
 
   //Arrows
-  runningArrowLeft= new ImageButton(rx-25, ry+rh/1.75, 30, 30, arrowLeft);
-  runningArrowRight =  new ImageButton(rx+25, ry+rh/1.75, 30, 30, arrowRight);
+  runningArrowLeft= new ImageButton(rx-25, ry+rh/1.75, 30, 30, ImageArrowLeft);
+  runningArrowRight =  new ImageButton(rx+25, ry+rh/1.75, 30, 30, ImageArrowRight);
   
   runningArrowLeft.drawImageButton();
   runningArrowRight.drawImageButton();
@@ -1098,6 +1164,8 @@ function drawRunningMissions(){
 } else {
   push();
   fill(255);
+  textSize(17);
+  textFont(ftRetroGaming);
   text('No Solo Missions Running',rx, ry);
   pop();
 }
@@ -1109,11 +1177,7 @@ function drawRunningMissions(){
 
 
 function drawAssistant(){
-
-  loadImage(cortana, img => {
-    image(img, width-500, height-600, 500, 600);
-    })
-  
+    image(ImageAssistant, width-500, height-600, 500, 600);
 }
 
 

@@ -120,7 +120,7 @@ if (cur_status === 'status_play' ){
 
 
 //Click arrow Right of Running Missions
-if (cur_status === 'status_play'  && runningSoloMissions.length > 0){
+if (cur_status === 'status_play'  && displayedRunningMissions.length > 0){
   if (runningArrowRight.IsClicked(mouseX, mouseY)){
     if(runningMissionPageEnable+1 < pages.length ){
 
@@ -1088,10 +1088,10 @@ function missionShipVerified(acceptedMission){
     ry= height*0.5;
     rw= 700;
     rh= 750;
-
-    missionRespawnTime --;  // how do I deduct from a timevalue?
+   
+    missionRespawnTime -= '00:00:01';  // how do I deduct from a timevalue?
     drawRespawnTimer(rx, ry, rw, rh);
-  }, 10000)
+  }, 1000)
 
  
 

@@ -68,7 +68,7 @@ class Tile {
 
 class Button {
 
-  constructor(x,y,width,height,txt,fillClr, txtClr, txtSize='20', corners=20){
+  constructor(x,y,width,height,txt,fillClr, txtClr, txtSize='20', corners=20, font){
     this.posX= x;
     this.posY= y;
     this.width= width;
@@ -79,7 +79,8 @@ class Button {
     this.txtSize= txtSize;
     this.corners= corners;
     this.enable = true;    //used to enable and disable buttons
-    this.borderClr = 'rgb(0,0,0)'; 
+    this.borderClr = 'rgb(0,0,0)';
+    this.font = font; 
 
 
   }
@@ -91,11 +92,15 @@ class Button {
     stroke(this.borderClr);
     rect(this.posX, this.posY, this.width, this.height, this.corners);
     pop();
+    push();
     textAlign(CENTER, CENTER);
     textSize(this.txtSize);
     fill(this.txtClr);
+    if (this.font){
+      textFont(this.font);
+    }
     text(this.txt, this.posX, this.posY);
-    
+    pop();
   }
 
 
@@ -150,9 +155,7 @@ class ExitButton {
 
 
   drawExitButton() {
-    loadImage(exitButtonIconPath, img => {
-      image(img, this.rx, this.ry, this.rw, this.rh)
-    })
+      image(ImageExitButton, this.rx, this.ry, this.rw, this.rh)
   }
 
   isClicked(x,y){
@@ -174,22 +177,20 @@ class ExitButton {
 
 class ImageButton {
 
-  constructor(rx,ry,rw,rh, IconPath){
+  constructor(rx,ry,rw,rh, Icon){
     this.rx=rx;
     this.ry=ry;
     this.rw=rw;
     this.rh=rh;
     this.enable=true;
-    this.IconPath = IconPath; 
+    this.Icon = Icon; 
   }
 
   drawImageButton(){
-    loadImage(this.IconPath, img => {
       push();
       imageMode(CENTER);
-      image(img, this.rx, this.ry, this.rw, this.rh);
+      image(this.Icon, this.rx, this.ry, this.rw, this.rh);
       pop();
-    })
   }
 
   IsClicked(x,y){
@@ -211,17 +212,19 @@ class ImageButton {
 
 class OnScreenFrame {
 
-  constructor(rx,ry,rw,rh, frame, bckclr="white"){
+  constructor(rx,ry,rw,rh, frame, bckclr="white", deduct=5){
     this.rx=rx;
     this.ry=ry;
     this.rw=rw;
     this.rh=rh;
+    
 
     this.backBtn = new Button(this.rx-this.rw/2+30,this.ry-this.rh/2+30,45,30,'Back',0,255, 0, 20);
 
     this.frame = frame;
   
     this.bckclr = bckclr;
+    this.deduct = deduct
 
   }
 
@@ -229,41 +232,36 @@ class OnScreenFrame {
     
 
     if (this.frame){
-    loadImage(this.frame, img => {
       push();
       imageMode(CENTER);
-      image(img, this.rx, this.ry, this.rw*1.15, this.rh*1.1);
+      image(this.frame, this.rx, this.ry, this.rw*1.15, this.rh*1.1);
       pop();
-      })
      }
 
     push();
-      fill(this.bckclr);
-     
-
+    fill(this.bckclr);
     rectMode(CENTER);
-    rect(this.rx,this.ry,this.rw,this.rh, 20);
+    rect(this.rx,this.ry,this.rw-5,this.rh-this.deduct, 15);
     pop();
   }
 
   drawPageArrows(){
 
-    loadImage(arrowLeft, img => {
       push();
       imageMode(CENTER);
-      image(img, this.rx-this.rw/14, this.ry+this.rh/2.5, 50, 50);
+      image(ImageArrowLeft, this.rx-this.rw/14, this.ry+this.rh/2.5, 50, 50);
       pop();
-    })
 
-    loadImage(arrowRight, img => {
+
+ 
       push();
       imageMode(CENTER);
-      image(img, this.rx+this.rw/18, this.ry+this.rh/2.5, 50, 50);
+      image(ImageArrowRight, this.rx+this.rw/18, this.ry+this.rh/2.5, 50, 50);
       pop();
-    })
+   
 
     push();
-    fill(0);
+    fill(255);
     text(`${pageEnabled}`, this.rx+this.rw/2-30, this.ry+this.rh/2.3  )
     pop();
   }
@@ -302,16 +300,15 @@ class OnScreenFrame {
 
 class Icon {
 
-  constructor(path, rx, ry, width, height){
+  constructor(Img, rx, ry, width, height){
     this.rx = rx;
     this.ry = ry;
     this.width = width;
     this.height = height;
-    this.path = path;  
+    this.img = Img;  
     
-    loadImage(this.path, img => {
-        image(img, this.rx, this.ry, this.width, this.height)
-      })
+    image(this.img, this.rx, this.ry, this.width, this.height)
+     
     
   }
 
@@ -342,7 +339,7 @@ class Ship {
     this.gridStartX = gridStartX;
     this.gridStartY = gridStartY;
     this.available = true;
-    this.shipOnMissionIconPath = shipOnMissionIconPath;
+    this.shipOnMissionIconPath =  ImageShipOnMission;
     this.removeImages = true;
 
     this.posX =    this.gridStartX * side + (this.c * side);
@@ -357,32 +354,32 @@ class Ship {
     switch (this.shipId) {
 
       case 3: 
-        this.iconpath = warShipIconPath;
+        this.iconpath = ImageWarShip;
         break;
       case 4:
-        this.iconpath = miningShipIconPath;
+        this.iconpath = ImageMiningShip;
         break;
       case 5:
-        this.iconpath = transportShipIconPath;
+        this.iconpath = ImageTransportShip;
         break;
       case 6:
-        this.iconpath = explorationShipIconPath;
+        this.iconpath = ImageExploarationShip;
         break;
       default:
-        this.iconpath = emptyIconPath;
+        this.iconpath = ImageEmptyIcon;
     }
 
  
 
-    loadImage(this.iconpath, img => {
-      image(img, this.posX-(this.side/5), this.posY-(this.side/5), this.width, this.height);
-    })
+   
+    image(this.iconpath, this.posX-(this.side/5), this.posY-(this.side/5), this.width, this.height);
+
 
 
   if (this.available === false) {
-    loadImage(this.shipOnMissionIconPath, img2 => {
-      image(img2, this.posX-this.side/2, this.posY-this.side/2, 20, 25);
-    }) 
+
+    image(this.shipOnMissionIconPath, this.posX-this.side/2, this.posY-this.side/2, 20, 25);
+ 
   }
 }
     
@@ -466,7 +463,7 @@ class SoloMissionBox {
     //Design: 
    
     this.font = ftRetroGaming;
-    this.backClr = 'rgb(157, 183, 224)';
+    this.backClr = Primary;
     this.AccetntClr = 'rgb(60, 253, 47)';
     this.frameClr = 'rgb(46, 51, 101)';
 
@@ -489,19 +486,19 @@ class SoloMissionBox {
 
             switch (i){
               case 0: 
-                this.inputResource2IconPath = moneyIconPath;
+                this.inputResource2IconPath = ImageMoneyIcon;
                 break;
               case 1:
-                this.inputResource2IconPath = peopleIconPath;
+                this.inputResource2IconPath = ImagePeopleIcon;
                 break;
               case 2:
-                this.inputResource2IconPath = oreIconPath;
+                this.inputResource2IconPath = ImageOreIcon;
                 break;
               case 3:
-                this.inputResource2IconPath = waterIconPath;
+                this.inputResource2IconPath = ImageWaterIcon;
                 break;
               default:
-                this.inputResource1IconPath = emptyIconPath;
+                this.inputResource1IconPath = ImageEmptyIcon;
                 
             }
 
@@ -509,19 +506,19 @@ class SoloMissionBox {
             this.InputResource1 = InputArr[i];
             switch (i){
               case 0: 
-                this.inputResource1IconPath = moneyIconPath;
+                this.inputResource1IconPath = ImageMoneyIcon;
                 break;
               case 1:
-                this.inputResource1IconPath = peopleIconPath;
+                this.inputResource1IconPath = ImagePeopleIcon;
                 break;
               case 2:
-                this.inputResource1IconPath = oreIconPath;
+                this.inputResource1IconPath = ImageOreIcon;
                 break;
               case 3:
-                this.inputResource1IconPath = waterIconPath;
+                this.inputResource1IconPath = ImageWaterIcon;
                 break;
               default:
-                this.inputResource1IconPath = emptyIconPath;
+                this.inputResource1IconPath = ImageEmptyIcon;
                 
             }
           } 
@@ -532,19 +529,19 @@ class SoloMissionBox {
     if (this.InputShip){
       switch(this.InputShip){
         case 3: 
-          this.inputShipIconPath = warShipIconPath;
+          this.inputShipIconPath = ImageWarShip;
           break;
         case 4:
-          this.inputShipIconPath = miningShipIconPath;
+          this.inputShipIconPath = ImageMiningShip;
           break;
         case 5:
-          this.inputShipIconPath = transportShipIconPath;
+          this.inputShipIconPath = ImageTransportShip;
           break;
         case 6:
-          this.inputShipIconPath = explorationShipIconPath;
+          this.inputShipIconPath = ImageExploarationShip;
           break;
         default:
-          this.inputShipIconPath = emptyIconPath;
+          this.inputShipIconPath = ImageEmptyIcon;
             
       }
     }
@@ -558,19 +555,19 @@ class SoloMissionBox {
             this.RewardResource2 = RewardArr[i];
             switch (i){
               case 0: 
-               this.rewardResource2IconPath = moneyIconPath;
+               this.rewardResource2IconPath = ImageMoneyIcon;
                 break;
               case 1:
-                this.rewardResource2IconPath = peopleIconPath;
+                this.rewardResource2IconPath = ImagePeopleIcon;
                 break;
               case 2:
-                this.rewardResource2IconPath = oreIconPath;
+                this.rewardResource2IconPath = ImageOreIcon;
                 break;
               case 3:
-                this.rewardResource2IconPath = waterIconPath;
+                this.rewardResource2IconPath = ImageWaterIcon;
                 break;
               default:
-                this.rewardResource2IconPath = emptyIconPath;
+                this.rewardResource2IconPath = ImageEmptyIcon;
                 
             }
 
@@ -578,19 +575,19 @@ class SoloMissionBox {
             this.RewardResource1 = RewardArr[i];
             switch (i){
               case 0: 
-                this.rewardResource1IconPath = moneyIconPath;
+                this.rewardResource1IconPath = ImageMoneyIcon;
                 break;
               case 1:
-                this.rewardResource1IconPath = peopleIconPath;
+                this.rewardResource1IconPath = ImagePeopleIcon;
                 break;
               case 2:
-                this.rewardResource1IconPath = oreIconPath;
+                this.rewardResource1IconPath = ImageOreIcon;
                 break;
               case 3:
-                this.rewardResource1IconPath = waterIconPath;
+                this.rewardResource1IconPath = ImageWaterIcon;
                 break;
               default:
-                this.rewardResource1IconPath = emptyIconPath;
+                this.rewardResource1IconPath = ImageEmptyIcon;
                 
             }
           }
@@ -631,9 +628,8 @@ class SoloMissionBox {
     pop();
 
     //Input Resource 1 with icon
-    loadImage(this.inputResource1IconPath, img => {
-      image(img, this.rx, this.ry-30, 12, 25)
-    })
+    image(this.inputResource1IconPath, this.rx, this.ry-30, 12, 25)
+    
     push();
     fill('red');
     textSize(15);
@@ -643,9 +639,9 @@ class SoloMissionBox {
 
     //Input Resource 2 with icon
     if (this.InputResource2){
-      loadImage(this.inputResource2IconPath, img => {
-        image(img, this.rx, this.ry+10, 12, 25)
-      })
+      
+      image(this.inputResource2IconPath, this.rx, this.ry+10, 12, 25)
+    
       push();
       fill('red');
       textFont(this.font);
@@ -656,9 +652,9 @@ class SoloMissionBox {
    
 
     //InputShip Icon and Time deployed
-    loadImage(this.inputShipIconPath, img => {
-      image(img, this.rx+90, this.ry-30, 22, 42)
-    })
+
+    image(this.inputShipIconPath, this.rx+90, this.ry-30, 22, 42)
+
     push();
     fill(this.AccetntClr);
     textFont(this.font);
@@ -668,11 +664,12 @@ class SoloMissionBox {
     
 
     //Reward Resource 1
-    loadImage(this.rewardResource1IconPath, img => {
-      image(img, this.rx+this.rw/2-100, this.ry-40, 12, 25)
-    })
+
+    image(this.rewardResource1IconPath, this.rx+this.rw/2-100, this.ry-40, 12, 25)
+ 
     push();
     fill('green');
+    strokeWeight(2);
     textFont(this.font);
     textSize(15);
     text('+'+this.RewardResource1,this.rx+this.rw/2-60, this.ry-25);
@@ -681,11 +678,12 @@ class SoloMissionBox {
 
     //Reward Resource 2
     if (this.RewardResource2){
-      loadImage(this.rewardResource2IconPath, img => {
-        image(img, this.rx+this.rw/2-100, this.ry-10, 12, 25)
-      })
+      
+      image(this.rewardResource2IconPath, this.rx+this.rw/2-100, this.ry-10, 12, 25)
+    
       push();
       fill('green');
+      strokeWeight(2);
       textFont(this.font);
       textSize(15);
       text('+'+this.RewardResource2,this.rx+this.rw/2-60, this.ry);
@@ -766,7 +764,7 @@ class MultipiplayerMission  {
 
     this.openBtn = new Button(this.rx,this.ry+this.rh/4,85,30,'Open',0,255,20) ;
     this.openBtnEnable = false;
-    this.openContributionBtn = new Button(width*0.5, height*0.35, 200, 40, 'Contribute to this Mission', 0, 255, 15, 20);
+    this.openContributionBtn = new Button(width*0.5, height*0.35, 200, 40, 'Contribute to this Mission', 0, 255, 12, 20);
 
     this.contributeToMissionBtn;
     
@@ -816,39 +814,39 @@ class MultipiplayerMission  {
 
   switch(this.Faction){
     case 'MEB':
-      this.factionImagePath1 = marsIconPath;
-      this.factionImagePath2 = earthIconPath;
-      this.factionImagePath3 = beltIconPath;
+      this.factionImagePath1 = ImageMarsFactionIcon;
+      this.factionImagePath2 = ImageEarthFactionIcon;
+      this.factionImagePath3 = ImageBeltFactionIcon;
       break;
     case 'M':
-      this.factionImagePath1 = emptyIconPath;
-      this.factionImagePath2 = marsIconPath;
-      this.factionImagePath3 = emptyIconPath;
+      this.factionImagePath1 = ImageEmptyIcon;
+      this.factionImagePath2 = ImageMarsFactionIcon;
+      this.factionImagePath3 = ImageEmptyIcon;
       break;
     case 'B':
-      this.factionImagePath1 = emptyIconPath;
-      this.factionImagePath2 = beltIconPath;
-      this.factionImagePath3 = emptyIconPath;
+      this.factionImagePath1 = ImageEmptyIcon;
+      this.factionImagePath2 = ImageBeltFactionIcon;
+      this.factionImagePath3 = ImageEmptyIcon;
       break;
     case 'E':
-      this.factionImagePath1 = emptyIconPath;
-      this.factionImagePath2 = earthIconPath;
-      this.factionImagePath3 = emptyIconPath;
+      this.factionImagePath1 = ImageEmptyIcon;
+      this.factionImagePath2 = ImageEarthFactionIcon;
+      this.factionImagePath3 = ImageEmptyIcon;
       break;
     case 'ME':
-      this.factionImagePath1 = marsIconPath;
-      this.factionImagePath2 = emptyIconPath;
-      this.factionImagePath3 = earthIconPath;
+      this.factionImagePath1 = ImageMarsFactionIcon;
+      this.factionImagePath2 = ImageEmptyIcon;
+      this.factionImagePath3 = ImageEarthFactionIcon;
       break;
     case 'MB':
-      this.factionImagePath1 = marsIconPath;
-      this.factionImagePath2 = emptyIconPath;
-      this.factionImagePath3 = beltIconPath;
+      this.factionImagePath1 = ImageMarsFactionIcon;
+      this.factionImagePath2 = ImageEmptyIcon;
+      this.factionImagePath3 = ImageBeltFactionIcon;
       break;
     case 'EB':
-      this.factionImagePath1 = earthIconPath;
-      this.factionImagePath2 = emptyIconPath;
-      this.factionImagePath3 = beltIconPath;
+      this.factionImagePath1 = ImageEarthFactionIcon;
+      this.factionImagePath2 = ImageEmptyIcon;
+      this.factionImagePath3 = ImageBeltFactionIcon;
       break;
 
   }
@@ -870,19 +868,19 @@ class MultipiplayerMission  {
 
           switch (i){
             case 0: 
-              this.inputResourceIconPath = moneyIconPath;
+              this.inputResourceIconPath = ImageMoneyIcon;
               break;
             case 1:
-              this.inputResourceIconPath = peopleIconPath;
+              this.inputResourceIconPath = ImagePeopleIcon;
               break;
             case 2:
-              this.inputResourceIconPath = oreIconPath;
+              this.inputResourceIconPath = ImageOreIcon;
               break;
             case 3:
-              this.inputResourceIconPath = waterIconPath;
+              this.inputResourceIconPath = ImageWaterIcon;
               break;
             default:
-              this.inputResourceIconPath = emptyIconPath;
+              this.inputResourceIconPath = ImageEmptyIcon;
               
           }
         }
@@ -897,19 +895,19 @@ class MultipiplayerMission  {
             this.RewardResource2 = RewardArr[i];
             switch (i){
               case 0: 
-               this.rewardResource2IconPath = moneyIconPath;
+               this.rewardResource2IconPath = ImageMoneyIcon;
                 break;
               case 1:
-                this.rewardResource2IconPath = peopleIconPath;
+                this.rewardResource2IconPath = ImagePeopleIcon;
                 break;
               case 2:
-                this.rewardResource2IconPath = oreIconPath;
+                this.rewardResource2IconPath = ImageOreIcon;
                 break;
               case 3:
-                this.rewardResource2IconPath = waterIconPath;
+                this.rewardResource2IconPath = ImageWaterIcon;
                 break;
               default:
-                this.rewardResource2IconPath = emptyIconPath;
+                this.rewardResource2IconPath = ImageEmptyIcon;
                 
             }
 
@@ -917,19 +915,19 @@ class MultipiplayerMission  {
             this.RewardResource1 = RewardArr[i];
             switch (i){
               case 0: 
-                this.rewardResource1IconPath = moneyIconPath;
+                this.rewardResource1IconPath = ImageMoneyIcon;
                 break;
               case 1:
-                this.rewardResource1IconPath = peopleIconPath;
+                this.rewardResource1IconPath = ImagePeopleIcon;
                 break;
               case 2:
-                this.rewardResource1IconPath = oreIconPath;
+                this.rewardResource1IconPath = ImageOreIcon;
                 break;
               case 3:
-                this.rewardResource1IconPath = waterIconPath;
+                this.rewardResource1IconPath = ImageWaterIcon;
                 break;
               default:
-                this.rewardResource1IconPath = emptyIconPath;
+                this.rewardResource1IconPath = ImageEmptyIcon;
                 
             }
           }
@@ -941,19 +939,19 @@ class MultipiplayerMission  {
      if (this.InputShipId){
       switch( this.InputShipId){
         case 3: 
-          this.inputShipIconPath = warShipIconPath;
+          this.inputShipIconPath = ImageWarShip;
           break;
         case 4:
-          this.inputShipIconPath = miningShipIconPath;
+          this.inputShipIconPath = ImageMiningShip;
           break;
         case 5:
-          this.inputShipIconPath = transportShipIconPath;
+          this.inputShipIconPath = ImageTransportShip;
           break;
         case 6:
-          this.inputShipIconPath = explorationShipIconPath;
+          this.inputShipIconPath = ImageExploarationShip;
           break;
         default:
-          this.inputShipIconPath = emptyIconPath;
+          this.inputShipIconPath = ImageEmptyIcon;
             
       }
     }
@@ -996,34 +994,35 @@ drawMission() {
   fill(0);
   textAlign(CENTER, CENTER);
   
-  textSize(20);
+  textSize(17);
   textStyle(BOLD);
+  textFont(ftRetroGaming);
   text(`${this.name}`,this.rx, this.ry -(this.rh/3), this.rw*0.8, this.rh)
   pop();
 
 
   //draw faction symbols
 
-  loadImage(this.factionImagePath1, img => {
+  
     push();
     imageMode(CENTER);
-    image(img, this.rx-this.rw/3, this.ry, 35, 25);
+    image(this.factionImagePath1, this.rx-this.rw/3, this.ry, 35, 25);
     pop();
-  })
+  
 
-  loadImage(this.factionImagePath2, img => {
-    push();
-    imageMode(CENTER);
-    image(img, this.rx, this.ry, 35, 25);
-    pop();
-  })
 
-  loadImage(this.factionImagePath3, img => {
     push();
     imageMode(CENTER);
-    image(img, this.rx+this.rw/3, this.ry, 35, 25);
+    image(this.factionImagePath2, this.rx, this.ry, 35, 25);
     pop();
-  })
+ 
+
+  
+    push();
+    imageMode(CENTER);
+    image(this.factionImagePath3, this.rx+this.rw/3, this.ry, 35, 25);
+    pop();
+
 
 
   //Draw Open Button
@@ -1036,12 +1035,14 @@ drawMission() {
     push();
     
     if (this.status === 2){
-      textSize(12);
+      textSize(10);
+      textFont(ftRetroGaming);
       stroke('rgba(97, 237, 114, 1)');
       text(`Waiting for Submissions`, this.rx, this.ry+this.rh/2.5 )
     }
     else if (this.status === 1){
       stroke('rgba(218, 66, 245, 1)');
+      textFont(ftRetroGaming);
       text(`${this.time}`, this.rx, this.ry+this.rh/2.5 )
     }
     fill(255, 70);
@@ -1062,14 +1063,17 @@ drawOpenMission(x, y, width, height){
   
 push();
   //draw box
+  textFont(ftRetroGaming);
   
-  strokeWeight(1);
+  push();
   rectMode(CENTER);
-  fill(255);
+  fill(Primary);
+  stroke('white');
   rect(x, y+height/6, width*0.9, height*0.6);
   strokeWeight(2);
+  stroke(0);
   line(x, y-height/10, x, y+ height/2.5 );
-  
+  pop();
 
 
   //create and draw Button
@@ -1078,13 +1082,14 @@ push();
   this.openContributionBtn.setBorderClr('rgb(160, 204, 102)')
   strokeWeight(5)
   this.openContributionBtn.drawButton();
-  console.log('draw button');
   pop();
   }
   else if (this.acceptedStatus === true){
     push();
     fill('green');
     textStyle(BOLD);
+    textFont(ftRetroGaming)
+    stroke('white');
     text('This mission has already been accepted by you!',x, y-height/6);
     pop();
   }
@@ -1093,64 +1098,81 @@ push();
   push();
   textSize(20);
   textStyle(BOLD);
-  fill('purple');
+  fill(TimeClr);
+  textFont(ftRetroGaming)
   text(`${this.time}`,x, y-height/4.5 );
   pop();
 
 
 
   //draw Submitted Resources
-  
-  fill(0)
-  text('Submitted Resources', x-width/4, y-y/6);
-
-  
-  loadImage(this.inputResourceIconPath, img => {
-    push();
-    imageMode(CENTER);
-    image(img, x-width/2.7, y, 40, 64);
-    pop();
-  })
+  push();
   fill(0);
-  text(`${this.SubmittedResource}`,x-width/2.7+80, y);
-  console.log(this.SubmittedResource);
+  textSize(17.5);
+  textStyle(BOLD);
+  text('Submitted Resources', x-width/4, y-y/6);
+  pop();
+  
 
-
-  loadImage(this.inputShipIconPath, img => {
     push();
     imageMode(CENTER);
-    image(img, x-width/2.7, y+height/10, 40, 64);
+    image(this.inputResourceIconPath, x-width/2.7, y, 40, 64);
     pop();
-  })
+  
+  push();
+  fill(0);
+  textSize(20);
+  strokeWeight(3);
+  text(`${this.SubmittedResource}`,x-width/2.7+80, y);
+  
+  pop();
+
+ 
+    push();
+    imageMode(CENTER);
+    image(this.inputShipIconPath, x-width/2.7, y+height/10, 40, 64);
+    pop();
+
+  push();
+  strokeWeight(3);
+  textSize(20);
   fill(0);
   text(''+this.SubmittedShips,x-width/2.7+80, y+height/10);
-
+  pop();
   
 
 
   //draw Required Resources
   
+  push();
   fill(0);
+  textSize(17.5);
   text('Required Resources', x+width/4, y-y/6 );
-
-  loadImage(this.inputResourceIconPath, img => {
+  pop();
+ 
     push();
     imageMode(CENTER);
-    image(img, x+width/10, y, 40, 64);
+    image(this.inputResourceIconPath, x+width/10, y, 40, 64);
     pop();
-  })
+ 
+  push();
+  strokeWeight(3);
+  textSize(20);
   fill(0);
   text(this.InputResource,x+width/10+80, y);
-
-  loadImage(this.inputShipIconPath, img => {
+  pop();
+ 
     push();
     imageMode(CENTER);
-    image(img, x+width/10, y+height/10, 40, 64);
+    image(this.inputShipIconPath, x+width/10, y+height/10, 40, 64);
     pop();
-  })
+  
+  push();
+  strokeWeight(3);
+  textSize(20);
   fill(0);
   text(''+this.ShipAmount,x+width/10+80, y+height/10);
-
+  pop();
   
 
  
@@ -1158,59 +1180,77 @@ push();
 
   //draw Reward Resources
   
+
+  push();
+  textSize(17.5);
   fill(0);
   text('Reward for Each Player', x+width/4, y+y/2.8 );
+  pop();
 
-  loadImage(this.rewardResource1IconPath, img => {
     push();
     imageMode(CENTER);
-    image(img, x+width/10, y+height/3.5, 40, 64);
+    image(this.rewardResource1IconPath, x+width/10, y+height/3.5, 40, 64);
     pop();
-  })
+
+  push();
+  stroke(0);
+  strokeWeight(3);
+  textSize(20);
   fill('green');
   textStyle(BOLD);
   text('+'+this.RewardResource1,x+width/10+80, y+height/3.5);
+  pop();
 
-  loadImage(this.rewardResource2IconPath, img => {
     push();
     imageMode(CENTER);
-    image(img, x+width/10, y+height/2.7, 35, 58);
+    image(this.rewardResource2IconPath, x+width/10, y+height/2.7, 35, 58);
     pop();
-  })
+
+  push();
+  strokeWeight(3);
+  stroke(0);
+  textSize(20);
   fill('green');
   textStyle(BOLD);
   text('+'+this.RewardResource2,x+width/10+80, y+height/2.7);
-
+  pop();
   
 
   
   //Draw Minimum Contribution
   
+  push();
+  textSize(17.5);
   fill(0);
-  textStyle(NORMAL);
   text('Minimum Contribution', x-width/4, y+y/2.8 );
-
-  loadImage(this.inputResourceIconPath, img => {
+  pop();
+ 
     push();
     imageMode(CENTER);
-    image(img, x-width/2.7, y+height/3.5, 40, 64);
+    image(this.inputResourceIconPath, x-width/2.7, y+height/3.5, 40, 64);
     pop();
-  })
+
+  push();
+  strokeWeight(3);
+  textSize(20);
   fill(0);
   textStyle(BOLD);
   text(this.MinResource,x-width/2.7+80, y+height/3.5);
+  pop();
 
 
-  loadImage(this.inputShipIconPath, img => {
     push();
     imageMode(CENTER);
-    image(img, x-width/2.7, y+height/2.7, 40, 64);
+    image(this.inputShipIconPath, x-width/2.7, y+height/2.7, 40, 64);
     pop();
-  })
+
+  push();
+  strokeWeight(3);
+  textSize(20);
   fill(0);
   textStyle(BOLD);
   text('1',x-width/2.7+80, y+height/2.7);
-
+  pop();
  
 
 pop();
@@ -1220,10 +1260,11 @@ pop();
 drawContribution(x, y, width, height){
   push();
   strokeWeight(1);
+  stroke(255);
   rectMode(CENTER);
-  fill(255);
+  fill(Primary);
   rect(x, y+height/6, width*0.9, height*0.6);
-  strokeWeight(2);
+  strokeWeight(0);
  
   if (this.acceptedStatus === false){
   this.contributeToMissionBtn = new Button(x, y+height/2.5, 200, 40, 'Contribute Resources!', 0, 255, 15, 20);
@@ -1240,8 +1281,8 @@ drawContribution(x, y, width, height){
 
 
 
-
-  fill(0)
+  
+  fill(0);
   textAlign(CENTER);
   textStyle(BOLD);
   textSize(20);
@@ -1249,6 +1290,7 @@ drawContribution(x, y, width, height){
   textSize(15);
   text('If you click Contribute Resources, the following Resources and Ships will be commited to this Mission. You wont be able to use your ship until this Multiplayer Mission is finished.', x, y+y/8, width*0.7, height);
   fill('red');
+  strokeWeight(2);
   text(`NOTE, that the ${this.time} minutes will only start, after 100% of the required resources have been submitted by players`, x, y+height/4, width*0.7, height)
   pop();
 }
@@ -1269,7 +1311,7 @@ class Message {
   constructor(message, index){
     this.message = message;
 
-    this.x = width*0.55;
+    this.x = width*0.65;
     this.y = height *0.3; 
     this.rw = 250;
     this.rh = 150;
@@ -1285,8 +1327,8 @@ class Message {
       if (messages.length>0){
         push();
         
-       
-        fill('rgba(255, 255, 255, 0.5)');
+        textFont(ftRetroGaming);
+        fill('rgba(255, 255, 255, 0.3)');
         rectMode(CENTER);
         rect(this.x,this.y, this.rw, this.rh , 20);
   
@@ -1334,7 +1376,7 @@ class RunningMission {
     push();
     fill('rgba(242, 209, 41, 0.7)');
     stroke(255);
-    rect(this.rx, this.ry, this.rw, this.rh);
+    rect(this.rx, this.ry, this.rw-5, this.rh-5, 20);
     fill(255);
     noStroke();
     text(this.name, this.rx, this.ry-this.rh/3);

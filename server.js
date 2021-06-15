@@ -6,6 +6,7 @@ const port = 3000;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+
 app.use(express.static('public'));
 
 // parse application/x-www-form-urlencoded --> we need this to encrypt the data coming from the httpPost in the script

@@ -17,6 +17,7 @@ function setup() {
   loginScreen();
   
   bg = loadImage('assets/background.png');
+  loadImages();
   
 }
 
