@@ -6,6 +6,9 @@
 
 
 
+
+
+
 // To find backend functions and executing commands, go to function-modules.js
 let cur_status = 'status_login'; //status_login, status_register, status_play
 let mainMenuEnable = true;
@@ -37,8 +40,79 @@ let backButtonIconPath = 'assets/exit-icon.jpg';
 let shipOnMissionIconPath = 'assets/exit-icon.jpg';
 let arrowLeft = 'assets/arrow-left.jpg';
 let arrowRight = 'assets/arrow-right.jpg';
+let tabletFrame = 'assets/tablet-frame.png';
+let cortana = 'assets/cortana-transparent.png';
+
+//Colors: 
+
+let Primary =  'rgb(159,177,217)';
+let Secondary = 'rgb(26,30,48)';
+//let Secondary = 'rgb(46, 51, 101)';
+let TimeClr = 'rgb(60, 253, 47)';
 
 
+
+
+//Load Images
+let ImageMoneyIcon;
+let ImageWaterIcon;
+let ImageOreIcon;
+let ImagePeopleIcon;
+let ImageRankIcon;
+
+let ImageAssistant;
+let ImageTabletFrame;
+let ImageExitButton;
+let ImageArrowLeft;
+let ImageArrowRight;
+let ImageShipOnMission;
+
+let ImageTransportShip;
+let ImageWarShip;
+let ImageExploarationShip;
+let ImageMiningShip;
+
+let ImageMarsFactionIcon;
+let ImageEarthFactionIcon;
+let ImageBeltFactionIcon;
+
+let ImageEmptyIcon;
+
+
+function loadImages(){
+
+  //Resources;
+  ImageMoneyIcon = loadImage(moneyIconPath);
+  ImageWaterIcon = loadImage(waterIconPath);
+  ImageOreIcon = loadImage(oreIconPath);
+  ImagePeopleIcon = loadImage(peopleIconPath);
+  ImageRankIcon = loadImage(rankIconPath);
+
+  //Assistant;
+  ImageAssistant = loadImage(cortana);
+
+  //Ships;
+   ImageTransportShip= loadImage(transportShipIconPath);
+   ImageWarShip= loadImage(warShipIconPath);
+   ImageExploarationShip= loadImage(explorationShipIconPath);
+   ImageMiningShip= loadImage(miningShipIconPath);
+
+   //Faction Icons: 
+   ImageMarsFactionIcon = loadImage(marsIconPath);
+   ImageEarthFactionIcon = loadImage(earthIconPath);
+   ImageBeltFactionIcon = loadImage(beltIconPath);
+
+  //Other
+  ImageTabletFrame = loadImage(tabletFrame);
+  ImageExitButton = loadImage(exitButtonIconPath);
+  ImageArrowLeft = loadImage(arrowLeft);
+  ImageArrowRight = loadImage(arrowRight);
+  ImageEmptyIcon = loadImage(emptyIconPath);
+  ImageShipOnMission = loadImage(shipOnMissionIconPath);
+
+
+
+}
 
 
 
@@ -178,12 +252,15 @@ function registerScreen(){
 let gameStatus= false;
 function createGame(){
 
+ 
+
   gameStatus = true;
   mainMenuEnable = true;
   cur_status = 'status_play';
   InputName.remove();
   InputPass.remove();
-  background(255);
+  background(bg);
+  drawAssistant();
   
 
   createResourceBar();
@@ -209,15 +286,27 @@ let marketplaceButton;
 
 
 function createButtons(){
-missionButton = new Button(width-200,200,200,50,'Missions',0,255,20);
+
+  rx = width*0.15;
+  ry = height*0.75;
+  rw = 250;
+  rh = 300;
+
+
+  push();
+  fill('rgba(255,255,255,0.4)')
+  rect(rx, ry, rw, rh, 20);
+  pop();
+
+missionButton = new Button(width*0.15,height-300,200,50,'Missions','rgb(117, 114, 110)','rgb(219, 112, 77)',20);
 missionButton.drawButton();
 
   //btn for the ship yard
-  shipFleetButton = new Button(width-1250,height-200,200,50,'Ship Fleet',0,255,20);
+  shipFleetButton = new Button(width*0.15,height-200,200,50,'Ship Fleet',Primary,Secondary,20);
   shipFleetButton.drawButton();
   
   //btn for the station upgrades
-  stationButton = new Button(width-1250,height-300,200,50,'Station Upgrades',0,255,20);
+  stationButton = new Button(width*0.15,height-100,200,50,'Station Upgrades',Secondary,Primary,20);
   stationButton.drawButton();
 
 }
@@ -250,22 +339,24 @@ let max_people;
 
 function createResourceBar(){
   if (gameStatus){
-    rx=width-650/2;
-    ry=20;
-    rw=660;
+    rx=0;
+    ry=0;
+    rw=600;
     rh= 50;
   
     //create bar frame
-    fill(255);
-    barFrame= new OnScreenFrame(rx, ry, rw, rh);
-    barFrame.drawScreen();
-    
+
+    push();
+    rectMode(CORNER);
+    fill(Secondary)
+    rect(rx, ry, rw, rh, 20);
+    pop();
     // create Icons
-    moneyIcon = new Icon(moneyIconPath, rx-rw/2+5, ry-rh/3, 20, 32 );
-    waterIcon = new Icon(waterIconPath, rx-rw/2+95, ry-rh/3, 20, 32 );
-    oreIcon = new Icon(oreIconPath, rx-rw/2+195, ry-rh/3, 20, 32 );
-    peopleIcon = new Icon(peopleIconPath, rx-rw/2+295, ry-rh/3, 20, 32 );
-    rankIcon = new Icon(rankIconPath, rx-rw/2+495, ry-rh/3, 20, 32 );
+    moneyIcon = new Icon(ImageMoneyIcon, rx+25, ry+10, 20, 32 );
+    waterIcon = new Icon(ImageWaterIcon, rx+125, ry+10, 20, 32 );
+    oreIcon = new Icon(ImageOreIcon, rx+225, ry+10, 20, 32 );
+    peopleIcon = new Icon(ImagePeopleIcon, rx+325, ry+10, 20, 32 );
+    rankIcon = new Icon(ImageRankIcon, rx+425, ry+10, 20, 32 );
 
   }
  
@@ -279,21 +370,24 @@ function drawResourceValues(){
   if (gameStatus){
 
    //Resource bar Coordinates;
-    rx=width-650/2;
-    ry=20;
+    rx=0;
+    ry=0;
     rw=660;
     rh= 50;
 
   push();
 
-  fill(0);
+  noStroke();
+  textStyle(BOLD);
+  fill(255);
   textSize(12);
-  text(`${money}`,(rx-rw/2+5)+40, ry+5);
-  text(`${water}/${max_water}`,(rx-rw/2+5)+140, ry+5);
-  text(`${ore}/${max_ore}`,(rx-rw/2+5)+240, ry+5);
-  text(`${people}/${max_people}`,(rx-rw/2+5)+340, ry+5);
-  text(`${rank}`,rx-rw/2+520, ry+5);
-  text(`Year: ${gameDate}`,rx-rw/2+595, ry+5);
+  textAlign(CENTER, CENTER);
+  text(`${money}`,(rx+25)+40, ry+30);
+  text(`${water}/${max_water}`,(rx+125)+50, ry+30);
+  text(`${ore}/${max_ore}`,(rx+225)+50, ry+30);
+  text(`${people}/${max_people}`,(rx+325)+50,  ry+30);
+  text(`${rank}`,(rx+425)+30,  ry+30);
+  text(`Year: ${gameDate}`,(rx+530),  ry+30);
     
   pop();
 
@@ -335,8 +429,8 @@ function drawGrid(){
         tilesArr[r][c].draw_tile();
       }
     }
-    gridArrowLeftBtn = new ImageButton(tilesArr[gridStartX][gridStartY].posX-75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowLeft);
-    gridArrowRightBtn =  new ImageButton(tilesArr[gridStartX+4][gridStartY].posX+75, tilesArr[gridStartX][gridStartY].posY, 30, 30, arrowRight);
+    gridArrowLeftBtn = new ImageButton(tilesArr[gridStartX][gridStartY].posX-75, tilesArr[gridStartX][gridStartY].posY, 30, 30, ImageArrowLeft);
+    gridArrowRightBtn =  new ImageButton(tilesArr[gridStartX+4][gridStartY].posX+75, tilesArr[gridStartX][gridStartY].posY, 30, 30, ImageArrowRight);
     gridArrowRightBtn.drawImageButton();
     gridArrowLeftBtn.drawImageButton();
   }
@@ -384,8 +478,7 @@ function createships(){
 
       
 
-      console.log(ship);
-      console.log('gridpages '+Gridpages);
+     
     
 
       //assign blocked and available ships
@@ -550,7 +643,7 @@ let missionFrame;
 let singleMissionsBtn;
 let multiMissionsBtn;
 let runningMissionsBtn;
-let missionRespawnTime;
+let missionRespawnTime;   //Value from Database
 let missionExitBtn;
 
 let missionMenuEnable = false;
@@ -571,7 +664,7 @@ let opensingleMissionsArr = []; //all open solo missions (reference by index of 
 
 let runningSoloMissions = []; // all running missions (reference by MissionId)
 
-let runningSoloMissionsIndex = [];
+let runningSoloMissionsIndex = [];  //all running missions by index of the singleMissionsArr
 
 let previousMissions;  //all five solo missions at last ping function!
 
@@ -579,7 +672,7 @@ let previousMissions;  //all five solo missions at last ping function!
 //Create AND draw Missions Interface
  function createMissions(){
   
-
+ 
 
     rx= width*0.5;
     ry= height*0.5;
@@ -587,16 +680,15 @@ let previousMissions;  //all five solo missions at last ping function!
     rh= 750;
 
     //Frame, title and buttons of Mission Interface;
-    missionFrame = new OnScreenFrame(rx, ry, rw, rh);
+    push();
+    missionFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary, 15);
 
-    singleMissionsBtn = new Button(rx-rw/2+rw/4,ry-rh/2+75,250,50,'Single Player Missions',0,255,20)
+    singleMissionsBtn = new Button(rx-rw/2+rw/4,ry-rh/2.6,250,50,'Single Player Missions',0,255,15,20, ftRetroGaming)
 
-    multiMissionsBtn = new Button(rx+rw/2-rw/4,ry-rh/2+75,250,50,'Collaborative Missions',0,255,20)
+    multiMissionsBtn = new Button(rx+rw/2-rw/4,ry-rh/2.6,250,50,'Collaborative Missions',0,255,15,20, ftRetroGaming)
     
-    runningMissionsBtn = new Button(rx+150,ry+(rh/2-50),250,50,'Running Missions',0,255,20);
-    
-    missionExitBtn = new ExitButton(rx+rw/2-30, ry-rh/2,30,30);
-    
+    missionExitBtn = new ExitButton(rx+rw/2-42, ry-rh/2+12,30,30);
+    pop();
 
     //___________________________________________________________________
     //Mission boxes and Input;
@@ -610,15 +702,13 @@ let previousMissions;  //all five solo missions at last ping function!
 
     singleMissionsArr = [singlemission1, singlemission2, singlemission3, singlemission4, singlemission5];
 
-    console.log(singleMissionsArr);
-    console.log(previousMissions);
 
     //message to player, when missions have changed!
     if (previousMissions.length === 0){
-      console.log('nothing');
+      
     }
     else if (previousMissions[0].missionId === singleMissionsArr[0].missionId){
-      console.log('nothing');
+      
     } 
     else if (previousMissions[0].missionId !== singleMissionsArr[0].missionId){
       let message = {message: `Commander, a new Solo Mission is available!`}
@@ -653,9 +743,9 @@ let previousMissions;  //all five solo missions at last ping function!
 
 
      //print arrays
-    //  console.log('open Missions Index '+ opensingleMissionsArr);
-    //  console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
-    //  console.log('running missions unindexed '+runningSoloMissions);
+     console.log('open Missions Index '+ opensingleMissionsArr);
+     console.log('runningSoloMissions Index '+ runningSoloMissionsIndex);
+     console.log('running missions ID '+runningSoloMissions);
      //console.log('Assigned missions '+singleMissionsArr.length);
     
 }
@@ -676,20 +766,28 @@ function drawSoloMissions(){
   missionFrame.drawScreen();
   singleMissionsBtn.drawButton();
   multiMissionsBtn.drawButton();
-  runningMissionsBtn.drawButton();
   missionExitBtn.drawExitButton();
 
 
-  push();
-    fill(0);
+  console.log(missionRespawnTime);
+
+    push();
+    textFont(ftRetroGaming);
+    fill(255);
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Missions", rx, ry-rh/2.2);
     textSize(15);
-    text("Time until new Mission: ", rx-rw/2+100, ry+rh/2-50);
-    fill('purple');
+    text("Time until new Mission: ", rx-rw/2+130, ry+rh/2-80);
+
+    drawRespawnTimer(rx, ry, rw, rh);
+
     textStyle(BOLD);
-    text(`${missionRespawnTime} min.`, rx-rw/2+225, ry+rh/2-50 );
+    fill(255, 1);
+    stroke(TimeClr)
+    rect(rx-rw/2+160, ry+rh/2-48, 100, 40);
+    fill(TimeClr);
+    noStroke();
     pop();
 
 
@@ -708,13 +806,46 @@ function drawSoloMissions(){
 
 
 
-//________________________________________________________
-//Create and Draw Running Missions Interface
+//create and set missionRespawnTimer:
+let counterSeconds;
+let counterMinutes;
+let counterHours;
 
 
-function createRunningMissionInterface(){
-  //put it on main screen!
+function setRespawnTimer(){
+  
+  
+
 }
+
+//Draw missionRespawnTimer:
+
+ 
+
+function drawRespawnTimer(rx, ry, rw, rh){
+  if (missionMenuEnable === true && mmissionEnable === false){
+
+    rx= width*0.5;
+    ry= height*0.5;
+    rw= 700;
+    rh= 750;
+
+  push();
+    fill(Secondary);
+    stroke(TimeClr);
+    rect(rx-rw/2+160, ry+rh/2-48, 100, 40);
+
+    textFont(ftRetroGaming);
+    textStyle(BOLD);
+    noStroke();
+    fill(255);
+    text(`${missionRespawnTime}`, rx-rw/2+160, ry+rh/2-50 );
+  pop();
+  }
+}
+
+
+
 
 
 
@@ -806,11 +937,18 @@ function createMultiplayerMissions(){
       for(let j=0; j<runningMultiplayerMissions.length; j++){
         if (runningMultiplayerMissions[j].amm_MMissions_Id === multiplayerMissions[i].missions_Id){
           multiplayerMissions[i].acceptMission(1);
-          console.log(multiplayerMissions[i]);
+          multiplayerMissions[i].time = runningMultiplayerMissions[j].Mission_Time
+         
           loop();
         }
       }
     }
+
+
+
+
+
+
 
   
 
@@ -823,7 +961,7 @@ function createMultiplayerMissions(){
 
   
   console.log('pages '+ mmissionPages);
-  console.log(multiplayerMissions[8].page);
+  
 
 }
 
@@ -851,8 +989,13 @@ function drawMultiplayerMissions(){
 
     missionFrame.drawPageArrows();
 
-
-  
+    push();
+    textFont(ftRetroGaming);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("Missions", rx, ry-rh/2.2);
+    pop();
 
      //draw Multiplayer missions!
      for (let i=0; i<multiplayerMissions.length; i++){
@@ -894,20 +1037,16 @@ function drawOpenMMission(){
   fill(0);
   textSize(30);
   textStyle(BOLD);
+  textFont(ftRetroGaming);
+  fill(255);
   text(`${openMMission.name}`, rx, ry-rh/2.2);
-
-  
-
-
-  textSize(15);
-  textStyle(NORMAL);
-  text(`${openMMission.Story}`, rx, ry-rh/2.5);
   pop();
 
 
   //draw open mission class
+  push();
   openMMission.drawOpenMission(rx, ry, rw, rh);
-
+  pop();
  }
 }
 
@@ -932,18 +1071,18 @@ function drawContributionScene(){
     missionFrame.backBtn.drawButton();
     missionExitBtn.drawExitButton();
    
-    fill(0);
+    fill(255);
+    textFont(ftRetroGaming);
     textSize(35);
     textStyle(BOLD);
     text(`${openMMission.name}`, rx, ry-rh/2.2);
   
-    textSize(15);
-    textStyle(NORMAL);
-    text(`${openMMission.Story}`, rx, ry-rh/2.5);
+    
     pop();
     
+    push();
     openMMission.drawContribution(rx, ry, rw, rh);
-
+    pop();
   }
 }
 
@@ -983,6 +1122,103 @@ function drawMessages() {
 
 
 
+
+//______________________________________________________________________
+//Draw Running Missions Interface 
+
+let fullRunningSoloMissions = [];       //Data from the accepted_solo_missions entity
+let runningMissionFrame;
+let runningMissionPageEnable = 0;   //enabled page on the interface
+
+let displayedRunningMissions;     //array of all created Running Mission to be displayed
+
+let runningArrowLeft;
+let runningArrowRight;
+let pages = [0];
+
+function drawRunningMissions(){
+  if (cur_status === 'status_play'){
+
+  rx = width*0.15;
+  ry = height*0.3;
+  rw = 300;
+  rh = 300;
+
+  let positions = [ry-rh*0.333, ry, ry+rh*0.333];
+  displayedRunningMissions = [];
+  let positionIndex = 0;
+  pages = [0];
+
+
+  //Frame
+  runningMissionFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary )
+  runningMissionFrame.drawScreen();
+
+
+  if (fullRunningSoloMissions.length>0){
+
+  for (let i=0; i<fullRunningSoloMissions.length; i++){
+
+    if (i % 3 === 0 && i!==0){
+      positionIndex = 0;
+      pages.push(pages.length);
+      displayedRunningMissions[i] = new RunningMission(rx, positions[positionIndex],rw, rh*0.33, pages[pages.length-1], fullRunningSoloMissions[i].Name, fullRunningSoloMissions[i].Mission_Time, fullRunningSoloMissions[i].Story);
+
+  }  else {
+    displayedRunningMissions[i] = new RunningMission(rx, positions[positionIndex],rw, rh*0.33, pages[pages.length-1], fullRunningSoloMissions[i].Name, fullRunningSoloMissions[i].Mission_Time, fullRunningSoloMissions[i].Story);
+    positionIndex ++;
+  }
+}
+
+  console.log(displayedRunningMissions);
+  for (let i=0; i<displayedRunningMissions.length; i++){
+    displayedRunningMissions[i].drawRunningMission();
+  }
+
+
+
+  //Arrows
+  runningArrowLeft= new ImageButton(rx-25, ry+rh/1.75, 30, 30, ImageArrowLeft);
+  runningArrowRight =  new ImageButton(rx+25, ry+rh/1.75, 30, 30, ImageArrowRight);
+  
+  runningArrowLeft.drawImageButton();
+  runningArrowRight.drawImageButton();
+
+
+
+
+} else {
+  push();
+  fill(255);
+  textSize(17);
+  textFont(ftRetroGaming);
+  text('No Solo Missions Running',rx, ry);
+  pop();
+}
+  
+
+  }
+}
+
+
+
+function drawAssistant(){
+    image(ImageAssistant, width-500, height-600, 500, 600);
+}
+
+
+
+
+function drawRegisteredScreen(){
+  push();
+  fill('green');
+  rect(width*0.5, height*0.7, 400, 150 );
+  fill(255);
+  textAlign(CENTER, CENTER);
+  fill(0)
+  text('You have successfully registered as a new Player. Please refresh this page and login again with your credentials.', width*0.5, height*0.7, 350, 400);
+  pop();
+}
 
 
 

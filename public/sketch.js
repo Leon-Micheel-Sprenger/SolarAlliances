@@ -1,6 +1,12 @@
+//Fonts:
+let ftRetroGaming;
+let ft8Bbit;
+
+
 
 function preload(){
-
+  ftRetroGaming = loadFont('assets/fonts/Retro-Gaming.ttf');
+  ft8Bbit = loadFont('assets/fonts/8-bit-pusab.ttf');
 
 }
 
@@ -10,7 +16,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   loginScreen();
   
-
+  bg = loadImage('assets/background.png');
+  loadImages();
   
 }
 
@@ -24,6 +31,7 @@ function draw() {
   drawShips();
   drawMessages();
   drawSoloMissions();
+  drawRunningMissions();
   drawMultiplayerMissions();
   drawOpenMMission();
   drawContributionScene();

@@ -6,6 +6,7 @@ const port = 3000;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+
 app.use(express.static('public'));
 
 // parse application/x-www-form-urlencoded --> we need this to encrypt the data coming from the httpPost in the script
@@ -82,6 +83,19 @@ setInterval(function(){
 }, 300000);
 
 
+//Deduct a second every second from the mission respawn timer
+setInterval(function(){
+
+  //select time value.
+
+
+  //if above 0, decrease
+  //let sql =`UPDATE player_missions`
+
+  //else set to 5 min again.
+
+},30000)
+
 
 
 
@@ -126,6 +140,9 @@ setInterval(function(){
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
+
+
+    
   })
 
     }
@@ -339,13 +356,13 @@ app.get('/getPlayerShips/:playerId', (req, res)=> {
 app.get('/getPlayerMissions/:playerId', (req, res)=> {
   let playerId = req.params.playerId;
 
-  let sql= `SELECT Mission1, Mission2, Mission3, Mission4, Mission5 FROM player_missions WHERE Player_Id = ${playerId};`;
+  let sql= `SELECT Mission1, Mission2, Mission3, Mission4, Mission5, RespawnMissionTime FROM player_missions WHERE Player_Id = ${playerId};`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
    
     if(result.length>0){
-
+      let RespawnTime = result[0].RespawnMissionTime;
       let Missions = [result[0].Mission1, result[0].Mission2, result[0].Mission3, result[0].Mission4, result[0].Mission5]
       
 
@@ -361,7 +378,7 @@ app.get('/getPlayerMissions/:playerId', (req, res)=> {
 
       db.query(sql, (err, result)=> {
         if(err) throw err;
-        res.send(result);
+        res.send({result: result, RespawnTime: RespawnTime});
       })
     }
   })
@@ -390,7 +407,9 @@ app.get('/getRespawnTimer/:playerId', (req, res)=> {
 app.get('/getRunningMissions/:playerId', (req, res)=> {
   let playerId = req.params.playerId;
 
-  let sql = `SELECT * FROM accepted_solomissions WHERE Player_Id=${playerId} AND Mission_Time > '00:00:00';`;
+  let sql = `SELECT * FROM accepted_solomissions a
+  INNER JOIN solo_missions b ON a.Solo_Mission_Id = b.Solo_Missions_Id
+  WHERE Player_Id=${playerId} AND Mission_Time > '00:00:00';`;
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
@@ -617,7 +636,7 @@ app.post('/getCompletedMissions', (req, res)=> {
             let sql = `UPDATE accepted_solomissions SET Confirmation_Sent_To_Player = 1 WHERE Player_Id= ${playerId} AND Solo_Mission_Id = ${completedMissions[0].Solo_Mission_Id};`
             db.query(sql, (err, result)=> {
               if (err) throw err;
-              res.send({message: 'Commander, a solo mission was copleted successfully.'});
+              res.send({message: 'Commander, a solo mission was completed successfully.'});
               
             })
           })
@@ -640,7 +659,17 @@ app.get('/getMMissions', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
-    res.send(result);
+    let MMissions = result;
+
+    let sql = `SELECT * FROM accepted_multiplayer_missions;`;
+
+    db.query(sql, (err, result)=> {
+      if (err) throw err;
+      let ammMMissions = result;
+
+      res.send({MMissions: MMissions, ammMMissions: ammMMissions});
+    })
+    
   })
 
 })

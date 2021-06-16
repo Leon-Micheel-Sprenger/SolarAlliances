@@ -2,6 +2,7 @@
 
 
 
+
 //_______________________________________________________
 // Mouse Pressed Function starts here
 function mousePressed(){
@@ -21,14 +22,11 @@ function mousePressed(){
     }
     }
 
-    //Register Button clicked
+    //'Register' Button clicked
     if(cur_status === 'status_register'){
       if (submitRegisterBtn.isClicked(mouseX, mouseY)){
         doRegister();
-        if (playerId){
-          cur_status === 'status_login';
-          reactivateLogin();
-        }
+        drawRegisteredScreen();
       }
     }
     
@@ -116,6 +114,29 @@ if (cur_status === 'status_play' ){
       gridPageEnable --;
       drawGrid();
       drawShips();
+    }
+  };
+}
+
+
+//Click arrow Right of Running Missions
+if (cur_status === 'status_play'  && displayedRunningMissions.length > 0){
+  if (runningArrowRight.IsClicked(mouseX, mouseY)){
+    if(runningMissionPageEnable+1 < pages.length ){
+
+      runningMissionPageEnable ++;
+      drawRunningMissions();
+    }
+  };
+}
+
+
+//Click arrow Left of Running Missions
+if (cur_status === 'status_play' && runningSoloMissions.length > 0){
+  if (runningArrowLeft.IsClicked(mouseX, mouseY)){
+    if(runningMissionPageEnable-1 >= 0 ){
+      runningMissionPageEnable --;
+      drawRunningMissions();
     }
   };
 }
@@ -381,7 +402,7 @@ if (cur_status==='status_register'){
 
     //create player
     httpPost('/Register', 'json', dataSent, (dataReceived)=> {
-  
+      
       if (dataReceived[0].Name === username){
         alert('The username is already taken');
 
@@ -389,9 +410,12 @@ if (cur_status==='status_register'){
   
         playerId = dataReceived[0].Player_Id;
         console.log('New Player registered with player Id: '+ playerId);
+        submitRegisterBtn.disable();
         
       }
     })
+
+
   }
   else {
     alert('Passwords dont match');
@@ -452,17 +476,20 @@ if (cur_status=== 'status_login'){
     //Get Resources from Database
     loadResources();
 
+   
+
 
 
     //Get SingleplayerMissions of the player: 
     loadSoloMissions();
 
+    loadMissionRespawnTime();
 
-     //Load Mission Respawn timer
-    loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
-    missionRespawnTime = dataReceived[0].RespawnMissionTime;
-    })
 
+
+     
+
+   
     
     //Load Accepted Missions and put them in Running Missions array
     loadRunningMissions();
@@ -529,6 +556,7 @@ function acceptSoloMission(missionIndex){
   //Disable button of accepted mission and put it into running missions array on client
   acceptedMission.acceptedMission();
   runningSoloMissions.push(acceptedMission.missionId);
+  
 
   //Deduct resources of the mission from the player resources:
   money -= acceptedMission.InputMoney;
@@ -556,6 +584,8 @@ function acceptSoloMission(missionIndex){
  drawSoloMissions();
  createResourceBar();
  drawResourceValues();
+ 
+
 
 
 
@@ -573,28 +603,35 @@ function acceptSoloMission(missionIndex){
 
   //put mission in accepted missions on db
   httpPost('/updateAcceptedMissions', 'json', dataSent, (dataReceived)=> {
-    //message to player:
-    let message = {message: `Commander, You accepted the mission ${acceptedMission.name}. Let's hope, everything goes as planned.`}
-    messages.push(message);
+   
  })
 
   
   //update resources
   httpPost('/updatePlayerResources', 'json', dataSent, (dataReceived)=> {
-    //message to player:
-     let message = dataReceived[0];
-     messages.push(message);
   } )
 
 
   //send updated Ships to DB:
   httpPost('/updateShipFleet', 'json', dataSent, (dataReceived)=> {
-     //message to player:
-     let message = {message: "Commander, one of your ships has been deployed for a mission!"}
-     messages.push(message);
+     
   });
 
-  drawMessages();
+    //message to player:
+    let message1 = {message: `Commander, You accepted the mission ${acceptedMission.name}. Let's hope, everything goes as planned.`}
+    messages.push(message1);
+
+    let message2 = {message: "Commander, one of your ships has been deployed for a mission!"}
+    messages.push(message2);
+
+    let message3 = {message: "Resources were Deducted from the Storage."}
+    messages.push(message2);
+  
+    drawMessages();
+
+   
+
+
 
   
   }
@@ -1047,6 +1084,23 @@ function missionShipVerified(acceptedMission){
 
 
 
+//MissionRespawn Timer:
+  setInterval(function(){
+    rx= width*0.5;
+    ry= height*0.5;
+    rw= 700;
+    rh= 750;
+   
+    //missionRespawnTime = '00:00:01';  // how do I deduct from a timevalue?
+    drawRespawnTimer(rx, ry, rw, rh);
+  }, 1000)
+
+ 
+
+
+
+
+
 //___________________________________________________________________________________
 //Ping function to get updated solo missions and completed running missions every 30 seconds. 
 
@@ -1096,6 +1150,8 @@ setInterval(function(){
  loadMultiplayerMissions();
  loadPlayerShips(); 
 
+ //loop();
+
 
 
   // loadResources();
@@ -1107,4 +1163,4 @@ setInterval(function(){
                          
  
 }
-},30000);
+},10000);
