@@ -1083,7 +1083,7 @@ function missionShipVerified(acceptedMission){
 
 
 
-
+//____________________________________________________________
 //MissionRespawn Timer:
   setInterval(function(){
     rx= width*0.5;
@@ -1144,6 +1144,7 @@ setInterval(function(){
 
  loadPlayerShips(); 
  loadResources();
+ loadMissionRespawnTime();
  loadSoloMissions();
  loadRunningMissions();
  loadAcceptedMultiplayerMissions(); 

@@ -806,17 +806,8 @@ function drawSoloMissions(){
 
 
 
-//create and set missionRespawnTimer:
-let counterSeconds;
-let counterMinutes;
-let counterHours;
 
 
-function setRespawnTimer(){
-  
-  
-
-}
 
 //Draw missionRespawnTimer:
 

@@ -70,6 +70,14 @@ setInterval(function(){
 
       db.query(sql, (err, result)=> {
         if (err) throw err;
+
+        //set respawn time value back to 5min!
+        let sql = `UPDATE player_missions SET RespawnMissionTime = '00:05:00';`;
+
+          db.query(sql, (err, result)=> {
+            if (err) throw err;
+          })
+        
         
       })
 
@@ -83,18 +91,31 @@ setInterval(function(){
 }, 300000);
 
 
-//Deduct a second every second from the mission respawn timer
+
+
+
+
+//Deduct 10 seconds from the mission respawn timer
 setInterval(function(){
 
   //select time value.
+  let sql =`SELECT RespawnMissionTime FROM player_missions WHERE RespawnMissionTime > '00:00:00';`
 
+  db.query(sql, (err, result)=> {
+    if (err) throw err;
+    
 
-  //if above 0, decrease
-  //let sql =`UPDATE player_missions`
+     //if above 0, decrease
+      let sql =`UPDATE player_missions SET RespawnMissionTime = subtime(RespawnMissionTime, '00:00:10') WHERE   RespawnMissionTime >= '00:00:30';`;
 
-  //else set to 5 min again.
+      db.query(sql, (err, result)=> {
+        if (err) throw err;
+          
+        })
+      
+  }) 
 
-},30000)
+},10000)
 
 
 

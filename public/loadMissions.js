@@ -211,7 +211,7 @@ function loadRunningMissions(){
 function loadMissionRespawnTime(){
   loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
     missionRespawnTime = dataReceived[0].RespawnMissionTime;
-    setRespawnTimer();
+    
     })
 }
 
