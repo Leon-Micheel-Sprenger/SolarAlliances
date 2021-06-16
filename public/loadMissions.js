@@ -100,7 +100,8 @@ function loadSoloMissions() {
       singleMissionsArr = [];
 
       //Respawn Timer
-      missionRespawnTime = dataReceived.RespawnTime;
+      //missionRespawnTime = dataReceived.RespawnTime;
+      
       
 
         //assign all variables of mission1. 
@@ -210,6 +211,7 @@ function loadRunningMissions(){
 function loadMissionRespawnTime(){
   loadJSON('/getRespawnTimer/'+playerId, (dataReceived)=> {
     missionRespawnTime = dataReceived[0].RespawnMissionTime;
+    setRespawnTimer();
     })
 }
 
@@ -264,10 +266,12 @@ function loadMultiplayerMissions(){
     multiplayerMissions = [];
     
     
-    for(let i=0; i<dataReceived.length; i++){
-      mmissionsData.push(dataReceived[i]);
+    for(let i=0; i<dataReceived.MMissions.length; i++){
+      mmissionsData.push(dataReceived.MMissions[i]);
+
     }
-  
+    
+    console.log(mmissionsData);
     
     
     createMultiplayerMissions();
@@ -296,6 +300,9 @@ function loadAcceptedMultiplayerMissions(){
       
     }
   }
+
+  loop();
+
 
   console.log('accepted multiplayer missions '+acceptedMultiplayerMissions);
   console.log('running multiplayer missions ' +runningMultiplayerMissions);

@@ -1064,7 +1064,14 @@ drawOpenMission(x, y, width, height){
 push();
   //draw box
   textFont(ftRetroGaming);
-  
+
+  push();
+  textSize(12);
+  textStyle(NORMAL);
+  fill(255);
+  text(`${openMMission.Story}`, x, y-height/3, width*0.9, height);
+  pop();
+
   push();
   rectMode(CENTER);
   fill(Primary);
@@ -1100,7 +1107,7 @@ push();
   textStyle(BOLD);
   fill(TimeClr);
   textFont(ftRetroGaming)
-  text(`${this.time}`,x, y-height/4.5 );
+  text(`${this.time}`,x, y-height/4.25 );
   pop();
 
 
@@ -1257,7 +1264,21 @@ pop();
   
 }
 
+
+
+
 drawContribution(x, y, width, height){
+push();
+ 
+
+  push();
+  textFont(ftRetroGaming);
+  textSize(12);
+  textStyle(NORMAL);
+  fill(255);
+  text(`${openMMission.Story}`, x, y-height/3, width*0.9, height);
+  pop();
+
   push();
   strokeWeight(1);
   stroke(255);
@@ -1277,21 +1298,24 @@ drawContribution(x, y, width, height){
     textStyle(BOLD);
     text('Mission Accepted', x, y+height/2.5);
     pop();
+
+  pop();
   }
 
 
 
-  
+  push();
   fill(0);
   textAlign(CENTER);
   textStyle(BOLD);
-  textSize(20);
+  textSize(15);
   text('Are you sure, you want to contribute to this Multiplayer Mission?', x, y-y/6);
   textSize(15);
   text('If you click Contribute Resources, the following Resources and Ships will be commited to this Mission. You wont be able to use your ship until this Multiplayer Mission is finished.', x, y+y/8, width*0.7, height);
   fill('red');
   strokeWeight(2);
   text(`NOTE, that the ${this.time} minutes will only start, after 100% of the required resources have been submitted by players`, x, y+height/4, width*0.7, height)
+  pop();
   pop();
 }
 

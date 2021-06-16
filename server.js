@@ -83,6 +83,19 @@ setInterval(function(){
 }, 300000);
 
 
+//Deduct a second every second from the mission respawn timer
+setInterval(function(){
+
+  //select time value.
+
+
+  //if above 0, decrease
+  //let sql =`UPDATE player_missions`
+
+  //else set to 5 min again.
+
+},30000)
+
 
 
 
@@ -127,6 +140,9 @@ setInterval(function(){
 
   db.query(sql, (err, result)=> {
     if(err) throw err;
+
+
+    
   })
 
     }
@@ -643,7 +659,17 @@ app.get('/getMMissions', (req, res)=> {
 
   db.query(sql, (err, result)=> {
     if (err) throw err;
-    res.send(result);
+    let MMissions = result;
+
+    let sql = `SELECT * FROM accepted_multiplayer_missions;`;
+
+    db.query(sql, (err, result)=> {
+      if (err) throw err;
+      let ammMMissions = result;
+
+      res.send({MMissions: MMissions, ammMMissions: ammMMissions});
+    })
+    
   })
 
 })

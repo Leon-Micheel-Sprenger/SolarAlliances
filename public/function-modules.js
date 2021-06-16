@@ -483,6 +483,8 @@ if (cur_status=== 'status_login'){
     //Get SingleplayerMissions of the player: 
     loadSoloMissions();
 
+    loadMissionRespawnTime();
+
 
 
      
@@ -1089,7 +1091,7 @@ function missionShipVerified(acceptedMission){
     rw= 700;
     rh= 750;
    
-    missionRespawnTime -= '00:00:01';  // how do I deduct from a timevalue?
+    //missionRespawnTime = '00:00:01';  // how do I deduct from a timevalue?
     drawRespawnTimer(rx, ry, rw, rh);
   }, 1000)
 
@@ -1142,13 +1144,13 @@ setInterval(function(){
 
  loadPlayerShips(); 
  loadResources();
- loadMissionRespawnTime();
  loadSoloMissions();
  loadRunningMissions();
  loadAcceptedMultiplayerMissions(); 
  loadMultiplayerMissions();
  loadPlayerShips(); 
 
+ //loop();
 
 
 
@@ -1161,4 +1163,4 @@ setInterval(function(){
                          
  
 }
-},30000);
+},10000);

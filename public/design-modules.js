@@ -377,13 +377,15 @@ function drawResourceValues(){
 
   push();
 
+  noStroke();
+  textStyle(BOLD);
   fill(255);
   textSize(12);
   textAlign(CENTER, CENTER);
   text(`${money}`,(rx+25)+40, ry+30);
   text(`${water}/${max_water}`,(rx+125)+50, ry+30);
   text(`${ore}/${max_ore}`,(rx+225)+50, ry+30);
-  text(`${people}/${max_people}`,(rx+325)+45,  ry+30);
+  text(`${people}/${max_people}`,(rx+325)+50,  ry+30);
   text(`${rank}`,(rx+425)+30,  ry+30);
   text(`Year: ${gameDate}`,(rx+530),  ry+30);
     
@@ -641,7 +643,7 @@ let missionFrame;
 let singleMissionsBtn;
 let multiMissionsBtn;
 let runningMissionsBtn;
-let missionRespawnTime;
+let missionRespawnTime;   //Value from Database
 let missionExitBtn;
 
 let missionMenuEnable = false;
@@ -777,7 +779,9 @@ function drawSoloMissions(){
     text("Missions", rx, ry-rh/2.2);
     textSize(15);
     text("Time until new Mission: ", rx-rw/2+130, ry+rh/2-80);
+
     drawRespawnTimer(rx, ry, rw, rh);
+
     textStyle(BOLD);
     fill(255, 1);
     stroke(TimeClr)
@@ -801,11 +805,40 @@ function drawSoloMissions(){
 }
 
 
+
+//create and set missionRespawnTimer:
+let counterSeconds;
+let counterMinutes;
+let counterHours;
+
+
+function setRespawnTimer(){
+  
+  
+
+}
+
 //Draw missionRespawnTimer:
+
+ 
 
 function drawRespawnTimer(rx, ry, rw, rh){
   if (missionMenuEnable === true && mmissionEnable === false){
+
+    rx= width*0.5;
+    ry= height*0.5;
+    rw= 700;
+    rh= 750;
+
   push();
+    fill(Secondary);
+    stroke(TimeClr);
+    rect(rx-rw/2+160, ry+rh/2-48, 100, 40);
+
+    textFont(ftRetroGaming);
+    textStyle(BOLD);
+    noStroke();
+    fill(255);
     text(`${missionRespawnTime}`, rx-rw/2+160, ry+rh/2-50 );
   pop();
   }
@@ -813,13 +846,6 @@ function drawRespawnTimer(rx, ry, rw, rh){
 
 
 
-//________________________________________________________
-//Create and Draw Running Missions Interface
-
-
-function createRunningMissionInterface(){
-  //put it on main screen!
-}
 
 
 
@@ -911,11 +937,18 @@ function createMultiplayerMissions(){
       for(let j=0; j<runningMultiplayerMissions.length; j++){
         if (runningMultiplayerMissions[j].amm_MMissions_Id === multiplayerMissions[i].missions_Id){
           multiplayerMissions[i].acceptMission(1);
+          multiplayerMissions[i].time = runningMultiplayerMissions[j].Mission_Time
          
           loop();
         }
       }
     }
+
+
+
+
+
+
 
   
 
@@ -1007,19 +1040,13 @@ function drawOpenMMission(){
   textFont(ftRetroGaming);
   fill(255);
   text(`${openMMission.name}`, rx, ry-rh/2.2);
-
-  
-
-  textFont(ftRetroGaming);
-  textSize(15);
-  textStyle(NORMAL);
-  text(`${openMMission.Story}`, rx, ry-rh/2.5);
   pop();
 
 
   //draw open mission class
+  push();
   openMMission.drawOpenMission(rx, ry, rw, rh);
-
+  pop();
  }
 }
 
@@ -1050,13 +1077,12 @@ function drawContributionScene(){
     textStyle(BOLD);
     text(`${openMMission.name}`, rx, ry-rh/2.2);
   
-    textSize(15);
-    textStyle(NORMAL);
-    text(`${openMMission.Story}`, rx, ry-rh/2.5);
+    
     pop();
     
+    push();
     openMMission.drawContribution(rx, ry, rw, rh);
-
+    pop();
   }
 }
 
@@ -1185,10 +1211,12 @@ function drawAssistant(){
 
 function drawRegisteredScreen(){
   push();
-  fill(0);
-  rect(width*0.5, height*0.7, 400, 300 );
+  fill('green');
+  rect(width*0.5, height*0.7, 400, 150 );
   fill(255);
-  text('You have successfully registered as a new Player. Please refresh this page and login again with your credentials.')
+  textAlign(CENTER, CENTER);
+  fill(0)
+  text('You have successfully registered as a new Player. Please refresh this page and login again with your credentials.', width*0.5, height*0.7, 350, 400);
   pop();
 }
 
