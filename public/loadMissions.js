@@ -218,6 +218,8 @@ function loadMissionRespawnTime(){
 
 
 
+
+
 //Get resources from DB
 function loadResources(){
   
@@ -310,3 +312,5 @@ function loadAcceptedMultiplayerMissions(){
   })
 
 }
+
+

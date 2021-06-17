@@ -34,6 +34,7 @@ function mousePressed(){
 //Missions Button clicked
     if (cur_status === 'status_play'){
       if(missionButton.isClicked(mouseX, mouseY)){
+        soundInterfaceOpen.play();
         missionMenuEnable = true;
         missionButton.disable();
         createMissions();
@@ -404,6 +405,7 @@ if (cur_status==='status_register'){
     httpPost('/Register', 'json', dataSent, (dataReceived)=> {
       
       if (dataReceived[0].Name === username){
+        soundError.play();
         alert('The username is already taken');
 
       } else {
@@ -418,10 +420,12 @@ if (cur_status==='status_register'){
 
   }
   else {
+    soundError.play();
     alert('Passwords dont match');
   } 
 }
   else {
+    soundError.play();
     alert('Please fill out all required fields');
   }
 
@@ -454,6 +458,7 @@ if (cur_status=== 'status_login'){
   httpPost('/Login', 'json', dataSent, (dataReceived)=>{
     console.log(dataReceived);
     if (dataReceived.message === 'Wrong password'){
+      soundError.play();
       alert('Password or username is wrong');
       console.log
     } else {
@@ -526,6 +531,7 @@ if (cur_status=== 'status_login'){
      //loop();
     }
     else {
+      soundError.play();
       alert('Please fill out the required fields');
   }
  
@@ -626,7 +632,8 @@ function acceptSoloMission(missionIndex){
 
     let message3 = {message: "Resources were Deducted from the Storage."}
     messages.push(message2);
-  
+
+    soundMessageReceived.play();
     drawMessages();
 
    
@@ -637,6 +644,7 @@ function acceptSoloMission(missionIndex){
   }
 
   else{
+  soundError.play();
   alert ('You dont have the resources or available ships, to do this mission');
    }
 }
@@ -699,6 +707,7 @@ function solomissionShipVerified(acceptedMission){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You dont have the resources to build this ship');
       }
     }
@@ -721,6 +730,7 @@ function solomissionShipVerified(acceptedMission){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You dont have the resources to build this ship');
       }
     }
@@ -745,6 +755,7 @@ function solomissionShipVerified(acceptedMission){
         console.log(dataReceived.message);
       });
     }else{
+      soundError.play();
       alert ('You dont have the resources to build this ship');
     }
   }
@@ -767,6 +778,7 @@ function buildexplorationship(){
         console.log(dataReceived.message);
       });
     }else{
+      soundError.play();
       alert ('You dont have the resources to build this ship');
     }
   }
@@ -790,9 +802,11 @@ function buildupgradedome1(){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You already did this upgrade');
       }
     }else{
+      soundError.play();
       alert('You dont have the resources to do this upgrade')
     }
   }
@@ -813,9 +827,11 @@ function buildupgradedome2(){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You already did this upgrade');
       }
     }else{
+      soundError.play();
       alert('You dont have the resources to do this upgrade')
     }
   }
@@ -836,9 +852,11 @@ function buildupgradedome3(){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You already did this upgrade');
       }
     }else{
+      soundError.play();
       alert('You dont have the resources to do this upgrade')
     }
   }
@@ -859,9 +877,11 @@ function buildupgradestorage1(){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You already did this upgrade');
       }
     }else{
+      soundError.play();
       alert('You dont have the resources to do this upgrade')
     }
   }
@@ -882,9 +902,11 @@ function buildupgradestorage2(){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You already did this upgrade');
       }
     }else{
+      soundError.play();
       alert('You dont have the resources to do this upgrade')
     }
   }
@@ -905,9 +927,11 @@ function buildupgradestorage3(){
           console.log(dataReceived.message);
         });
       }else{
+        soundError.play();
         alert ('You already did this upgrade');
       }
     }else{
+      soundError.play();
       alert('You dont have the resources to do this upgrade')
     }
   }
@@ -1037,6 +1061,7 @@ loop();
 
 }
 else {
+  soundError.play();
   alert('You dont have the resources or Ships to contribute to this Mission');
 }
 
@@ -1119,6 +1144,7 @@ setInterval(function(){
   if (dataReceived.message){
     console.log(dataReceived);
     messages.push(dataReceived);
+    soundMessageReceived.play();
 
    
     loadPlayerShips(); 
@@ -1133,6 +1159,7 @@ setInterval(function(){
   if (dataReceived.message){
     console.log(dataReceived);
     messages.push(dataReceived);
+    soundMessageReceived.play();
 
     
     loadPlayerShips(); 

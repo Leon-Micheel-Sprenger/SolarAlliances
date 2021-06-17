@@ -7,6 +7,8 @@ let ft8Bbit;
 function preload(){
   ftRetroGaming = loadFont('assets/fonts/Retro-Gaming.ttf');
   ft8Bbit = loadFont('assets/fonts/8-bit-pusab.ttf');
+  loadSounds();
+  loadImages();
 
 }
 
@@ -17,7 +19,8 @@ function setup() {
   loginScreen();
   
   bg = loadImage('assets/background.png');
-  loadImages();
+  
+  
   
 }
 

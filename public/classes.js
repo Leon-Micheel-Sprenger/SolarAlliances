@@ -101,12 +101,14 @@ class Button {
     }
     text(this.txt, this.posX, this.posY);
     pop();
+
   }
 
 
   isClicked(x,y){
     if(this.enable===true){
       if ((x>this.posX-this.width/2 && x<this.posX+this.width/2) && (y>this.posY-this.height/2 && y<this.posY+this.height/2)){
+        soundButtonClick.play();
         return true;
       }
     }
@@ -118,8 +120,18 @@ class Button {
     }
   }
 
-  isHovered(){
-    
+  isHovered(x,y){
+    if(this.enable===true){
+      if ((x>this.posX-this.width/2 && x<this.posX+this.width/2) && (y>this.posY-this.height/2 && y<this.posY+this.height/2)){
+        console.log('HOvering');
+      }
+    }
+    else {
+      if (this.enable === false){
+        console.log('Button disabled');
+      }
+      return false;
+    }
   }
 
   disable(){
@@ -161,6 +173,7 @@ class ExitButton {
   isClicked(x,y){
     if(this.enable===true){
       if ((x>this.rx && x<this.rx+this.rw) && (y>this.ry && y<this.ry+this.rh)){
+        soundButtonClick.play();
         return true;
       }
     }
@@ -196,6 +209,7 @@ class ImageButton {
   IsClicked(x,y){
     let d= dist(x, y, this.rx, this.ry);
     if (d<this.rw){
+      soundButtonClick.play();
       return true;
     }
   }
@@ -1373,6 +1387,7 @@ class Message {
 
   dismissMessage(){
     messageObjects.splice(this.index, 1);
+    
   }
 
 }
