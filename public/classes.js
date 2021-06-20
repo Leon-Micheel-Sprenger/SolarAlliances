@@ -97,7 +97,7 @@ class Button {
         y > this.posY - this.height / 2 &&
         y < this.posY + this.height / 2
       ) {
-        //soundButtonClick.play();
+        soundButtonClick.play();
         return true;
       }
     } else {
@@ -195,7 +195,7 @@ class ImageButton {
   IsClicked(x, y) {
     let d = dist(x, y, this.rx, this.ry);
     if (d < this.rw) {
-      //soundButtonClick.play();
+      soundButtonClick.play();
       return true;
     }
   }
