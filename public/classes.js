@@ -97,7 +97,7 @@ class Button {
         y > this.posY - this.height / 2 &&
         y < this.posY + this.height / 2
       ) {
-        soundButtonClick.play();
+        //soundButtonClick.play();
         return true;
       }
     } else {
@@ -195,7 +195,7 @@ class ImageButton {
   IsClicked(x, y) {
     let d = dist(x, y, this.rx, this.ry);
     if (d < this.rw) {
-      soundButtonClick.play();
+      //soundButtonClick.play();
       return true;
     }
   }
@@ -276,6 +276,7 @@ class OnScreenFrame {
     let d = dist(x, y, this.rx - this.rw / 14, this.ry + this.rh / 2.5);
 
     if (d < 25) {
+      soundButtonClick.play();
       return true;
     }
   }
@@ -284,6 +285,7 @@ class OnScreenFrame {
     let d = dist(x, y, this.rx + rw / 18, this.ry + this.rh / 2.5);
 
     if (d < 25) {
+      soundButtonClick.play();
       return true;
     }
   }
@@ -1227,24 +1229,27 @@ class MultipiplayerMission {
     pop();
 
     push();
-    imageMode(CENTER);
-    image(
-      this.rewardResource2IconPath,
-      x + width / 10,
-      y + height / 2.7,
-      35,
-      58
-    );
-    pop();
+    if (this.rewardResource2IconPath) {
+      imageMode(CENTER);
+      image(
+        this.rewardResource2IconPath,
+        x + width / 10,
+        y + height / 2.7,
+        35,
+        58
+      );
 
-    push();
-    strokeWeight(3);
-    stroke(0);
-    textSize(20);
-    fill("green");
-    textStyle(BOLD);
-    text("+" + this.RewardResource2, x + width / 10 + 80, y + height / 2.7);
-    pop();
+      pop();
+
+      push();
+      strokeWeight(3);
+      stroke(0);
+      textSize(20);
+      fill("green");
+      textStyle(BOLD);
+      text("+" + this.RewardResource2, x + width / 10 + 80, y + height / 2.7);
+      pop();
+    }
 
     //Draw Minimum Contribution
     push();

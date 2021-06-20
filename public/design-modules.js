@@ -109,6 +109,7 @@ function loadSounds() {
   soundButtonClick = loadSound("assets/sounds/button-click.wav");
   soundError = loadSound("assets/sounds/error.wav");
   soundMessageReceived = loadSound("assets/sounds/message-arrived.wav");
+  soundTest = loadSound("assets/sounds/test-sound.mp3");
 }
 
 // //_____________________________________________________________________
@@ -1171,8 +1172,6 @@ function createMultiplayerMissions() {
   console.log(multiplayerMissions);
 
   //Change status of accepted and/or running Multiplayer Missions;
-  //YOU ARE ONLY STORING THE DATA OF THE SERVER CALL IN THOSE ARRAYS, and no actual missions. But you have to loop created missions for this to work.!
-  //or you could loo multiplayerMissions and see, which missions are in those arrays and then disable those
 
   for (let i = 0; i < multiplayerMissions.length; i++) {
     for (let j = 0; j < acceptedMultiplayerMissions.length; j++) {
