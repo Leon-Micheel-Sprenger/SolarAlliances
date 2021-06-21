@@ -16,6 +16,8 @@ class Tile {
     push();
     fill(this.clr);
     //noStroke();
+    stroke(255);
+    strokeWeight(2);
     square(this.posX, this.posY, side);
     fill(0);
     textAlign(CENTER, CENTER);
@@ -1436,9 +1438,9 @@ class Message {
       circle(this.x + this.rw / 2 + 40, this.y + this.rh / 2 + 30, 20);
 
       fill(0);
-      textAlign(CENTER, CENTER);
+      textAlign(LEFT, CENTER);
       textSize(15);
-      text(`${this.message}`, this.x, this.y, this.rw * 0.8, this.rh * 0.7);
+      text(`${this.message}`, this.x, this.y, this.rw * 0.85, this.rh * 0.9);
 
       this.dismissBtn.drawButton();
       pop();

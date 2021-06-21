@@ -188,7 +188,7 @@ app.post("/Register", (req, res) => {
               res.send(result);
               let playerId = result[0].Player_Id;
 
-              let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player_Id) VALUES ('200', '200', '200', '25', '100', '500', '500', '${result[0].Player_Id}' ) ; `;
+              let sql = `INSERT INTO player_resources (Money, Water, Ore, People, Max_People, Max_Ore, Max_Water, Player_Id) VALUES ('200', '150', '150', '25', '100', '300', '300', '${result[0].Player_Id}' ) ; `;
 
               db.query(sql, (err, result) => {
                 if (err) throw err;
