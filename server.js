@@ -35,6 +35,17 @@ db.connect(function (err) {
 //______________________________________________________________
 //Other server logic
 
+//______________________________________________________________
+//Reset Mission Respawn Time to 5 min after the server starts
+setTimeout(function () {
+  let sql = `UPDATE player_missions SET RespawnMissionTime = '00:05:00';`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log("reset mission respawn time");
+  });
+}, 100);
+
 //_______________________________________________________________
 //update Solo missions every 5 minutes (a new Mission is coming on top and all others are shifted down)
 setInterval(function () {

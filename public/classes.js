@@ -204,7 +204,16 @@ class ImageButton {
 //_________________________________________________________________________
 //OnScreen Interface
 class OnScreenFrame {
-  constructor(rx, ry, rw, rh, frame, bckclr = "white", deduct = 5) {
+  constructor(
+    rx,
+    ry,
+    rw,
+    rh,
+    frame,
+    bckclr = "white",
+    deduct = 5,
+    extendedFrame
+  ) {
     this.rx = rx;
     this.ry = ry;
     this.rw = rw;
@@ -223,6 +232,7 @@ class OnScreenFrame {
     );
 
     this.frame = frame;
+    this.extendedFrame = extendedFrame;
 
     this.bckclr = bckclr;
     this.deduct = deduct;
@@ -240,6 +250,19 @@ class OnScreenFrame {
     fill(this.bckclr);
     rectMode(CENTER);
     rect(this.rx, this.ry, this.rw - 5, this.rh - this.deduct, 15);
+    pop();
+  }
+
+  drawExtendedFrame() {
+    push();
+    imageMode(CENTER);
+    image(
+      this.extendedFrame,
+      this.rx + 110,
+      this.ry + 22,
+      this.rw * 1.42,
+      this.rh * 1.15
+    );
     pop();
   }
 

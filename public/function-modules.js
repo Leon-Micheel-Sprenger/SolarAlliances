@@ -435,6 +435,7 @@ function doLogin() {
 
           //Create the game
           createGame();
+          resetRespawnTimer();
         }
       });
       //loop();
@@ -942,15 +943,14 @@ function missionShipVerified(acceptedMission) {
 
 //____________________________________________________________
 //MissionRespawn Timer:
-setInterval(function () {
+function resetRespawnTimer() {
   rx = width * 0.5;
   ry = height * 0.5;
   rw = 700;
   rh = 750;
 
-  //missionRespawnTime = '00:00:01';  // how do I deduct from a timevalue?
   drawRespawnTimer(rx, ry, rw, rh);
-}, 1000);
+}
 
 //___________________________________________________________________________________
 //Ping function to get updated solo missions and completed running missions every 30 seconds.

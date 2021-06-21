@@ -33,6 +33,7 @@ let arrowLeft = "assets/arrow-left.jpg";
 let arrowRight = "assets/arrow-right.jpg";
 let tabletFrame = "assets/tablet-frame.png";
 let cortana = "assets/cortana-transparent.png";
+let missionInterfaceFrame = "assets/Frame_Main_01.png";
 
 //Colors:
 
@@ -54,6 +55,8 @@ let ImageExitButton;
 let ImageArrowLeft;
 let ImageArrowRight;
 let ImageShipOnMission;
+
+let ImageMissionInterfaceFrame;
 
 let ImageTransportShip;
 let ImageWarShip;
@@ -95,6 +98,8 @@ function loadImages() {
   ImageArrowRight = loadImage(arrowRight);
   ImageEmptyIcon = loadImage(emptyIconPath);
   ImageShipOnMission = loadImage(shipOnMissionIconPath);
+
+  ImageMissionInterfaceFrame = loadImage(missionInterfaceFrame);
 }
 
 //_____________________________________________________
@@ -796,9 +801,10 @@ function createMissions() {
     ry,
     rw,
     rh,
-    ImageTabletFrame,
+    false,
     Secondary,
-    15
+    15,
+    ImageMissionInterfaceFrame
   );
 
   singleMissionsBtn = new Button(
@@ -989,6 +995,7 @@ function drawSoloMissions() {
 
   if (missionMenuEnable === true && mmissionEnable === false) {
     missionFrame.drawScreen();
+    missionFrame.drawExtendedFrame();
     singleMissionsBtn.drawButton();
     multiMissionsBtn.drawButton();
     missionExitBtn.drawExitButton();
@@ -1216,6 +1223,7 @@ function drawMultiplayerMissions() {
 
   if (mmissionEnable === true) {
     missionFrame.drawScreen();
+    missionFrame.drawExtendedFrame();
     singleMissionsBtn.drawButton();
     multiMissionsBtn.drawButton();
     missionExitBtn.drawExitButton();
@@ -1252,6 +1260,7 @@ function drawOpenMMission() {
   if (openMissionEnable) {
     push();
     missionFrame.drawScreen();
+    missionFrame.drawExtendedFrame();
     missionFrame.backBtn.drawButton();
     missionExitBtn.drawExitButton();
 
@@ -1284,6 +1293,7 @@ function drawContributionScene() {
   if (contributionSzeneEnable === true) {
     push();
     missionFrame.drawScreen();
+    missionFrame.drawExtendedFrame();
     missionFrame.backBtn.drawButton();
     missionExitBtn.drawExitButton();
 
