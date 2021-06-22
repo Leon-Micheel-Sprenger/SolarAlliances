@@ -886,33 +886,33 @@ class MultipiplayerMission {
         this.factionImagePath3 = ImageBeltFactionIcon;
         break;
       case "M":
-        this.factionImagePath1 = ImageEmptyIcon;
+        this.factionImagePath1 = ImageEmptyFaction;
         this.factionImagePath2 = ImageMarsFactionIcon;
-        this.factionImagePath3 = ImageEmptyIcon;
+        this.factionImagePath3 = ImageEmptyFaction;
         break;
       case "B":
-        this.factionImagePath1 = ImageEmptyIcon;
+        this.factionImagePath1 = ImageEmptyFaction;
         this.factionImagePath2 = ImageBeltFactionIcon;
-        this.factionImagePath3 = ImageEmptyIcon;
+        this.factionImagePath3 = ImageEmptyFaction;
         break;
       case "E":
-        this.factionImagePath1 = ImageEmptyIcon;
+        this.factionImagePath1 = ImageEmptyFaction;
         this.factionImagePath2 = ImageEarthFactionIcon;
-        this.factionImagePath3 = ImageEmptyIcon;
+        this.factionImagePath3 = ImageEmptyFaction;
         break;
       case "ME":
         this.factionImagePath1 = ImageMarsFactionIcon;
-        this.factionImagePath2 = ImageEmptyIcon;
+        this.factionImagePath2 = ImageEmptyFaction;
         this.factionImagePath3 = ImageEarthFactionIcon;
         break;
       case "MB":
         this.factionImagePath1 = ImageMarsFactionIcon;
-        this.factionImagePath2 = ImageEmptyIcon;
+        this.factionImagePath2 = ImageEmptyFaction;
         this.factionImagePath3 = ImageBeltFactionIcon;
         break;
       case "EB":
         this.factionImagePath1 = ImageEarthFactionIcon;
-        this.factionImagePath2 = ImageEmptyIcon;
+        this.factionImagePath2 = ImageEmptyFaction;
         this.factionImagePath3 = ImageBeltFactionIcon;
         break;
     }

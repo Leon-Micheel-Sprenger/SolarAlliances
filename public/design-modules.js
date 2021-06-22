@@ -21,9 +21,10 @@ let warShipIconPath = "assets/warship-icon.jpg";
 let explorationShipIconPath = "assets/explorationship-icon.jpg";
 
 //Faction Icon Paths
-let marsIconPath = "assets/money-icon.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
-let earthIconPath = "assets/money-icon.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
-let beltIconPath = "assets/money-icon.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
+let marsIconPath = "assets/mars-logo1.png"; //!!NEED DIMENSIONS 35px TO 25px!!
+let earthIconPath = "assets/earth-logo.png"; //!!NEED DIMENSIONS 35px TO 25px!!
+let beltIconPath = "assets/opa-logo.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
+let emptyFactionPath = "assets/empty-faction.png";
 
 //Other paths
 let exitButtonIconPath = "assets/exit-icon.jpg";
@@ -66,6 +67,7 @@ let ImageMiningShip;
 let ImageMarsFactionIcon;
 let ImageEarthFactionIcon;
 let ImageBeltFactionIcon;
+let ImageEmptyFaction;
 
 let ImageEmptyIcon;
 
@@ -90,6 +92,7 @@ function loadImages() {
   ImageMarsFactionIcon = loadImage(marsIconPath);
   ImageEarthFactionIcon = loadImage(earthIconPath);
   ImageBeltFactionIcon = loadImage(beltIconPath);
+  ImageEmptyFaction = loadImage(emptyFactionPath);
 
   //Other
   ImageTabletFrame = loadImage(tabletFrame);
