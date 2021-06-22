@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 22, 2021 at 06:24 PM
+-- Generation Time: Jun 22, 2021 at 07:36 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -141,7 +141,8 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`Player_Id`, `Name`, `Email`, `Password`, `Rank`, `Faction_Id`, `In_Game_Date`) VALUES
-(69, 'Leon1', 'email', '$2b$10$YYMl3sQWoT0TnOxWUuz.DeJAc/Xz7I5MQTRC.8ORBVbxHTIbg/u5O', 4, 2, '2350-04-15');
+(69, 'Leon1', 'email', '$2b$10$YYMl3sQWoT0TnOxWUuz.DeJAc/Xz7I5MQTRC.8ORBVbxHTIbg/u5O', 4, 2, '2350-04-15'),
+(88, 'Player2', 'email', '$2b$10$5C6.KoLXybchEyvwvPJ8ce1Yuqz264ZvLkjRNJGHCHdL2OLW19vtW', 2, 2, '2364-07-19');
 
 -- --------------------------------------------------------
 
@@ -165,7 +166,8 @@ CREATE TABLE `player_missions` (
 --
 
 INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mission2`, `Mission3`, `Mission4`, `Mission5`, `RespawnMissionTime`) VALUES
-(22, 69, 36, 34, 32, 29, 30, '00:03:20');
+(22, 69, 36, 34, 32, 29, 30, '00:05:00'),
+(23, 88, 13, 14, 15, 16, 17, '00:05:00');
 
 -- --------------------------------------------------------
 
@@ -190,7 +192,8 @@ CREATE TABLE `player_resources` (
 --
 
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
-(31, 14750, 800, 970, 500, 500, 1000, 1000, 69);
+(31, 14750, 800, 800, 300, 400, 950, 950, 69),
+(32, 2500, 350, 420, 150, 250, 550, 550, 88);
 
 -- --------------------------------------------------------
 
@@ -224,11 +227,15 @@ CREATE TABLE `ship_fleet` (
 INSERT INTO `ship_fleet` (`Ship_Fleet_ID`, `Ship_on_Mission`, `Player_Id`, `Spaceships_Id`) VALUES
 (70, 0, 69, 5),
 (71, 0, 69, 5),
-(72, 0, 69, 5),
-(73, 0, 69, 5),
+(72, 0, 69, 4),
+(73, 0, 69, 3),
 (75, 0, 69, 3),
-(76, 1, 69, 4),
-(77, 0, 69, 6);
+(76, 0, 69, 4),
+(77, 0, 69, 6),
+(78, 0, 88, 5),
+(79, 0, 88, 5),
+(80, 0, 88, 3),
+(81, 0, 88, 4);
 
 -- --------------------------------------------------------
 
@@ -473,7 +480,7 @@ ALTER TABLE `multiplayer_missions`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `Player_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `player_missions`

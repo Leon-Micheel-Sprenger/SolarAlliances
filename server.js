@@ -193,7 +193,7 @@ app.post("/Register", (req, res) => {
               db.query(sql, (err, result) => {
                 if (err) throw err;
 
-                let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${playerId}', '5') ;`;
+                let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Player_Id, Spaceships_Id) VALUES ('0', '${playerId}', '5') ;`;
 
                 db.query(sql, (err, result) => {
                   if (err) throw err;
@@ -239,27 +239,31 @@ app.post("/Login", (req, res) => {
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    hash = result[0].Password;
+    if (result.length > 0) {
+      hash = result[0].Password;
 
-    bcrypt.compare(password, hash, function (err, result) {
-      if (result === true) {
-        let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${hash}';`;
+      bcrypt.compare(password, hash, function (err, result) {
+        if (result === true) {
+          let sql = `SELECT * FROM player WHERE Name='${username}' AND Password='${hash}';`;
 
-        db.query(sql, (err, result) => {
-          if (err) throw err;
+          db.query(sql, (err, result) => {
+            if (err) throw err;
 
-          if (result.length < 1) {
-            //if user exists not
+            if (result.length < 1) {
+              //if user exists not
 
-            res.send(result);
-          } else res.send(result);
+              res.send(result);
+            } else res.send(result);
 
-          console.log("new playerId sent to client");
-        });
-      } else if (result === false) {
-        res.send({ message: "Wrong password" });
-      }
-    });
+            console.log("new playerId sent to client");
+          });
+        } else if (result === false) {
+          res.send({ message: "Wrong password" });
+        }
+      });
+    } else {
+      res.send({ message: "Wrong password" });
+    }
   });
 });
 
@@ -664,7 +668,7 @@ app.post("/buildwarship", (req, res) => {
   let Ore = req.body.Ore;
   let People = req.body.People;
 
-  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '3');`;
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Player_Id, Spaceships_Id) VALUES ('0', '${Player_Id}', '3');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -684,7 +688,7 @@ app.post("/buildminingship", (req, res) => {
   let Ore = req.body.Ore;
   let People = req.body.People;
 
-  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '4');`;
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Player_Id, Spaceships_Id) VALUES ('0', '${Player_Id}', '4');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -704,7 +708,7 @@ app.post("/buildtransportship", (req, res) => {
   let Ore = req.body.Ore;
   let People = req.body.People;
 
-  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '5');`;
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Player_Id, Spaceships_Id) VALUES ('0', '${Player_Id}', '5');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -724,7 +728,7 @@ app.post("/buildexplorationship", (req, res) => {
   let Ore = req.body.Ore;
   let People = req.body.People;
 
-  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Ship_UnderRepair, Ship_Health, Ship_UnderConstruction, Player_Id, Spaceships_Id) VALUES ('0', '0', '100', '0', '${Player_Id}', '6');`;
+  let sql = `INSERT INTO ship_fleet (Ship_on_Mission, Player_Id, Spaceships_Id) VALUES ('0', '${Player_Id}', '6');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
