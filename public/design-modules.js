@@ -249,6 +249,7 @@ function createGame() {
   InputPass.remove();
   background(bg);
   drawAssistant();
+  drawLogo();
 
   createResourceBar();
   createButtons();
@@ -1461,7 +1462,7 @@ function drawAssistant() {
 }
 
 function drawLogo() {
-  image(ImageLogo, widt);
+  image(ImageMarsFactionIcon, width * 0.5, height * 0.5, 200, 200);
 }
 
 function drawRegisteredScreen() {
