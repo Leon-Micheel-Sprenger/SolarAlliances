@@ -436,6 +436,12 @@ function doLogin() {
           //Create the game
           createGame();
           resetRespawnTimer();
+
+          let message = {
+            message: `Welcome back to the station Commander.`,
+          };
+          messages.push(message);
+          soundMessageReceived.play();
         }
       });
       //loop();

@@ -15,13 +15,13 @@ let rankIconPath = "assets/rank-icon.jpg";
 let emptyIconPath = "assets/empty-icon.jpg";
 
 //Ship Icon Paths
-let transportShipIconPath = "assets/transportship-icon.jpg";
-let miningShipIconPath = "assets/miningship-icon.jpg";
-let warShipIconPath = "assets/warship-icon.jpg";
-let explorationShipIconPath = "assets/explorationship-icon.jpg";
+let transportShipIconPath = "assets/Raumschiff_1.png";
+let miningShipIconPath = "assets/Raumschiff_2.png";
+let warShipIconPath = "assets/Raumschiff_3.png";
+let explorationShipIconPath = "assets/Raumschiff_4.png";
 
 //Faction Icon Paths
-let marsIconPath = "assets/mars-logo1.png"; //!!NEED DIMENSIONS 35px TO 25px!!
+let marsIconPath = "assets/Mars_Logo.png"; //!!NEED DIMENSIONS 35px TO 25px!!
 let earthIconPath = "assets/earth-logo.png"; //!!NEED DIMENSIONS 35px TO 25px!!
 let beltIconPath = "assets/opa-logo.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
 let emptyFactionPath = "assets/empty-faction.png";
@@ -30,11 +30,14 @@ let emptyFactionPath = "assets/empty-faction.png";
 let exitButtonIconPath = "assets/exit-icon.jpg";
 let backButtonIconPath = "assets/exit-icon.jpg";
 let shipOnMissionIconPath = "assets/exit-icon.jpg";
-let arrowLeft = "assets/arrow-left.jpg";
-let arrowRight = "assets/arrow-right.jpg";
+let arrowLeft = "assets/Button_Left.png";
+let arrowRight = "assets/Button_Right.png";
 let tabletFrame = "assets/tablet-frame.png";
 let cortana = "assets/cortana-transparent.png";
 let missionInterfaceFrame = "assets/Frame_Main_01.png";
+let runningMissionsFramePath = "assets/RunningMissionsFrame.png";
+let terminalFramePath = "assets/TerminalFrame.png";
+let markerPath = "assets/Maker_1.png";
 
 //Colors:
 
@@ -51,13 +54,17 @@ let ImagePeopleIcon;
 let ImageRankIcon;
 
 let ImageAssistant;
-let ImageTabletFrame;
+
 let ImageExitButton;
 let ImageArrowLeft;
 let ImageArrowRight;
 let ImageShipOnMission;
 
+let ImageTabletFrame;
 let ImageMissionInterfaceFrame;
+let ImageRunningMissionsFrame;
+let ImageTerminalFrame;
+let ImageMarker;
 
 let ImageTransportShip;
 let ImageWarShip;
@@ -103,6 +110,9 @@ function loadImages() {
   ImageShipOnMission = loadImage(shipOnMissionIconPath);
 
   ImageMissionInterfaceFrame = loadImage(missionInterfaceFrame);
+  ImageRunningMissionsFrame = loadImage(runningMissionsFramePath);
+  ImageTerminalFrame = loadImage(terminalFramePath);
+  ImageMarker = loadImage(markerPath);
 }
 
 //_____________________________________________________
@@ -241,6 +251,7 @@ function createGame() {
   createResourceBar();
   createButtons();
   createGrid();
+
   //createships();
   //loop();
 }
@@ -253,16 +264,21 @@ let stationButton;
 let shipFleetButton;
 let marketplaceButton;
 
+let TerminalFrame;
+
 function createButtons() {
   rx = width * 0.15;
   ry = height * 0.75;
   rw = 250;
   rh = 300;
 
-  push();
-  fill("rgba(255,255,255,0.4)");
-  rect(rx, ry, rw, rh, 20);
-  pop();
+  TerminalFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTerminalFrame, false);
+  TerminalFrame.drawScreen();
+
+  // push();
+  // fill("rgba(255,255,255,0.4)");
+  // rect(rx, ry, rw, rh, 20);
+  // pop();
 
   missionButton = new Button(
     width * 0.15,
@@ -270,9 +286,13 @@ function createButtons() {
     200,
     50,
     "Missions",
-    "rgb(117, 114, 110)",
-    "rgb(219, 112, 77)",
-    20
+    "rgba(117, 114, 110,0)",
+    "rgb(0,0,0)",
+    20,
+    20,
+    ftRetroGaming,
+    "rgba(0,0,0,0)",
+    ImageMarker
   );
   missionButton.drawButton();
 
@@ -283,9 +303,13 @@ function createButtons() {
     200,
     50,
     "Ship Fleet",
-    Primary,
+    "rgba(0,0,0,0)",
     Secondary,
-    20
+    20,
+    20,
+    ftRetroGaming,
+    "rgba(0,0,0,0)",
+    ImageMarker
   );
   shipFleetButton.drawButton();
 
@@ -295,10 +319,14 @@ function createButtons() {
     height - 100,
     200,
     50,
-    "Station Upgrades",
+    "Upgrades",
+    "rgba(0,0,0,0)",
     Secondary,
-    Primary,
-    20
+    20,
+    20,
+    ftRetroGaming,
+    "rgba(0,0,0,0)",
+    ImageMarker
   );
   stationButton.drawButton();
 }
@@ -414,15 +442,15 @@ function drawGrid() {
     gridArrowLeftBtn = new ImageButton(
       tilesArr[gridStartX][gridStartY].posX - 75,
       tilesArr[gridStartX][gridStartY].posY,
-      30,
-      30,
+      40,
+      40,
       ImageArrowLeft
     );
     gridArrowRightBtn = new ImageButton(
       tilesArr[gridStartX + 4][gridStartY].posX + 75,
       tilesArr[gridStartX][gridStartY].posY,
-      30,
-      30,
+      40,
+      40,
       ImageArrowRight
     );
     gridArrowRightBtn.drawImageButton();
@@ -465,8 +493,8 @@ function createships() {
           gridStartX,
           gridStartY,
           side,
-          30,
-          40,
+          60,
+          84,
           shipOnMissionIconPath
         );
         column++;
@@ -484,8 +512,8 @@ function createships() {
           gridStartX,
           gridStartY,
           side,
-          30,
-          40,
+          60,
+          84,
           shipOnMissionIconPath
         );
         column++;
@@ -794,7 +822,8 @@ function createMissions() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
 
   multiMissionsBtn = new Button(
@@ -807,7 +836,8 @@ function createMissions() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
 
   missionExitBtn = new ExitButton(rx + rw / 2 - 42, ry - rh / 2 + 12, 30, 30);
@@ -931,6 +961,7 @@ function createMissions() {
   } else if (previousMissions[0].missionId !== singleMissionsArr[0].missionId) {
     let message = { message: `Commander, a new Solo Mission is available!` };
     messages.push(message);
+    soundMessageReceived.play();
     drawMessages();
   }
 
@@ -1291,7 +1322,7 @@ function drawContributionScene() {
 //_________________________________________________________________
 // Draw Messages to the client:
 
-let messages = [{ message: "Welcome back to your station Commander! " }];
+let messages = [];
 
 let messageObjects = [];
 //let messages = [];
@@ -1343,7 +1374,7 @@ function drawRunningMissions() {
     rw = 300;
     rh = 300;
 
-    let positions = [ry - rh * 0.333, ry, ry + rh * 0.333];
+    let positions = [ry - rh * 0.3, ry, ry + rh * 0.29];
     displayedRunningMissions = [];
     let positionIndex = 0;
     pages = [0];
@@ -1354,8 +1385,8 @@ function drawRunningMissions() {
       ry,
       rw,
       rh,
-      ImageTabletFrame,
-      Secondary
+      ImageRunningMissionsFrame,
+      false
     );
     runningMissionFrame.drawScreen();
 
@@ -1365,7 +1396,7 @@ function drawRunningMissions() {
           positionIndex = 0;
           pages.push(pages.length);
           displayedRunningMissions[i] = new RunningMission(
-            rx,
+            rx + 30,
             positions[positionIndex],
             rw,
             rh * 0.33,
@@ -1376,7 +1407,7 @@ function drawRunningMissions() {
           );
         } else {
           displayedRunningMissions[i] = new RunningMission(
-            rx,
+            rx + 30,
             positions[positionIndex],
             rw,
             rh * 0.33,
@@ -1396,15 +1427,15 @@ function drawRunningMissions() {
 
       //Arrows
       runningArrowLeft = new ImageButton(
-        rx - 25,
-        ry + rh / 1.75,
+        rx + 10,
+        ry + rh / 2.3,
         30,
         30,
         ImageArrowLeft
       );
       runningArrowRight = new ImageButton(
-        rx + 25,
-        ry + rh / 1.75,
+        rx + 55,
+        ry + rh / 2.3,
         30,
         30,
         ImageArrowRight
@@ -1414,10 +1445,10 @@ function drawRunningMissions() {
       runningArrowRight.drawImageButton();
     } else {
       push();
-      fill(255);
-      textSize(17);
+      fill(TimeClr);
+      textSize(12);
       textFont(ftRetroGaming);
-      text("No Solo Missions Running", rx, ry);
+      text("No Solo Missions Running", rx + 30, positions[0] - 30, 130, 50);
       pop();
     }
   }
@@ -1425,6 +1456,10 @@ function drawRunningMissions() {
 
 function drawAssistant() {
   image(ImageAssistant, width - 500, height - 600, 500, 600);
+}
+
+function drawLogo() {
+  image(ImageLogo, widt);
 }
 
 function drawRegisteredScreen() {

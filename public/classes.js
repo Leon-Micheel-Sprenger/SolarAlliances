@@ -58,7 +58,9 @@ class Button {
     txtClr,
     txtSize = "20",
     corners = 20,
-    font
+    font,
+    borderClr = "rgb(0,0,0)",
+    frame = false
   ) {
     this.posX = x;
     this.posY = y;
@@ -70,12 +72,18 @@ class Button {
     this.txtSize = txtSize;
     this.corners = corners;
     this.enable = true; //used to enable and disable buttons
-    this.borderClr = "rgb(0,0,0)";
+    this.borderClr = borderClr;
     this.font = font;
+    this.frame = frame;
   }
 
   drawButton() {
     push();
+    if (this.frame) {
+      imageMode(CENTER);
+      image(this.frame, this.posX, this.posY, 300, 50);
+    }
+
     fill(this.fillClr);
     stroke(this.borderClr);
     rect(this.posX, this.posY, this.width, this.height, this.corners);
@@ -222,15 +230,17 @@ class OnScreenFrame {
     this.rh = rh;
 
     this.backBtn = new Button(
-      this.rx - this.rw / 2 + 30,
-      this.ry - this.rh / 2 + 30,
+      this.rx - this.rw / 2 + 35,
+      this.ry - this.rh / 2 + 20,
       45,
       30,
       "Back",
       0,
       255,
       0,
-      20
+      0,
+      false,
+      Primary
     );
 
     this.frame = frame;
@@ -248,11 +258,13 @@ class OnScreenFrame {
       pop();
     }
 
-    push();
-    fill(this.bckclr);
-    rectMode(CENTER);
-    rect(this.rx, this.ry, this.rw - 5, this.rh - this.deduct, 15);
-    pop();
+    if (this.bckclr) {
+      push();
+      fill(this.bckclr);
+      rectMode(CENTER);
+      rect(this.rx, this.ry, this.rw - 5, this.rh - this.deduct, 15);
+      pop();
+    }
   }
 
   drawExtendedFrame() {
@@ -393,13 +405,10 @@ class Ship {
           this.iconpath = ImageEmptyIcon;
       }
 
-      image(
-        this.iconpath,
-        this.posX - this.side / 5,
-        this.posY - this.side / 5,
-        this.width,
-        this.height
-      );
+      push();
+      imageMode(CENTER);
+      image(this.iconpath, this.posX, this.posY, this.width, this.height);
+      pop();
 
       if (this.available === false) {
         image(
@@ -655,28 +664,28 @@ class SoloMissionBox {
     pop();
 
     //Input Resource 1 with icon
-    image(this.inputResource1IconPath, this.rx, this.ry - 30, 12, 25);
+    image(this.inputResource1IconPath, this.rx - 20, this.ry - 30, 20, 34);
 
     push();
     fill("red");
     textSize(15);
-    text("-" + this.InputResource1, this.rx + 30, this.ry - 25 / 2);
+    text("-" + this.InputResource1, this.rx - 20 + 40, this.ry - 25 / 2);
     pop();
 
     //Input Resource 2 with icon
     if (this.InputResource2) {
-      image(this.inputResource2IconPath, this.rx, this.ry + 10, 12, 25);
+      image(this.inputResource2IconPath, this.rx - 20, this.ry + 10, 20, 34);
 
       push();
       fill("red");
       textFont(this.font);
       textSize(15);
-      text("-" + this.InputResource2, this.rx + 30, this.ry + 10 + 25 / 2);
+      text("-" + this.InputResource2, this.rx - 20 + 40, this.ry + 10 + 25 / 2);
       pop();
     }
 
     //InputShip Icon and Time deployed
-    image(this.inputShipIconPath, this.rx + 90, this.ry - 30, 22, 42);
+    image(this.inputShipIconPath, this.rx + 80, this.ry - 50, 40, 57);
     push();
     fill(this.AccetntClr);
     textFont(this.font);
@@ -689,7 +698,7 @@ class SoloMissionBox {
       this.rewardResource1IconPath,
       this.rx + this.rw / 2 - 100,
       this.ry - 40,
-      12,
+      15,
       25
     );
 
@@ -707,7 +716,7 @@ class SoloMissionBox {
         this.rewardResource2IconPath,
         this.rx + this.rw / 2 - 100,
         this.ry - 10,
-        12,
+        15,
         25
       );
 
@@ -829,7 +838,10 @@ class MultipiplayerMission {
       "Open",
       0,
       255,
-      20
+      20,
+      20,
+      false,
+      Primary
     );
     this.openBtnEnable = false;
     this.openContributionBtn = new Button(
@@ -1471,11 +1483,12 @@ class RunningMission {
   drawRunningMission() {
     if (this.page === runningMissionPageEnable) {
       push();
-      fill("rgba(242, 209, 41, 0.7)");
-      stroke(255);
-      rect(this.rx, this.ry, this.rw - 5, this.rh - 5, 20);
-      fill(255);
+      //fill("rgba(242, 209, 41, 0.7)");
+      //stroke(255);
+      //rect(this.rx, this.ry, this.rw - 5, this.rh - 5, 20);
+      fill(TimeClr);
       noStroke();
+      textFont(ftRetroGaming);
       text(this.name, this.rx, this.ry - this.rh / 3);
       fill(TimeClr);
       text(this.time, this.rx, this.ry);
