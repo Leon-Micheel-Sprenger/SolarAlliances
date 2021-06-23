@@ -432,12 +432,14 @@ app.post("/updateAcceptedMultiplayerMissions", (req, res) => {
         result[0].Submitted_Ore,
         result[0].Submitted_People,
         result[0].Submitted_Water,
+        result[0].Submitted_Ships,
       ];
       let InputArr = [
         result[0].Input_Money,
         result[0].Input_Ore,
         result[0].Input_People,
         result[0].Input_Water,
+        result[0].Ship_amount,
       ];
 
       let sql = `INSERT INTO accepted_multiplayer_missions (Player_Id, amm_MMissions_Id, Mission_Time, Ship_Fleet_Id, Status) VALUES (${Player_Id}, ${Mission_Id}, '${time}', ${Ship_Fleet_ID}, 2);`;
@@ -468,7 +470,6 @@ app.post("/updateAcceptedMultiplayerMissions", (req, res) => {
 
               if (result.affectedRows > 0) {
                 res.send({ message: "Mission Accepted and Running !" });
-
                 //message to all players, that mission has started???
               }
             });

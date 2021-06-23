@@ -748,7 +748,9 @@ class SoloMissionBox {
     if (this.accepted === true) {
       this.acceptButton.disable();
       push();
-      fill("rgba(242, 209, 41, 0.7)");
+      imageMode(CENTER);
+      image(ImageStoneLayer, this.rx, this.ry, this.rw, this.rh);
+      noFill();
       rectMode(CENTER);
       rect(this.rx, this.ry, this.rw, this.rh);
       pop();
@@ -1158,10 +1160,9 @@ class MultipiplayerMission {
       pop();
     } else if (this.acceptedStatus === true) {
       push();
-      fill("green");
+      fill(TimeClr);
       textStyle(BOLD);
       textFont(ftRetroGaming);
-      stroke("white");
       text("This mission has already been accepted by you!", x, y - height / 6);
       pop();
     }
@@ -1342,6 +1343,7 @@ class MultipiplayerMission {
     pop();
 
     push();
+    textFont(ftRetroGaming);
     strokeWeight(1);
     stroke(255);
     rectMode(CENTER);
@@ -1353,7 +1355,7 @@ class MultipiplayerMission {
       this.contributeToMissionBtn = new Button(
         x,
         y + height / 2.5,
-        200,
+        220,
         40,
         "Contribute Resources!",
         0,
@@ -1364,6 +1366,7 @@ class MultipiplayerMission {
       this.contributeToMissionBtn.drawButton();
     } else if (this.acceptedStatus === true) {
       push();
+      textFont(ftRetroGaming);
       this.contributeToMissionBtn.disable();
       fill("green");
       textStyle(BOLD);
@@ -1377,6 +1380,7 @@ class MultipiplayerMission {
     fill(0);
     textAlign(CENTER);
     textStyle(BOLD);
+    textFont(ftRetroGaming);
     textSize(15);
     text(
       "Are you sure, you want to contribute to this Multiplayer Mission?",
@@ -1489,9 +1493,9 @@ class RunningMission {
       fill(TimeClr);
       noStroke();
       textFont(ftRetroGaming);
-      text(this.name, this.rx, this.ry - this.rh / 3);
+      text(this.name, this.rx, this.ry - this.rh / 3, 155, 100);
       fill(TimeClr);
-      text(this.time, this.rx, this.ry);
+      text(this.time, this.rx, this.ry, 200, 100);
       pop();
 
       //countdown;

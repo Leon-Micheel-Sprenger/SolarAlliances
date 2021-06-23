@@ -38,13 +38,13 @@ let missionInterfaceFrame = "assets/Frame_Main_01.png";
 let runningMissionsFramePath = "assets/RunningMissionsFrame.png";
 let terminalFramePath = "assets/TerminalFrame.png";
 let markerPath = "assets/Maker_1.png";
+let stoneLayerPath = "assets/Stone-layer.png";
 
 //Colors:
-
 let Primary = "rgb(159,177,217)";
 let Secondary = "rgb(26,30,48)";
-//let Secondary = 'rgb(46, 51, 101)';
 let TimeClr = "rgb(60, 253, 47)";
+let ImageStoneLayer;
 
 //Load Images
 let ImageMoneyIcon;
@@ -113,6 +113,8 @@ function loadImages() {
   ImageRunningMissionsFrame = loadImage(runningMissionsFramePath);
   ImageTerminalFrame = loadImage(terminalFramePath);
   ImageMarker = loadImage(markerPath);
+
+  ImageStoneLayer = loadImage(stoneLayerPath);
 }
 
 //_____________________________________________________
