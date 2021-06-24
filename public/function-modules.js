@@ -449,7 +449,7 @@ function doLogin() {
           resetRespawnTimer();
 
           let message = {
-            message: `Welcome back to the station Commander.`,
+            message: `Welcome back to the  station Commander.`,
           };
           messages.push(message);
           soundMessageReceived.play();
@@ -942,7 +942,7 @@ function acceptMultiplayerMission(acceptedMission) {
 
       //message to player:
       let message = {
-        message: `Commander, You are joining others on the glorious mission: ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune to a successful completion. `,
+        message: `Commander, You are joining others on the mission: ${acceptedMission.name}! The Martian Federal Republic wishes good fortune.`,
       };
       messages.push(message);
     } else {
@@ -950,7 +950,7 @@ function acceptMultiplayerMission(acceptedMission) {
 
       //message to player:
       let message = {
-        message: `Commander, You are joining others on the glorious mission ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune and hopes to find other brave commanders to join.`,
+        message: `Commander, You are joining others on the mission ${acceptedMission.name}! Hopefully more players will contribute to this cause.`,
       };
       messages.push(message);
     }

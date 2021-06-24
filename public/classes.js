@@ -415,8 +415,8 @@ class Ship {
           this.shipOnMissionIconPath,
           this.posX - this.side / 2,
           this.posY - this.side / 2,
-          20,
-          25
+          22,
+          22
         );
       }
     }

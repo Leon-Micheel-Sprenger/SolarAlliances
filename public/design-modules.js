@@ -299,7 +299,7 @@ function createButtons() {
 
   missionButton = new Button(
     width * 0.15,
-    height - 300,
+    height * 0.65,
     200,
     50,
     "Missions",
@@ -316,7 +316,7 @@ function createButtons() {
   //btn for the ship yard
   shipFleetButton = new Button(
     width * 0.15,
-    height - 200,
+    height * 0.75,
     200,
     50,
     "Ship Fleet",
@@ -333,7 +333,7 @@ function createButtons() {
   //btn for the station upgrades
   stationButton = new Button(
     width * 0.15,
-    height - 100,
+    height * 0.85,
     200,
     50,
     "Upgrades",
