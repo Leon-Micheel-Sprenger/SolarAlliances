@@ -57,6 +57,9 @@ let ImageOreIcon;
 let ImagePeopleIcon;
 let ImageRankIcon;
 
+let ImageDomeUpgradeIcon;
+let ImageStorageUpgradeIcon;
+
 let ImageAssistant;
 
 let ImageExitButton;
@@ -107,6 +110,10 @@ function loadImages() {
   ImageEarthFactionIcon = loadImage(earthIconPath);
   ImageBeltFactionIcon = loadImage(beltIconPath);
   ImageEmptyFaction = loadImage(emptyFactionPath);
+
+  //Upgrade Icons
+  ImageDomeUpgradeIcon = loadImage(domeUpgradeIconPath);
+  ImageStorageUpgradeIcon = loadImage(storageUpgradeIconPath);
 
   //Other
   ImageTabletFrame = loadImage(tabletFrame);
@@ -442,7 +449,9 @@ function drawGrid() {
     missionMenuEnable === false &&
     mmissionEnable === false &&
     openMissionEnable === false &&
-    contributionSzeneEnable === false
+    contributionSzeneEnable === false &&
+    shipFleetEnable === false &&
+    stationUpgradeEnable === false
   ) {
     for (let r = gridStartX; r < gridX + gridStartX; r++) {
       for (let c = gridStartY; c < gridY + gridStartY; c++) {
@@ -552,7 +561,9 @@ function drawShips() {
     missionMenuEnable === false &&
     mmissionEnable === false &&
     openMissionEnable === false &&
-    contributionSzeneEnable === false
+    contributionSzeneEnable === false &&
+    shipFleetEnable === false &&
+    stationUpgradeEnable === false
   ) {
     for (let i = 0; i < shipList.length; i++) {
       for (r = gridStartX; r < gridX + gridStartX; r++) {
@@ -591,22 +602,24 @@ function createShipFleetInterface() {
     ry,
     rw,
     rh,
-    ImageTabletFrame,
+    false,
     Secondary,
-    15
+    15,
+    ImageMissionInterfaceFrame
   );
   shipfleetFrame.drawScreen();
+  shipfleetFrame.drawExtendedFrame();
 
   shipfleetExitBtn = new ExitButton(
     rx + rw / 2 - 42,
-    ry - rh / 2 + 12,
+    ry - rh / 2 + 8,
     exitbtnW,
     exitbtnH
   );
   shipfleetExitBtn.drawExitButton();
 
   buildWarshipBtn = new Button(
-    rx - rx / 2 + 270,
+    rx - rw / 2 + 200,
     ry - (rh / 2 - 300),
     btnW,
     btnH,
@@ -615,12 +628,13 @@ function createShipFleetInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildWarshipBtn.drawButton();
 
   buildTransportshipBtn = new Button(
-    rx - rx / 2 + 270,
+    rx - rw / 2 + 200,
     ry - (rh / 2 - 600),
     btnW,
     btnH,
@@ -629,12 +643,13 @@ function createShipFleetInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildTransportshipBtn.drawButton();
 
   buildMiningtshipBtn = new Button(
-    rx + 200,
+    rx + rw / 2 - 200,
     ry - (rh / 2 - 300),
     btnW,
     btnH,
@@ -643,12 +658,13 @@ function createShipFleetInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildMiningtshipBtn.drawButton();
 
   buildExplorationshipBtn = new Button(
-    rx + 200,
+    rx + rw / 2 - 200,
     ry - (rh / 2 - 600),
     btnW,
     btnH,
@@ -657,12 +673,13 @@ function createShipFleetInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildExplorationshipBtn.drawButton();
 
   let warshipinfo = new DrawInfoShipfleet(
-    rx - rx / 2 + 270,
+    rx - rw / 2 + 200,
     ry - (rh / 2 - 150),
     250,
     150,
@@ -671,7 +688,7 @@ function createShipFleetInterface() {
     shipscosts[0].Spaceships_Id
   );
   let miningshipinfo = new DrawInfoShipfleet(
-    rx + 200,
+    rx + rw / 2 - 200,
     ry - (rh / 2 - 150),
     250,
     150,
@@ -680,7 +697,7 @@ function createShipFleetInterface() {
     shipscosts[1].Spaceships_Id
   );
   let transportshipinfo = new DrawInfoShipfleet(
-    rx - rx / 2 + 270,
+    rx - rw / 2 + 200,
     ry - (rh / 2 - 450),
     250,
     150,
@@ -689,7 +706,7 @@ function createShipFleetInterface() {
     shipscosts[2].Spaceships_Id
   );
   let explorationshipinfo = new DrawInfoShipfleet(
-    rx + 200,
+    rx + rw / 2 - 200,
     ry - (rh / 2 - 450),
     250,
     150,
@@ -734,23 +751,25 @@ function createStationUpgradesInterface() {
   let btnrank1posY = ry - (rh / 2 - 260);
   let btnrank2posY = ry - (rh / 2 - 480);
   let btnrank3posY = ry - (rh / 2 - 700);
-  let btndomeposX = rx - rx / 2 + 270;
-  let btnstorageposX = rx + 200;
+  let btndomeposX = rx - rw / 2 + 200;
+  let btnstorageposX = rx + rw / 2 - 200;
 
   stationFrame = new OnScreenFrame(
     rx,
     ry,
     rw,
     rh,
-    ImageTabletFrame,
+    false,
     Secondary,
-    15
+    15,
+    ImageMissionInterfaceFrame
   );
   stationFrame.drawScreen();
+  stationFrame.drawExtendedFrame();
 
   stationExitBtn = new ExitButton(
     rx + rw / 2 - 42,
-    ry - rh / 2 + 12,
+    ry - rh / 2 + 8,
     exitbtnW,
     exitbtnH
   );
@@ -766,7 +785,8 @@ function createStationUpgradesInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildDome1Btn.drawButton();
 
@@ -780,7 +800,8 @@ function createStationUpgradesInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildDome2Btn.drawButton();
 
@@ -794,7 +815,8 @@ function createStationUpgradesInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildDome3Btn.drawButton();
 
@@ -808,7 +830,8 @@ function createStationUpgradesInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildStorage1Btn.drawButton();
 
@@ -822,7 +845,8 @@ function createStationUpgradesInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildStorage2Btn.drawButton();
 
@@ -836,12 +860,13 @@ function createStationUpgradesInterface() {
     255,
     15,
     20,
-    ftRetroGaming
+    ftRetroGaming,
+    Primary
   );
   buildStorage3Btn.drawButton();
 
   let dome1 = new DrawInfoDomes(
-    rx - rx / 2 + 270,
+    rx - rw / 2 + 200,
     ry - (rh / 2 - 150),
     200,
     150,
@@ -851,7 +876,7 @@ function createStationUpgradesInterface() {
     stationupgrades[0].SSUpgrade_Id
   );
   let dome2 = new DrawInfoDomes(
-    rx - rx / 2 + 270,
+    rx - rw / 2 + 200,
     ry - (rh / 2 - 370),
     200,
     150,
@@ -861,7 +886,7 @@ function createStationUpgradesInterface() {
     stationupgrades[1].SSUpgrade_Id
   );
   let dome3 = new DrawInfoDomes(
-    rx - rx / 2 + 270,
+    rx - rw / 2 + 200,
     ry - (rh / 2 - 590),
     200,
     150,
@@ -871,7 +896,7 @@ function createStationUpgradesInterface() {
     stationupgrades[2].SSUpgrade_Id
   );
   let storage1 = new DrawInfoStorage(
-    rx + 200,
+    rx + rw / 2 - 200,
     ry - (rh / 2 - 150),
     200,
     150,
@@ -882,7 +907,7 @@ function createStationUpgradesInterface() {
     stationupgrades[3].SSUpgrade_Id
   );
   let storage2 = new DrawInfoStorage(
-    rx + 200,
+    rx + rw / 2 - 200,
     ry - (rh / 2 - 370),
     200,
     150,
@@ -893,7 +918,7 @@ function createStationUpgradesInterface() {
     stationupgrades[4].SSUpgrade_Id
   );
   let storage3 = new DrawInfoStorage(
-    rx + 200,
+    rx + rw / 2 - 200,
     ry - (rh / 2 - 590),
     200,
     150,
@@ -996,7 +1021,7 @@ function createMissions() {
     Primary
   );
 
-  missionExitBtn = new ExitButton(rx + rw / 2 - 42, ry - rh / 2 + 12, 30, 30);
+  missionExitBtn = new ExitButton(rx + rw / 2 - 42, ry - rh / 2 + 8, 30, 30);
   pop();
 
   //___________________________________________________________________
@@ -1489,7 +1514,9 @@ function drawMessages() {
     missionMenuEnable === false &&
     mmissionEnable === false &&
     openMissionEnable === false &&
-    contributionSzeneEnable === false
+    contributionSzeneEnable === false &&
+    shipFleetEnable === false &&
+    stationUpgradeEnable === false
   ) {
     if (messages[0]) {
       messageObjects = [];
@@ -1615,7 +1642,7 @@ function drawAssistant() {
 }
 
 function drawLogo() {
-  image(ImageMarsFactionIcon, width * 0.5, height * 0.5, 200, 200);
+  image(ImageMarsFactionIcon, width * 0.84, height * 0.03, 200, 200);
 }
 
 function drawRegisteredScreen() {

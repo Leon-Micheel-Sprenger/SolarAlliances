@@ -665,11 +665,11 @@ function buildupgradedome1() {
       if (max_people === 100) {
         let price = stationupgrades[0].Price;
         money = money - price;
-        if(rank === stationupgrades[0].Upgrade_Level){
+        if (rank === stationupgrades[0].Upgrade_Level) {
           rank = rank + 1;
-        }else if(rank > stationupgrades[0].Upgrade_Level){
+        } else if (rank > stationupgrades[0].Upgrade_Level) {
           rank = rank;
-        }else if(rank < stationupgrades[0].Upgrade_Level){
+        } else if (rank < stationupgrades[0].Upgrade_Level) {
           alert("You don't have the rank needed to do this upgrade");
           rank = rank;
         }
@@ -701,11 +701,11 @@ function buildupgradedome2() {
       if (max_people === 150) {
         let price = stationupgrades[1].Price;
         money = money - price;
-        if(rank === stationupgrades[1].Upgrade_Level){
+        if (rank === stationupgrades[1].Upgrade_Level) {
           rank = rank + 1;
-        }else if(rank > stationupgrades[1].Upgrade_Level){
+        } else if (rank > stationupgrades[1].Upgrade_Level) {
           rank = rank;
-        }else if(rank < stationupgrades[1].Upgrade_Level){
+        } else if (rank < stationupgrades[1].Upgrade_Level) {
           alert("You don't have the rank needed to do this upgrade");
           rank = rank;
         }
@@ -737,11 +737,11 @@ function buildupgradedome3() {
       if (max_people === 250) {
         let price = stationupgrades[2].Price;
         money = money - price;
-        if(rank === stationupgrades[2].Upgrade_Level){
+        if (rank === stationupgrades[2].Upgrade_Level) {
           rank = rank + 1;
-        }else if(rank > stationupgrades[2].Upgrade_Level){
+        } else if (rank > stationupgrades[2].Upgrade_Level) {
           rank = rank;
-        }else if(rank < stationupgrades[2].Upgrade_Level){
+        } else if (rank < stationupgrades[2].Upgrade_Level) {
           alert("You don't have the rank needed to do this upgrade");
           rank = rank;
         }
@@ -773,11 +773,11 @@ function buildupgradestorage1() {
       if (max_water === 1000 && max_ore === 1000) {
         let price = stationupgrades[3].Price;
         money = money - price;
-        if(rank === stationupgrades[3].Upgrade_Level){
+        if (rank === stationupgrades[3].Upgrade_Level) {
           rank = rank + 1;
-        }else if(rank > stationupgrades[3].Upgrade_Level){
+        } else if (rank > stationupgrades[3].Upgrade_Level) {
           rank = rank;
-        }else if(rank < stationupgrades[3].Upgrade_Level){
+        } else if (rank < stationupgrades[3].Upgrade_Level) {
           alert("You don't have the rank needed to do this upgrade");
           rank = rank;
         }
@@ -811,11 +811,11 @@ function buildupgradestorage2() {
       if (max_water === 1050 && max_ore === 1050) {
         let price = stationupgrades[4].Price;
         money = money - price;
-        if(rank === stationupgrades[4].Upgrade_Level){
+        if (rank === stationupgrades[4].Upgrade_Level) {
           rank = rank + 1;
-        }else if(rank > stationupgrades[4].Upgrade_Level){
+        } else if (rank > stationupgrades[4].Upgrade_Level) {
           rank = rank;
-        }else if(rank < stationupgrades[4].Upgrade_Level){
+        } else if (rank < stationupgrades[4].Upgrade_Level) {
           alert("You don't have the rank needed to do this upgrade");
           rank = rank;
         }
@@ -849,11 +849,11 @@ function buildupgradestorage3() {
       if (max_water === 1150 && max_ore === 1150) {
         let price = stationupgrades[5].Price;
         money = money - price;
-        if(rank === stationupgrades[5].Upgrade_Level){
+        if (rank === stationupgrades[5].Upgrade_Level) {
           rank = rank + 1;
-        }else if(rank > stationupgrades[5].Upgrade_Level){
+        } else if (rank > stationupgrades[5].Upgrade_Level) {
           rank = rank;
-        }else if(rank < stationupgrades[5].Upgrade_Level){
+        } else if (rank < stationupgrades[5].Upgrade_Level) {
           alert("You don't have the rank needed to do this upgrade");
           rank = rank;
         }
@@ -1068,7 +1068,7 @@ setInterval(function () {
       }
     );
 
-    loadRank();                 //get player rank (doesn't draws resources)
+    loadRank(); //get player rank (doesn't draws resources)
     loadPlayerShips();
     loadResources();
     loadMissionRespawnTime();

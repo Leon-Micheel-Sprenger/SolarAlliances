@@ -259,9 +259,9 @@ INSERT INTO `space_station` (`SSUpgrade_Id`, `Upgrade_Type`, `Upgrade_Level`, `P
 (1, 'Dome', 1, 500, 50, NULL, NULL),
 (2, 'Dome', 2, 200, 100, NULL, NULL),
 (3, 'Dome', 3, 300, 150, NULL, NULL),
-(4, 'Storage', 1, 100, NULL, 50, 50),
-(5, 'Storage', 2, 200, NULL, 100, 100),
-(6, 'Storage', 3, 300, NULL, 150, 150);
+(4, 'Storage', 1, 100, NULL, 100, 100),
+(5, 'Storage', 2, 200, NULL, 150, 150),
+(6, 'Storage', 3, 300, NULL, 400, 400);
 
 
 
@@ -279,7 +279,7 @@ INSERT INTO `player_missions` (`Player_Mission_Id`, `Player_Id`, `Mission1`, `Mi
 
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
 (31, 14750, 800, 800, 300, 400, 950, 950, 69),
-(32, 2500, 350, 350, 150, 250, 550, 550, 88);
+(32, 2500, 250, 250, 150, 150, 400, 400, 88);
 
 INSERT INTO `ship_fleet` (`Ship_Fleet_ID`, `Ship_on_Mission`, `Player_Id`, `Spaceships_Id`) VALUES
 (70, 0, 69, 5),
