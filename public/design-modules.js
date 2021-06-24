@@ -7,32 +7,36 @@ let mainMenuEnable = true;
 //Global Variables:
 
 //Resource Icon paths
-let moneyIconPath = "assets/money-icon.jpg";
-let oreIconPath = "assets/ore-icon.jpg";
-let waterIconPath = "assets/water-icon.jpg";
-let peopleIconPath = "assets/people-icon.jpg";
-let rankIconPath = "assets/rank-icon.jpg";
+let moneyIconPath = "assets/money-icon.png";
+let oreIconPath = "assets/ore-icon.png";
+let waterIconPath = "assets/water-icon.png";
+let peopleIconPath = "assets/people-icon.png";
+let rankIconPath = "assets/rank-icon.png";
 let emptyIconPath = "assets/empty-icon.jpg";
 
-//Ship Icon Paths
+//Ship Icon Paths    still missiong
 let transportShipIconPath = "assets/transportship-icon.jpg";
 let miningShipIconPath = "assets/miningship-icon.jpg";
 let warShipIconPath = "assets/warship-icon.jpg";
 let explorationShipIconPath = "assets/explorationship-icon.jpg";
 
-//Faction Icon Paths
-let marsIconPath = "assets/money-icon.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
-let earthIconPath = "assets/money-icon.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
-let beltIconPath = "assets/money-icon.jpg"; //!!NEED DIMENSIONS 35px TO 25px!!
+// Upgrades Icon Paths
+let domeUpgradeIconPath = 'assets/dome-icon.png';
+let storageUpgradeIconPath = 'assets/storage-icon.png';
+
+//Faction Icon Paths   missing last 2
+let marsIconPath = "assets/Mars-logo.png"; //!!NEED DIMENSIONS 35px TO 25px!!
+let earthIconPath = "assets/Earth-logo.png"; //!!NEED DIMENSIONS 35px TO 25px!!
+let beltIconPath = "assets/Belt-logo.png"; //!!NEED DIMENSIONS 35px TO 25px!!
 
 //Other paths
-let exitButtonIconPath = "assets/exit-icon.jpg";
-let backButtonIconPath = "assets/exit-icon.jpg";
-let shipOnMissionIconPath = "assets/exit-icon.jpg";
-let arrowLeft = "assets/arrow-left.jpg";
-let arrowRight = "assets/arrow-right.jpg";
+let exitButtonIconPath = "assets/exit-icon.png";
+let backButtonIconPath = "assets/exit-icon.png";
+let shipOnMissionIconPath = "assets/relogio.png";
+let arrowLeft = "assets/arrow-left.png";
+let arrowRight = "assets/arrow-right.png";
 let tabletFrame = "assets/tablet-frame.png";
-let cortana = "assets/cortana-transparent.png";
+let cortana = "assets/assistant.png";
 
 //Colors:
 
@@ -59,6 +63,9 @@ let ImageTransportShip;
 let ImageWarShip;
 let ImageExploarationShip;
 let ImageMiningShip;
+
+let ImageDomeUpgrade;
+let ImageStorageUpgrade;
 
 let ImageMarsFactionIcon;
 let ImageEarthFactionIcon;
@@ -111,32 +118,6 @@ function loadSounds() {
   soundMessageReceived = loadSound("assets/sounds/message-arrived.wav");
   soundTest = loadSound("assets/sounds/test-sound.mp3");
 }
-
-// //_____________________________________________________________________
-// //Creating the Grid for the main menu. (not used, just for reference)
-// //Grid variables
-// let tilesArr= [];
-// let gridStartX=0;
-// let gridStartY=0;
-// let side = 100;
-// let gridX = window.innerWidth/side;    //length of the grid
-// let gridY = window.innerHeight/side;   // height of the grid
-
-// function createGrid(){
-//   for (r=gridStartX; r<gridX+gridStartX;r++){
-//     tilesArr[r]= [];
-//     for(c=gridStartY; c<gridY+gridStartY; c++){
-//       tilesArr[r][c] = new Tile (r, c, side,txt=``,255);    //to let tile numbers appear, insert into txt: ${r},${c}
-//     }
-//   }
-// }
-
-// function drawGrid(){
-//   for (r=gridStartX; r<gridX+gridStartX;r++)
-//     for(c=gridStartY; c<gridY+gridStartY; c++){
-//       tilesArr[r][c].drawCharacter();
-//   }
-// }
 
 //______________________________________________
 //Creating Login Interface
@@ -555,89 +536,100 @@ let buildTransportshipBtn;
 let buildMiningtshipBtn;
 let buildExplorationshipBtn;
 //btns
-let btnW = 250;
-let btnH = 50;
-let btnclr = 0;
-let txtclr = 255;
+let btnW=250;
+let btnH=50;
+let btnclr=0;
+let txtclr=255;
 
 let spaceshipid;
 
 function createShipFleetInterface() {
-  rx = width * 0.5;
-  ry = height * 0.5;
-  rw = 700;
-  rh = 750;
+  let btnW=250;
+  let btnH=50;
 
-  shipfleetFrame = new OnScreenFrame(rx, ry, rw, rh);
+  shipfleetFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary, 15);
   shipfleetFrame.drawScreen();
 
   shipfleetExitBtn = new ExitButton(
-    rx + rw / 2 - exitbtnW,
-    ry - rh / 2,
+    rx + rw / 2 - 42,
+    ry - rh / 2 +12,
     exitbtnW,
     exitbtnH
   );
   shipfleetExitBtn.drawExitButton();
 
   buildWarshipBtn = new Button(
-    rx,
-    ry - (rh / 2 - 250),
+    rx - rx / 2 + 270,
+    ry - (rh / 2 - 300),
     btnW,
     btnH,
-    "Build War Ship",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildWarshipBtn.drawButton();
 
   buildTransportshipBtn = new Button(
-    rx,
-    ry - (rh / 2 - 350),
+    rx - rx / 2 + 270,
+    ry - (rh / 2 - 600),
     btnW,
     btnH,
-    "Build Transport Ship",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildTransportshipBtn.drawButton();
 
   buildMiningtshipBtn = new Button(
-    rx,
-    ry - (rh / 2 - 450),
+    rx + 200,
+    ry - (rh / 2 - 300),
     btnW,
     btnH,
-    "Build Mining Ship",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildMiningtshipBtn.drawButton();
 
   buildExplorationshipBtn = new Button(
-    rx,
-    ry - (rh / 2 - 550),
+    rx + 200,
+    ry - (rh / 2 - 600),
     btnW,
     btnH,
-    "Build Exploration Ship",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildExplorationshipBtn.drawButton();
 
-  //if(buildWarshipBtn.isClicked()){
-  //spaceshipid=3;
-  //}else if(buildTransportshipBtn.isClicked()){
-  //spaceshipid=5;
-  //}else if(buildMiningtshipBtn.isClicked()){
-  //spaceshipid=4;
-  //}else if(buildExplorationshipBtn.isClicked()){
-  //spaceshipid=5;
-  //}else{
-  //spaceshipid=0;
-  //}
+  let warshipinfo = new DrawInfoShipfleet(rx-rx/2+270,ry-(rh/2-150),250,150,shipscosts[0].Input_Crew,shipscosts[0].Input_Ore,shipscosts[0].Spaceships_Id);
+  let miningshipinfo = new DrawInfoShipfleet(rx+200,ry-(rh/2-150),250,150,shipscosts[1].Input_Crew,shipscosts[1].Input_Ore,shipscosts[1].Spaceships_Id);
+  let transportshipinfo = new DrawInfoShipfleet(rx-rx/2+270,ry-(rh/2-450),250,150,shipscosts[2].Input_Crew,shipscosts[2].Input_Ore,shipscosts[2].Spaceships_Id);
+  let explorationshipinfo = new DrawInfoShipfleet(rx+200,ry-(rh/2-450),250,150,shipscosts[3].Input_Crew,shipscosts[3].Input_Ore,shipscosts[3].Spaceships_Id);
+
+  push();
+    textFont(ftRetroGaming);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("Ship Fleet", rx, ry-rh/2.2);
+    warshipinfo.draw_shipfleetInfo();
+    miningshipinfo.draw_shipfleetInfo();
+    transportshipinfo.draw_shipfleetInfo();
+    explorationshipinfo.draw_shipfleetInfo();
+  pop();
 }
 
 //_________________________________________________________________________________________________
@@ -646,8 +638,8 @@ let stationUpgradeEnable = false;
 
 let stationFrame;
 let stationExitBtn;
-let exitbtnW = 30;
-let exitbtnH = 30;
+let exitbtnW=30;
+let exitbtnH=30;
 let buildDome1Btn;
 let buildDome2Btn;
 let buildDome3Btn;
@@ -656,25 +648,22 @@ let buildStorage2Btn;
 let buildStorage3Btn;
 
 function createStationUpgradesInterface() {
-  rx = width * 0.5;
-  ry = height * 0.5;
-  rw = 700;
-  rh = 750;
-  let rank1;
-  let rank2;
-  let rank3;
-  let btnrank1posY = ry - (rh / 2 - 200);
-  let btnrank2posY = ry - (rh / 2 - 450);
-  let btnrank3posY = ry + (rh / 2 - 50);
-  let btndomeposX = rx - rx / 2 + 270;
-  let btnstorageposX = rx + 200;
+  rx= width*0.5;
+  ry= height*0.5;
+  rw= 700;
+  rh= 750;
+  let btnrank1posY = ry-(rh/2-260);
+  let btnrank2posY = ry-(rh/2-480);
+  let btnrank3posY = ry-(rh/2-700);
+  let btndomeposX = rx-rx/2+270;
+  let btnstorageposX = rx+200;
 
-  stationFrame = new OnScreenFrame(rx, ry, rw, rh);
+  stationFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary, 15);
   stationFrame.drawScreen();
 
   stationExitBtn = new ExitButton(
-    rx + rw / 2 - exitbtnW,
-    ry - rh / 2,
+    rx + rw / 2 - 42,
+    ry - rh / 2 +12,
     exitbtnW,
     exitbtnH
   );
@@ -685,10 +674,12 @@ function createStationUpgradesInterface() {
     btnrank1posY,
     btnW,
     btnH,
-    "Build Dome Rank 1",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildDome1Btn.drawButton();
 
@@ -697,10 +688,12 @@ function createStationUpgradesInterface() {
     btnrank2posY,
     btnW,
     btnH,
-    "Build Dome Rank 2",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildDome2Btn.drawButton();
 
@@ -709,10 +702,12 @@ function createStationUpgradesInterface() {
     btnrank3posY,
     btnW,
     btnH,
-    "Build Dome Rank 3",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildDome3Btn.drawButton();
 
@@ -721,10 +716,12 @@ function createStationUpgradesInterface() {
     btnrank1posY,
     btnW,
     btnH,
-    "Build Storage Rank 1",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildStorage1Btn.drawButton();
 
@@ -733,10 +730,12 @@ function createStationUpgradesInterface() {
     btnrank2posY,
     btnW,
     btnH,
-    "Build Storage Rank 2",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildStorage2Btn.drawButton();
 
@@ -745,12 +744,35 @@ function createStationUpgradesInterface() {
     btnrank3posY,
     btnW,
     btnH,
-    "Build Storage Rank 3",
-    btnclr,
-    txtclr,
-    20
+    "Build",
+    0,
+    255,
+    15,
+    20,
+    ftRetroGaming
   );
   buildStorage3Btn.drawButton();
+
+  let dome1 = new DrawInfoDomes(rx-rx/2+270,ry-(rh/2-150),200,150,stationupgrades[0].Upgrade_Level,stationupgrades[0].Price,stationupgrades[0].Increase_People,stationupgrades[0].SSUpgrade_Id);
+  let dome2 = new DrawInfoDomes(rx-rx/2+270,ry-(rh/2-370),200,150,stationupgrades[1].Upgrade_Level,stationupgrades[1].Price,stationupgrades[1].Increase_People,stationupgrades[1].SSUpgrade_Id);
+  let dome3 = new DrawInfoDomes(rx-rx/2+270,ry-(rh/2-590),200,150,stationupgrades[2].Upgrade_Level,stationupgrades[2].Price,stationupgrades[2].Increase_People,stationupgrades[2].SSUpgrade_Id);
+  let storage1 = new DrawInfoStorage(rx+200,ry-(rh/2-150),200,150,stationupgrades[3].Upgrade_Level,stationupgrades[3].Price,stationupgrades[3].Increase_Water,stationupgrades[3].Increase_Ore,stationupgrades[3].SSUpgrade_Id);
+  let storage2 = new DrawInfoStorage(rx+200,ry-(rh/2-370),200,150,stationupgrades[4].Upgrade_Level,stationupgrades[4].Price,stationupgrades[4].Increase_Water,stationupgrades[4].Increase_Ore,stationupgrades[4].SSUpgrade_Id);
+  let storage3 = new DrawInfoStorage(rx+200,ry-(rh/2-590),200,150,stationupgrades[5].Upgrade_Level,stationupgrades[5].Price,stationupgrades[5].Increase_Water,stationupgrades[5].Increase_Ore,stationupgrades[5].SSUpgrade_Id);
+
+  push();
+    textFont(ftRetroGaming);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("Station Upgrades", rx, ry-rh/2.2);
+    dome1.draw_DomesInfo();
+    dome2.draw_DomesInfo();
+    dome3.draw_DomesInfo();
+    storage1.draw_StorageInfo();
+    storage2.draw_StorageInfo();
+    storage3.draw_StorageInfo();
+  pop();
 }
 
 //________________________________

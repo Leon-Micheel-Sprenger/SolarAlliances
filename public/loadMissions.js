@@ -277,3 +277,34 @@ function loadAcceptedMultiplayerMissions() {
     console.log("running multiplayer missions " + runningMultiplayerMissions);
   });
 }
+
+//Get spaceships
+function loadShipsCosts(){
+  loadJSON('/getSpaceShipsCosts', (dataReceived)=> {
+    shipscosts = [];
+    for(let i = 0; i<dataReceived.length; i++){
+      shipscosts.push(dataReceived[i]);
+    }
+    print(shipscosts);
+  })
+}
+
+//Get station upgrades
+function loadStationUpgrades(){
+  loadJSON('/getStationUpgrades', (dataReceived)=> {
+    stationupgrades = [];
+    for(let i = 0; i<dataReceived.length; i++){
+      stationupgrades.push(dataReceived[i]);
+    }
+    print(stationupgrades);
+  })
+}
+
+//Get player rank
+function loadRank(){
+  loadJSON('/getRank/'+playerId, (dataReceived)=> {
+    rank = dataReceived[0].Rank;
+    gameDate = new Date(dataReceived[0].In_Game_Date).getFullYear();
+    print(rank);
+  })
+}
