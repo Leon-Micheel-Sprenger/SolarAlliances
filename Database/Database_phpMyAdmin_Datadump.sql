@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 22, 2021 at 07:36 PM
+-- Generation Time: Jun 24, 2021 at 04:28 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -112,7 +112,7 @@ CREATE TABLE `multiplayer_missions` (
 
 INSERT INTO `multiplayer_missions` (`MMissions_Id`, `MMission_Name`, `Story`, `Time`, `Ship_Id`, `Reward_Water`, `Reward_People`, `Reward_Ore`, `Reward_Money`, `Input_Water`, `Input_People`, `Input_Ore`, `Input_Money`, `Ship_amount`, `Minimum_Money`, `Minimum_Water`, `Minimum_People`, `Minimum_Ore`, `Submitted_Ore`, `Submitted_Water`, `Submitted_People`, `Submitted_Money`, `Submitted_Ships`, `Rank`, `Faction`) VALUES
 (1, 'Evacuating EROS', 'On the outer Belter Astroid EROS, the new alien species is spreading a virus to its 100k people. Mars and Earth have decided to join the OPA on the mission to evacuating EROS, before its it too late while ensuring a safe quarantine of the contaminated refugees. ', '01:00:00', 5, 0, 30, 0, 500, 0, 150, 0, 0, 15, 0, 0, 10, 0, 0, 0, 0, 0, 0, 1, 'MEB'),
-(3, 'Great Mining Alliance', 'Just 10 clicks south of Ganimed, a Rock Hopper discovered what seems to be a giant Block of Ice larger than Europa. Exploration ships confirmed, that the ice is minable, but only by a fleet of 10 Mining Ships at a time to counterbalance the Weight and ensure the stability of the HO2 molecules. Now the OPA under Fred Johnson is looking for Outer and Inner Contributors to team up and ensure a proper and safe mining process…\r\n', '04:00:00', 4, 400, 0, 300, 0, 0, 100, 0, 0, 10, 0, 0, 10, 0, 0, 0, 80, 700, 7, 1, 'MEB'),
+(3, 'Great Mining Alliance', 'Just 10 clicks south of Ganimed, a Rock Hopper discovered what seems to be a giant Block of Ice larger than Europa. Exploration ships confirmed, that the ice is minable, but only by a fleet of 10 Mining Ships at a time to counterbalance the Weight and ensure the stability of the HO2 molecules. Now the OPA under Fred Johnson is looking for Outer and Inner Contributors to team up and ensure a proper and safe mining process…\r\n', '04:00:00', 4, 400, 0, 300, 0, 0, 100, 0, 0, 10, 0, 0, 10, 0, 0, 0, 80, 0, 8, 1, 'MEB'),
 (4, 'Defending Luna', 'Luna is under attack from a some rioting OPA members of the extreme wing. Mars and Earth have decided to take on the challenge together and put an end to the extremist group for good. Be ready to deploy your war ships to upon calling! ', '01:30:00', 3, 0, 0, 350, 0, 0, 0, 0, 1500, 12, 150, 0, 0, 0, 0, 0, 0, 0, 0, 1, 'ME'),
 (5, 'Astroid Mining Convoit', 'Earths News Outlets have reported the reoccurance of the famous Comet P/2019 M2 Astroid, also known as ATLAS, in our Solar System. ATLAS only passes our Solar System near Earth every 200 years and is made out of solid Oblevian, the most precious metal in the solar system. The OPA is calling for the advanced technologies of Mars to mine the bypassing Comet. A risky endeavor, that only the bravest of crew members can embark on. ', '00:30:00', 4, 0, 0, 400, 0, 0, 40, 0, 0, 8, 0, 0, 5, 0, 0, 0, 0, 0, 0, 1, 'MB'),
 (6, 'Finding new Worlds', 'The great Ring, created by extraterrestrial life 1000 years ago is a portal to other habitable planets. Millions of light years away, the risks and dangerous are great, but those who make groundbreaking discoveries will be create a legacy for thousands of years to come.  ', '05:00:00', 6, 0, 0, 0, 1000, 1000, 0, 0, 0, 5, 0, 200, 0, 0, 0, 0, 0, 0, 0, 1, 'MEB'),
@@ -193,7 +193,7 @@ CREATE TABLE `player_resources` (
 
 INSERT INTO `player_resources` (`PResource_Id`, `Money`, `Water`, `Ore`, `People`, `Max_People`, `Max_Ore`, `Max_Water`, `Player_Id`) VALUES
 (31, 14750, 800, 800, 300, 400, 950, 950, 69),
-(32, 2500, 350, 420, 150, 250, 550, 550, 88);
+(32, 2500, 250, 250, 150, 150, 400, 400, 88);
 
 -- --------------------------------------------------------
 
@@ -206,6 +206,20 @@ CREATE TABLE `player_upgrades` (
   `Player_Id` int(11) NOT NULL,
   `SSUpgrade_Id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `player_upgrades`
+--
+
+INSERT INTO `player_upgrades` (`Id`, `Player_Id`, `SSUpgrade_Id`) VALUES
+(1, 88, 1),
+(2, 88, 4),
+(3, 69, 1),
+(4, 69, 2),
+(5, 69, 3),
+(6, 69, 4),
+(7, 69, 5),
+(8, 69, 6);
 
 -- --------------------------------------------------------
 
@@ -300,7 +314,7 @@ INSERT INTO `solo_missions` (`Solo_Missions_Id`, `Name`, `Story`, `Time`, `Input
 (33, 'Refugee Rescue', 'Description and story', '00:40:00', 0, 0, 0, 400, 5, 0, 100, 0, 0, 4),
 (34, 'Ice Mining', 'Description and story', '00:40:00', 0, 70, 250, 0, 4, 0, 0, 0, 650, 4),
 (35, 'Mining Mission', 'Description and story', '00:45:00', 700, 50, 0, 0, 4, 0, 0, 500, 500, 4),
-(36, 'Extrasolar Exploration', 'Description and story', '00:45:00', 600, 5, 0, 200, 6, 0, 0, 600, 250, 1);
+(36, 'Extrasolar Exploration', 'Description and story', '00:45:00', 600, 5, 0, 200, 6, 0, 0, 600, 250, 4);
 
 -- --------------------------------------------------------
 
@@ -349,9 +363,9 @@ INSERT INTO `space_station` (`SSUpgrade_Id`, `Upgrade_Type`, `Upgrade_Level`, `P
 (1, 'Dome', 1, 500, 50, NULL, NULL),
 (2, 'Dome', 2, 200, 100, NULL, NULL),
 (3, 'Dome', 3, 300, 150, NULL, NULL),
-(4, 'Storage', 1, 100, NULL, 50, 50),
-(5, 'Storage', 2, 200, NULL, 100, 100),
-(6, 'Storage', 3, 300, NULL, 150, 150);
+(4, 'Storage', 1, 100, NULL, 100, 100),
+(5, 'Storage', 2, 200, NULL, 150, 150),
+(6, 'Storage', 3, 300, NULL, 400, 400);
 
 --
 -- Indexes for dumped tables
@@ -498,7 +512,7 @@ ALTER TABLE `player_resources`
 -- AUTO_INCREMENT for table `player_upgrades`
 --
 ALTER TABLE `player_upgrades`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `ship_fleet`
