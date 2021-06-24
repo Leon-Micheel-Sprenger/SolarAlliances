@@ -224,6 +224,7 @@ function mousePressed() {
   if (cur_status === "status_play" && shipFleetEnable) {
     if (buildWarshipBtn.isClicked(mouseX, mouseY)) {
       buildwarship();
+      createResourceBar();
       loop();
     }
   }
@@ -232,6 +233,7 @@ function mousePressed() {
   if (cur_status === "status_play" && shipFleetEnable) {
     if (buildMiningtshipBtn.isClicked(mouseX, mouseY)) {
       buildminingship();
+      createResourceBar();
       loop();
     }
   }
@@ -240,6 +242,7 @@ function mousePressed() {
   if (cur_status === "status_play" && shipFleetEnable) {
     if (buildTransportshipBtn.isClicked(mouseX, mouseY)) {
       buildtransportship();
+      createResourceBar();
       loop();
     }
   }
@@ -248,6 +251,7 @@ function mousePressed() {
   if (cur_status === "status_play" && shipFleetEnable) {
     if (buildExplorationshipBtn.isClicked(mouseX, mouseY)) {
       buildexplorationship();
+      createResourceBar();
       loop();
     }
   }
@@ -273,6 +277,7 @@ function mousePressed() {
   if (cur_status === "status_play" && stationUpgradeEnable) {
     if (buildDome1Btn.isClicked(mouseX, mouseY)) {
       buildupgradedome1();
+      createResourceBar();
       loop();
     }
   }
@@ -281,6 +286,7 @@ function mousePressed() {
   if (cur_status === "status_play" && stationUpgradeEnable) {
     if (buildDome2Btn.isClicked(mouseX, mouseY)) {
       buildupgradedome2();
+      createResourceBar();
       loop();
     }
   }
@@ -289,6 +295,7 @@ function mousePressed() {
   if (cur_status === "status_play" && stationUpgradeEnable) {
     if (buildDome3Btn.isClicked(mouseX, mouseY)) {
       buildupgradedome3();
+      createResourceBar();
       loop();
     }
   }
@@ -297,6 +304,7 @@ function mousePressed() {
   if (cur_status === "status_play" && stationUpgradeEnable) {
     if (buildStorage1Btn.isClicked(mouseX, mouseY)) {
       buildupgradestorage1();
+      createResourceBar();
       loop();
     }
   }
@@ -305,6 +313,7 @@ function mousePressed() {
   if (cur_status === "status_play" && stationUpgradeEnable) {
     if (buildStorage2Btn.isClicked(mouseX, mouseY)) {
       buildupgradestorage2();
+      createResourceBar();
       loop();
     }
   }
@@ -313,6 +322,7 @@ function mousePressed() {
   if (cur_status === "status_play" && stationUpgradeEnable) {
     if (buildStorage3Btn.isClicked(mouseX, mouseY)) {
       buildupgradestorage3();
+      createResourceBar();
       loop();
     }
   }

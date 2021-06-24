@@ -405,7 +405,6 @@ function drawResourceValues() {
     push();
 
     noStroke();
-    textStyle(BOLD);
     fill(255);
     textSize(12);
     textAlign(CENTER, CENTER);

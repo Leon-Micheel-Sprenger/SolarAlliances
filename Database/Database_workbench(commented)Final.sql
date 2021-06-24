@@ -294,6 +294,18 @@ INSERT INTO `ship_fleet` (`Ship_Fleet_ID`, `Ship_on_Mission`, `Player_Id`, `Spac
 (80, 0, 88, 3),
 (81, 0, 88, 4);
 
+INSERT INTO `player_upgrades` (`Id`, `Player_Id`, `SSUpgrade_Id`) VALUES
+(1, 88, 1),
+(2, 88, 4),
+(3, 69, 1),
+(4, 69, 2),
+(5, 69, 3),
+(6, 69, 4),
+(7, 69, 5),
+(8, 69, 6);
+
+
+
 
 
 
