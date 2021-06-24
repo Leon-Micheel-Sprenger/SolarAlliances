@@ -436,6 +436,318 @@ class Ship {
   }
 }
 
+class DrawInfoShipfleet {
+
+  constructor(x,y,w,h,InputPeople,InputOre,shipId){
+    this.posX = x;
+    this.posY = y;
+    this.w = w;
+    this.h = h;
+    this.name;
+    this.inputpeople = InputPeople;
+    this.inputore = InputOre;
+    this.shipId = shipId;
+    this.iconpath;
+    this.inputpeopleIconpath = peopleIconPath;
+    this.inputoreIconpath = oreIconPath;
+
+    this.font = ftRetroGaming;
+    this.backClr = Primary;
+    this.AccetntClr = "rgb(60, 253, 47)";
+    this.frameClr = "rgb(46, 51, 101)";
+  }
+
+  draw_shipfleetInfo(){
+
+    switch (this.shipId) {
+
+      case 3: 
+        this.iconpath = warShipIconPath;
+        this.name = "War Ship";
+        break;
+      case 4:
+        this.iconpath = miningShipIconPath;
+        this.name = "Mining Ship";
+        break;
+      case 5:
+        this.iconpath = transportShipIconPath;
+        this.name = "Transport Ship";
+        break;
+      case 6:
+        this.iconpath = explorationShipIconPath;
+        this.name = "Exploration Ship";
+        break;
+      default:
+        this.iconpath = emptyIconPath;
+        this.name = "   ";
+    }
+
+    loadImage(this.iconpath, img => {
+      image(img, this.posX-120, this.posY-70, 50, 70);
+    })
+    fill(this.backClr);
+    stroke(255, 255, 255);
+    rect(this.posX, this.posY, this.w, this.h);
+
+    fill(0);
+    textSize(18);
+    textFont(this.font);
+    noStroke();
+    text(this.name,this.posX+30,this.posY-60);
+
+    textSize(16);
+    text("Need: ",this.posX,this.posY-20);
+
+    fill("red");
+    textSize(13);
+    strokeWeight(2);
+    textFont(this.font);
+    text("-"+this.inputpeople,this.posX-70,this.posY+10);
+
+    loadImage(this.inputpeopleIconpath, img => {
+      image(img, this.posX-40, this.posY-8, 20, 30);
+    })
+    
+    text("-"+this.inputore,this.posX+20,this.posY+10);
+
+    loadImage(this.inputoreIconpath, img => {
+      image(img, this.posX+50, this.posY-8, 20, 30);
+    })
+
+    fill(0);
+    textSize(18);
+    textFont(this.font);
+    noStroke();
+    text("Get: ",this.posX,this.posY+30);
+
+    fill("green");
+    strokeWeight(2);
+    textFont(this.font);
+    textSize(13);
+    text(this.name,this.posX,this.posY+60);
+
+    loadImage(this.iconpath, img => {
+      image(img, this.posX+80, this.posY+40, 20, 30);
+    })
+  }
+}
+
+class DrawInfoDomes {
+
+  constructor(x,y,w,h,rankNeeded,InputMoney,OutputMaxPeople,upgradesId){
+    this.posX = x;
+    this.posY = y;
+    this.w = w;
+    this.h = h;
+    this.name;
+    this.rankneeded = rankNeeded;
+    this.gettingrank = this.rankneeded+1;
+    this.inputmoney = InputMoney;
+    this.outputmaxpeople = OutputMaxPeople;
+
+    this.rankIconpath = rankIconPath;
+    this.moneyIconpath = moneyIconPath;
+    this.peopleIconpath = peopleIconPath;
+    this.upgradesId = upgradesId;
+    this.iconpath;
+
+    this.font = ftRetroGaming;
+    this.backClr = Primary;
+    this.AccetntClr = "rgb(60, 253, 47)";
+  }
+
+  draw_DomesInfo(){
+
+    switch (this.upgradesId) {
+
+      case 1: 
+        this.iconpath = domeUpgradeIconPath;
+        this.name = "Dome";
+        break;
+      case 2:
+        this.iconpath = domeUpgradeIconPath;
+        this.name = "Dome";
+        break;
+      case 3:
+        this.iconpath = domeUpgradeIconPath;
+        this.name = "Dome";
+        break;
+      default:
+        this.iconpath = emptyIconPath;
+        this.name = "   ";
+    }
+
+    loadImage(this.iconpath, img => {
+      image(img, this.posX-90, this.posY-70, 50, 70);
+    })
+
+    fill(this.backClr);
+    stroke(255, 255, 255);
+    rect(this.posX, this.posY, this.w, this.h);
+
+    fill(0);
+    textSize(20);
+    textFont(this.font);
+    noStroke();
+    text(this.name,this.posX,this.posY-60);
+
+    textSize(18);
+    text("Need: ",this.posX,this.posY-20);
+
+    fill("red");
+    textSize(15);
+    strokeWeight(2);
+    textFont(this.font);
+    text(this.rankneeded,this.posX-60,this.posY+10);
+
+    loadImage(this.rankIconpath, img => {
+      image(img, this.posX-40, this.posY-8, 20, 30);
+    })
+
+    text("-"+this.inputmoney,this.posX+30,this.posY+10);
+
+    loadImage(this.moneyIconpath, img => {
+      image(img, this.posX+70, this.posY-8, 20, 30);
+    })
+
+    fill(0);
+    textSize(18);
+    textFont(this.font);
+    noStroke();
+    text("Get: ",this.posX,this.posY+30);
+
+    fill("green");
+    strokeWeight(2);
+    textFont(this.font);
+    textSize(15);
+    text(this.gettingrank,this.posX-60,this.posY+60);
+
+    loadImage(this.rankIconpath, img => {
+      image(img, this.posX-40, this.posY+42, 20, 30);
+    })
+
+    text("+"+this.outputmaxpeople,this.posX+30,this.posY+60);
+
+    loadImage(this.peopleIconpath, img => {
+      image(img, this.posX+70, this.posY+42, 20, 30);
+    })
+  }
+}
+
+class DrawInfoStorage {
+
+  constructor(x,y,w,h,rankNeeded,InputMoney,OutputMaxWater,OutputMaxOre,upgradesId){
+    this.posX = x;
+    this.posY = y;
+    this.w = w;
+    this.h = h;
+    this.name;
+    this.rankneeded = rankNeeded;
+    this.gettingrank = this.rankneeded+1;
+    this.inputmoney = InputMoney;
+    this.outputmaxwater = OutputMaxWater;
+    this.outputmaxore = OutputMaxOre;
+
+    this.rankIconpath = rankIconPath;
+    this.moneyIconpath = moneyIconPath;
+    this.oreIconpath = oreIconPath;
+    this.waterIconpath = waterIconPath;
+    this.upgradesId = upgradesId;
+    this.iconpath;
+
+    this.font = ftRetroGaming;
+    this.backClr = Primary;
+    this.AccetntClr = "rgb(60, 253, 47)";
+    this.frameClr = "rgb(46, 51, 101)";
+  }
+
+  draw_StorageInfo(){
+
+    switch (this.upgradesId) {
+
+      case 4:
+        this.iconpath = storageUpgradeIconPath;
+        this.name = "Storage";
+        break;
+      case 5:
+          this.iconpath = storageUpgradeIconPath;
+          this.name = "Storage";
+          break;
+      case 6:
+        this.iconpath = storageUpgradeIconPath;
+        this.name = "Storage";
+        break;
+      default:
+        this.iconpath = emptyIconPath;
+        this.name = "   ";
+    }
+
+    loadImage(this.iconpath, img => {
+      image(img, this.posX-90, this.posY-70, 50, 70);
+    })
+
+    fill(this.backClr);
+    stroke(255, 255, 255);
+    rect(this.posX, this.posY, this.w, this.h);
+
+    fill(0);
+    textSize(20);
+    textFont(this.font);
+    noStroke();
+    text(this.name,this.posX,this.posY-60);
+
+    fill(0);
+    textSize(18);
+    textFont(this.font);
+    noStroke();
+    text("Need: ",this.posX,this.posY-20);
+
+    fill("red");
+    textSize(15);
+    strokeWeight(2);
+    textFont(this.font);
+    text(this.rankneeded,this.posX-60,this.posY+10);
+
+    loadImage(this.rankIconpath, img => {
+      image(img, this.posX-40, this.posY-8, 20, 35);
+    })
+
+    text(this.inputmoney,this.posX+30,this.posY+10);
+
+    loadImage(this.moneyIconpath, img => {
+      image(img, this.posX+70, this.posY-8, 20, 35);
+    })
+
+    fill(0);
+    textSize(18);
+    textFont(this.font);
+    noStroke();
+    text("Get: ",this.posX,this.posY+40);
+
+    fill("green");
+    strokeWeight(2);
+    textFont(this.font);
+    textSize(15);
+    text(this.gettingrank,this.posX-90,this.posY+60);
+
+    loadImage(this.rankIconpath, img => {
+      image(img, this.posX-70, this.posY+42, 20, 35);
+    })
+
+    text("+"+this.outputmaxwater,this.posX-20,this.posY+60);
+
+    loadImage(this.waterIconpath, img => {
+      image(img, this.posX+5, this.posY+42, 20, 35);
+    })
+
+    text("+"+this.outputmaxore,this.posX+50,this.posY+60);
+
+    loadImage(this.oreIconpath, img => {
+      image(img, this.posX+75, this.posY+42, 20, 35);
+    })
+  }
+}
+
 //_________________________________________________________________________
 //Solo Mission Class:
 class SoloMissionBox {

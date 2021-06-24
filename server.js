@@ -282,7 +282,7 @@ app.get("/getPlayerResources/:playerId", (req, res) => {
 });
 
 //get player Rank
-app.get("/getPlayerRank/:playerId", (req, res) => {
+app.get("/getRank/:playerId", (req, res) => {
   let playerId = req.params.playerId;
   let sql = `SELECT Rank, In_Game_Date FROM player WHERE Player_Id = ${playerId};`;
 
@@ -297,6 +297,28 @@ app.get("/getPlayerShips/:playerId", (req, res) => {
   let playerId = req.params.playerId;
 
   let sql = `SELECT * FROM ship_fleet WHERE Player_Id = ${playerId};`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+
+    res.send(result);
+  });
+});
+
+//Get Station Upgardes
+app.get("/getStationUpgrades", (req, res) => {
+  let sql = `SELECT * FROM space_station`;
+
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+
+    res.send(result);
+  });
+});
+
+//Get spaceships Costs
+app.get("/getSpaceShipsCosts", (req, res) => {
+  let sql = `SELECT Input_Crew, Input_Ore, Spaceships_Id FROM spaceships`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -750,17 +772,25 @@ app.post("/buildexplorationship", (req, res) => {
 app.post("/builddome1", (req, res) => {
   let Player_Id = req.body.Player_Id;
   let Money = req.body.Money;
+  let Rank = req.body.Rank;
+  let Increase_People = req.body.Increase_People;
 
   let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '1');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    let sql = `UPDATE player_resources SET Max_People = 150, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+    let sql = `UPDATE player_resources SET Max_People = '${Increase_People}', Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
 
     db.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+
+      let sql = `UPDATE player SET Rank = '${Rank}' WHERE Player_Id = ${Player_Id};`;
+
+      db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      });
     });
   });
 });
@@ -769,17 +799,25 @@ app.post("/builddome1", (req, res) => {
 app.post("/builddome2", (req, res) => {
   let Player_Id = req.body.Player_Id;
   let Money = req.body.Money;
+  let Rank = req.body.Rank;
+  let Increase_People = req.body.Increase_People;
 
   let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '2');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    let sql = `UPDATE player_resources SET Max_People = 250, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+    let sql = `UPDATE player_resources SET Max_People = '${Increase_People}', Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
 
     db.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+
+      let sql = `UPDATE player SET Rank = '${Rank}' WHERE Player_Id = ${Player_Id};`;
+
+      db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      });
     });
   });
 });
@@ -788,17 +826,25 @@ app.post("/builddome2", (req, res) => {
 app.post("/builddome3", (req, res) => {
   let Player_Id = req.body.Player_Id;
   let Money = req.body.Money;
+  let Rank = req.body.Rank;
+  let Increase_People = req.body.Increase_People;
 
   let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '3');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    let sql = `UPDATE player_resources SET Max_People = 400, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+    let sql = `UPDATE player_resources SET Max_People = '${Increase_People}', Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
 
     db.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+
+      let sql = `UPDATE player SET Rank = '${Rank}' WHERE Player_Id = ${Player_Id};`;
+
+      db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      });
     });
   });
 });
@@ -807,17 +853,26 @@ app.post("/builddome3", (req, res) => {
 app.post("/buildstorage1", (req, res) => {
   let Player_Id = req.body.Player_Id;
   let Money = req.body.Money;
+  let Rank = req.body.Rank;
+  let Increase_Water = req.body.Increase_Water;
+  let Increase_Ore = req.body.Increase_Ore;
 
   let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '4');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    let sql = `UPDATE player_resources SET Max_Ore = 1050, Max_Water = 1050, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+    let sql = `UPDATE player_resources SET Max_Ore = '${Increase_Ore}', Max_Water = '${Increase_Water}', Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
 
     db.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+
+      let sql = `UPDATE player SET Rank = '${Rank}' WHERE Player_Id = ${Player_Id};`;
+
+      db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      });
     });
   });
 });
@@ -826,17 +881,26 @@ app.post("/buildstorage1", (req, res) => {
 app.post("/buildstorage2", (req, res) => {
   let Player_Id = req.body.Player_Id;
   let Money = req.body.Money;
+  let Rank = req.body.Rank;
+  let Increase_Water = req.body.Increase_Water;
+  let Increase_Ore = req.body.Increase_Ore;
 
   let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '5');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    let sql = `UPDATE player_resources SET Max_Ore = 1150, Max_Water = 1150, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+    let sql = `UPDATE player_resources SET Max_Ore = '${Increase_Ore}', Max_Water = '${Increase_Water}', Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
 
     db.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+
+      let sql = `UPDATE player SET Rank = '${Rank}' WHERE Player_Id = ${Player_Id};`;
+
+      db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      });
     });
   });
 });
@@ -845,17 +909,26 @@ app.post("/buildstorage2", (req, res) => {
 app.post("/buildstorage3", (req, res) => {
   let Player_Id = req.body.Player_Id;
   let Money = req.body.Money;
+  let Rank = req.body.Rank;
+  let Increase_Water = req.body.Increase_Water;
+  let Increase_Ore = req.body.Increase_Ore;
 
   let sql = `INSERT INTO player_upgrades (Player_Id, SSUpgrade_Id) VALUES ('${Player_Id}', '3');`;
 
   db.query(sql, (err, result) => {
     if (err) throw err;
 
-    let sql = `UPDATE player_resources SET Max_Ore = 1300, Max_Water = 1300, Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
+    let sql = `UPDATE player_resources SET Max_Ore = '${Increase_Ore}', Max_Water = '${Increase_Water}', Money = '${Money}' WHERE Player_Id = ${Player_Id};`;
 
     db.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+
+      let sql = `UPDATE player SET Rank = '${Rank}' WHERE Player_Id = ${Player_Id};`;
+
+      db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      });
     });
   });
 });

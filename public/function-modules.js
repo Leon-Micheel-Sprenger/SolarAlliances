@@ -405,10 +405,7 @@ function doLogin() {
           //Load all initial stuff from DB, that we need for initial drawing
 
           //Get Rank from player
-          loadJSON("/getPlayerRank/" + playerId, (dataReceived) => {
-            rank = dataReceived[0].Rank;
-            gameDate = new Date(dataReceived[0].In_Game_Date).getFullYear();
-          });
+          loadRank();
 
           //Get Resources from Database
           loadResources();
@@ -431,7 +428,11 @@ function doLogin() {
 
           // add all the loadJSON paths below:
 
+          //ships costs
+          loadShipsCosts();
+
           //station upgrades
+          loadStationUpgrades();
 
           //Create the game
           createGame();
@@ -567,8 +568,8 @@ function solomissionShipVerified(acceptedMission) {
 function buildwarship() {
   if (buildWarshipBtn.isClicked(mouseX, mouseY)) {
     if (people > 20 && ore > 50) {
-      let inputcrew = 20;
-      let inputore = 50;
+      let inputcrew = shipscosts[0].Input_Crew;
+      let inputore = shipscosts[0].Input_Ore;
       ore = ore - inputore;
       people = people - inputcrew;
       let dataSend = {
@@ -590,8 +591,8 @@ function buildwarship() {
 function buildminingship() {
   if (buildMiningtshipBtn.isClicked(mouseX, mouseY)) {
     if (ore > 50 && people > 20) {
-      let inputcrew = 20;
-      let inputore = 50;
+      let inputcrew = shipscosts[1].Input_Crew;
+      let inputore = shipscosts[1].Input_Ore;
       ore = ore - inputore;
       people = people - inputcrew;
       let dataSend = {
@@ -613,8 +614,8 @@ function buildminingship() {
 function buildtransportship() {
   if (buildTransportshipBtn.isClicked(mouseX, mouseY)) {
     if (ore > 50 && people > 20) {
-      let inputcrew = 20;
-      let inputore = 50;
+      let inputcrew = shipscosts[0].Input_Crew;
+      let inputore = shipscosts[2].Input_Ore;
       ore = ore - inputore;
       people = people - inputcrew;
       let dataSend = {
@@ -636,8 +637,8 @@ function buildtransportship() {
 function buildexplorationship() {
   if (buildExplorationshipBtn.isClicked(mouseX, mouseY)) {
     if (ore > 50 && people > 20) {
-      let inputcrew = 20;
-      let inputore = 50;
+      let inputcrew = shipscosts[0].Input_Crew;
+      let inputore = shipscosts[3].Input_Ore;
       ore = ore - inputore;
       people = people - inputcrew;
       let dataSend = {
@@ -662,11 +663,22 @@ function buildupgradedome1() {
   if (buildDome1Btn.isClicked(mouseX, mouseY)) {
     if (money > 100) {
       if (max_people === 100) {
-        let price = 100;
+        let price = stationupgrades[0].Price;
         money = money - price;
+        if(rank === stationupgrades[0].Upgrade_Level){
+          rank = rank + 1;
+        }else if(rank > stationupgrades[0].Upgrade_Level){
+          rank = rank;
+        }else if(rank < stationupgrades[0].Upgrade_Level){
+          alert("You don't have the rank needed to do this upgrade");
+          rank = rank;
+        }
+        maxPeople = max_people + stationupgrades[0].Increase_People;
         let dataSend = {
           Player_Id: playerId,
           Money: money,
+          Rank: rank,
+          Increase_People: maxPeople,
         };
         httpPost("/builddome1", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
@@ -687,11 +699,22 @@ function buildupgradedome2() {
   if (buildDome2Btn.isClicked(mouseX, mouseY)) {
     if (money > 200) {
       if (max_people === 150) {
-        let price = 200;
+        let price = stationupgrades[1].Price;
         money = money - price;
+        if(rank === stationupgrades[1].Upgrade_Level){
+          rank = rank + 1;
+        }else if(rank > stationupgrades[1].Upgrade_Level){
+          rank = rank;
+        }else if(rank < stationupgrades[1].Upgrade_Level){
+          alert("You don't have the rank needed to do this upgrade");
+          rank = rank;
+        }
+        maxPeople = max_people + stationupgrades[1].Increase_People;
         let dataSend = {
           Player_Id: playerId,
           Money: money,
+          Rank: rank,
+          Increase_People: maxPeople,
         };
         httpPost("/builddome2", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
@@ -712,11 +735,22 @@ function buildupgradedome3() {
   if (buildDome3Btn.isClicked(mouseX, mouseY)) {
     if (money > 300) {
       if (max_people === 250) {
-        let price = 300;
+        let price = stationupgrades[2].Price;
         money = money - price;
+        if(rank === stationupgrades[2].Upgrade_Level){
+          rank = rank + 1;
+        }else if(rank > stationupgrades[2].Upgrade_Level){
+          rank = rank;
+        }else if(rank < stationupgrades[2].Upgrade_Level){
+          alert("You don't have the rank needed to do this upgrade");
+          rank = rank;
+        }
+        maxPeople = max_people + stationupgrades[2].Increase_People;
         let dataSend = {
           Player_Id: playerId,
           Money: money,
+          Rank: rank,
+          Increase_People: maxPeople,
         };
         httpPost("/builddome3", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
@@ -737,11 +771,24 @@ function buildupgradestorage1() {
   if (buildStorage1Btn.isClicked(mouseX, mouseY)) {
     if (money > 100) {
       if (max_water === 1000 && max_ore === 1000) {
-        let price = 100;
+        let price = stationupgrades[3].Price;
         money = money - price;
+        if(rank === stationupgrades[3].Upgrade_Level){
+          rank = rank + 1;
+        }else if(rank > stationupgrades[3].Upgrade_Level){
+          rank = rank;
+        }else if(rank < stationupgrades[3].Upgrade_Level){
+          alert("You don't have the rank needed to do this upgrade");
+          rank = rank;
+        }
+        maxWater = max_water + stationupgrades[3].Increase_Water;
+        maxOre = max_ore + stationupgrades[3].Increase_Ore;
         let dataSend = {
           Player_Id: playerId,
           Money: money,
+          Rank: rank,
+          Increase_Water: maxWate,
+          Increase_Ore: maxOre,
         };
         httpPost("/buildstorage1", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
@@ -762,11 +809,24 @@ function buildupgradestorage2() {
   if (buildStorage2Btn.isClicked(mouseX, mouseY)) {
     if (money > 200) {
       if (max_water === 1050 && max_ore === 1050) {
-        let price = 200;
+        let price = stationupgrades[4].Price;
         money = money - price;
+        if(rank === stationupgrades[4].Upgrade_Level){
+          rank = rank + 1;
+        }else if(rank > stationupgrades[4].Upgrade_Level){
+          rank = rank;
+        }else if(rank < stationupgrades[4].Upgrade_Level){
+          alert("You don't have the rank needed to do this upgrade");
+          rank = rank;
+        }
+        maxWater = max_water + stationupgrades[4].Increase_Water;
+        maxOre = max_ore + stationupgrades[4].Increase_Ore;
         let dataSend = {
           Player_Id: playerId,
           Money: money,
+          Rank: rank,
+          Increase_Water: maxWate,
+          Increase_Ore: maxOre,
         };
         httpPost("/buildstorage2", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
@@ -787,11 +847,24 @@ function buildupgradestorage3() {
   if (buildStorage3Btn.isClicked(mouseX, mouseY)) {
     if (money > 300) {
       if (max_water === 1150 && max_ore === 1150) {
-        let price = 300;
+        let price = stationupgrades[5].Price;
         money = money - price;
+        if(rank === stationupgrades[5].Upgrade_Level){
+          rank = rank + 1;
+        }else if(rank > stationupgrades[5].Upgrade_Level){
+          rank = rank;
+        }else if(rank < stationupgrades[5].Upgrade_Level){
+          alert("You don't have the rank needed to do this upgrade");
+          rank = rank;
+        }
+        maxWater = max_water + stationupgrades[5].Increase_Water;
+        maxOre = max_ore + stationupgrades[5].Increase_Ore;
         let dataSend = {
           Player_Id: playerId,
           Money: money,
+          Rank: rank,
+          Increase_Water: maxWate,
+          Increase_Ore: maxOre,
         };
         httpPost("/buildstorage3", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
@@ -995,6 +1068,7 @@ setInterval(function () {
       }
     );
 
+    loadRank();                 //get player rank (doesn't draws resources)
     loadPlayerShips();
     loadResources();
     loadMissionRespawnTime();
