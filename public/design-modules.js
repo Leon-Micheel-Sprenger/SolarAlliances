@@ -186,8 +186,9 @@ function loginScreen() {
     textFont(ftRetroGaming);
     textSize(30);
     text("Login or Register", rx, ry - rh / 2.2);
-    textAlign(CENTER);
-    textSize(15);
+    //textAlign(CENTER, CENTER);
+    textSize(13);
+
     text(
       "Welcome to Solar Alliances. Please login into your existing account.",
       rx,
@@ -221,7 +222,7 @@ function loginScreen() {
       "Register as new Player",
       255,
       0,
-      10,
+      8,
       20,
       ftRetroGaming
     );
