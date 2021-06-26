@@ -20,7 +20,7 @@ const db = mysql.createConnection({
   user: "root",
   password: "root",
   database: "solaralliances",
-  port: "8889",
+  port: "3306",
 });
 
 db.connect(function (err) {
