@@ -738,10 +738,9 @@ function buildupgradedome1() {
           message: `Commander, You did a upgrade`,
         };
         messages.push(message);
-  
+
         soundMessageReceived.play();
         drawMessages();
-
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -757,7 +756,7 @@ function buildupgradedome1() {
 function buildupgradedome2() {
   if (buildDome2Btn.isClicked(mouseX, mouseY)) {
     if (money >= stationupgrades[1].Price) {
-      if (max_people === max_people + stationupgrades[0].Increase_People) {
+      if (max_people === 100 + stationupgrades[0].Increase_People) {
         let price = stationupgrades[1].Price;
         money = money - price;
         if (rank === stationupgrades[1].Upgrade_Level) {
@@ -783,10 +782,9 @@ function buildupgradedome2() {
           message: `Commander, You did a upgrade`,
         };
         messages.push(message);
-  
+
         soundMessageReceived.play();
         drawMessages();
-
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -802,7 +800,7 @@ function buildupgradedome2() {
 function buildupgradedome3() {
   if (buildDome3Btn.isClicked(mouseX, mouseY)) {
     if (money >= stationupgrades[2].Price) {
-      if (max_people === max_people + stationupgrades[1].Increase_People) {
+      if (max_people === 100 + stationupgrades[1].Increase_People) {
         let price = stationupgrades[2].Price;
         money = money - price;
         if (rank === stationupgrades[2].Upgrade_Level) {
@@ -828,10 +826,9 @@ function buildupgradedome3() {
           message: `Commander, You did a upgrade`,
         };
         messages.push(message);
-  
+
         soundMessageReceived.play();
         drawMessages();
-
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -875,10 +872,9 @@ function buildupgradestorage1() {
           message: `Commander, You did a upgrade`,
         };
         messages.push(message);
-  
+
         soundMessageReceived.play();
         drawMessages();
-
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -894,7 +890,10 @@ function buildupgradestorage1() {
 function buildupgradestorage2() {
   if (buildStorage2Btn.isClicked(mouseX, mouseY)) {
     if (money >= stationupgrades[4].Price) {
-      if (max_water === max_water + stationupgrades[3].Increase_Water && max_ore === max_ore + stationupgrades[3].Increase_Ore) {
+      if (
+        max_water === max_water + stationupgrades[3].Increase_Water &&
+        max_ore === max_ore + stationupgrades[3].Increase_Ore
+      ) {
         let price = stationupgrades[4].Price;
         money = money - price;
         if (rank === stationupgrades[4].Upgrade_Level) {
@@ -922,10 +921,9 @@ function buildupgradestorage2() {
           message: `Commander, You did a upgrade`,
         };
         messages.push(message);
-  
+
         soundMessageReceived.play();
         drawMessages();
-
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -941,7 +939,10 @@ function buildupgradestorage2() {
 function buildupgradestorage3() {
   if (buildStorage3Btn.isClicked(mouseX, mouseY)) {
     if (money >= stationupgrades[5].Price) {
-      if (max_water === max_water + stationupgrades[4].Increase_Water && max_ore === max_ore + stationupgrades[4].Increase_Ore) {
+      if (
+        max_water === max_water + stationupgrades[4].Increase_Water &&
+        max_ore === max_ore + stationupgrades[4].Increase_Ore
+      ) {
         let price = stationupgrades[5].Price;
         money = money - price;
         if (rank === stationupgrades[5].Upgrade_Level) {
@@ -969,10 +970,9 @@ function buildupgradestorage3() {
           message: `Commander, You did a upgrade`,
         };
         messages.push(message);
-  
+
         soundMessageReceived.play();
         drawMessages();
-
       } else {
         soundError.play();
         alert("You already did this upgrade");

@@ -10,10 +10,8 @@ function preload() {
 }
 
 function setup() {
-  preload();
   createCanvas(windowWidth, windowHeight);
   loginScreen();
-  bg = loadImage("assets/background.png");
 }
 
 function draw() {

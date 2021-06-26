@@ -89,6 +89,8 @@ let ImageEmptyFaction;
 let ImageEmptyIcon;
 
 function loadImages() {
+  bg = loadImage("assets/background.png");
+
   //Resources;
   ImageMoneyIcon = loadImage(moneyIconPath);
   ImageWaterIcon = loadImage(waterIconPath);
@@ -137,6 +139,12 @@ let soundInterfaceOpen;
 let soundButtonClick;
 let soundError;
 let soundMessageReceived;
+let soundMMissionsBkg;
+let soundWelcom;
+let soundNewSMission;
+let soundAcceptedSMission;
+let soundJoinMMission;
+let soundBkgMusic;
 
 function loadSounds() {
   soundInterfaceOpen = loadSound("assets/sounds/openInterface.wav");
@@ -146,10 +154,10 @@ function loadSounds() {
   soundTest = loadSound("assets/sounds/test-sound.mp3");
   //soundLogin = loadSound("assets/sounds/loadgame.mp3"); //to loud
   soundMMissionsBkg = loadSound("assets/sounds/mmissions-bkg.wav");
-  soundWelcom = loadSound("assets/sounds/welcom.wav");                           //mesage
-  soundNewSMission = loadSound("assets/sounds/new-solomission.wav");             //message
-  soundAcceptedSMission = loadSound("assets/sounds/accepted-solomission.wav");   //message
-  soundJoinMMission = loadSound("assets/sounds/joining-mmission.wav");           //message
+  soundWelcom = loadSound("assets/sounds/welcom.wav"); //mesage
+  soundNewSMission = loadSound("assets/sounds/new-solomission.wav"); //message
+  soundAcceptedSMission = loadSound("assets/sounds/accepted-solomission.wav"); //message
+  soundJoinMMission = loadSound("assets/sounds/joining-mmission.wav"); //message
   soundBkgMusic = loadSound("assets/sounds/bkg-music.mp3");
 }
 
@@ -173,8 +181,9 @@ function loginScreen() {
   if (cur_status === "status_login") {
     loginFrame = new OnScreenFrame(rx, ry, rw, rh);
     loginFrame.drawScreen();
-    textFont(ftRetroGaming);
     textAlign(CENTER, CENTER);
+    push();
+    textFont(ftRetroGaming);
     textSize(30);
     text("Login or Register", rx, ry - rh / 2.2);
     textAlign(CENTER);
@@ -190,8 +199,20 @@ function loginScreen() {
       ry - rh / 4
     );
 
+    pop();
     //Create Buttons
-    loginBtn = new Button(rx, ry + 80, 300, 50, "Login", 0, 255, 20, 20, ftRetroGaming);
+    loginBtn = new Button(
+      rx,
+      ry + 80,
+      300,
+      50,
+      "Login",
+      0,
+      255,
+      20,
+      20,
+      ftRetroGaming
+    );
     registerBtn = new Button(
       rx,
       ry + 130,
