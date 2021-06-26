@@ -585,7 +585,7 @@ function solomissionShipVerified(acceptedMission) {
 //build war ships
 function buildwarship() {
   if (buildWarshipBtn.isClicked(mouseX, mouseY)) {
-    if (people > shipscosts[0].Input_Cre && ore > shipscosts[0].Input_Ore) {
+    if (people > shipscosts[0].Input_Crew && ore > shipscosts[0].Input_Ore) {
       let inputcrew = shipscosts[0].Input_Crew;
       let inputore = shipscosts[0].Input_Ore;
       ore = ore - inputore;
