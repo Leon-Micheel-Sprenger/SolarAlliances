@@ -144,6 +144,13 @@ function loadSounds() {
   soundError = loadSound("assets/sounds/error.wav");
   soundMessageReceived = loadSound("assets/sounds/message-arrived.wav");
   soundTest = loadSound("assets/sounds/test-sound.mp3");
+  //soundLogin = loadSound("assets/sounds/loadgame.mp3"); //to loud
+  soundMMissionsBkg = loadSound("assets/sounds/mmissions-bkg.wav");
+  soundWelcom = loadSound("assets/sounds/welcom.wav");                           //mesage
+  soundNewSMission = loadSound("assets/sounds/new-solomission.wav");             //message
+  soundAcceptedSMission = loadSound("assets/sounds/accepted-solomission.wav");   //message
+  soundJoinMMission = loadSound("assets/sounds/joining-mmission.wav");           //message
+  soundBkgMusic = loadSound("assets/sounds/bkg-music.mp3");
 }
 
 //______________________________________________
@@ -166,6 +173,7 @@ function loginScreen() {
   if (cur_status === "status_login") {
     loginFrame = new OnScreenFrame(rx, ry, rw, rh);
     loginFrame.drawScreen();
+    textFont(ftRetroGaming);
     textAlign(CENTER, CENTER);
     textSize(30);
     text("Login or Register", rx, ry - rh / 2.2);
@@ -183,16 +191,18 @@ function loginScreen() {
     );
 
     //Create Buttons
-    loginBtn = new Button(rx, ry + 80, 300, 50, "Login", 0, 255, 20);
+    loginBtn = new Button(rx, ry + 80, 300, 50, "Login", 0, 255, 20, 20, ftRetroGaming);
     registerBtn = new Button(
       rx,
       ry + 130,
-      120,
+      130,
       30,
       "Register as new Player",
       255,
       0,
-      10
+      10,
+      20,
+      ftRetroGaming
     );
 
     InputName = createInput("Leon1").position(rx - 100, ry - 60);
@@ -244,7 +254,9 @@ function registerScreen() {
       "Register",
       0,
       255,
-      20
+      20,
+      20,
+      ftRetroGaming
     );
     submitRegisterBtn.drawButton();
     console.log(cur_status);
@@ -1142,6 +1154,7 @@ function createMissions() {
     let message = { message: `Commander, a new Solo Mission is available!` };
     messages.push(message);
     soundMessageReceived.play();
+    soundNewSMission.play();
     drawMessages();
   }
 
