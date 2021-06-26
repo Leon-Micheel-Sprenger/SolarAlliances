@@ -64,6 +64,7 @@ function mousePressed() {
         createGame();
         //createMultiplayerMissions();
         loop();
+        soundMMissionsBkg.stop();
       }
     }
   }
@@ -137,6 +138,7 @@ function mousePressed() {
       mmissionEnable = true;
       createGame();
       loop();
+      soundMMissionsBkg.loop();
     }
   }
 
@@ -153,6 +155,7 @@ function mousePressed() {
         openMMission.index = i;
         //createMultiplayerMissions();
         loop();
+        soundMMissionsBkg.stop();
       }
     }
   }
@@ -169,6 +172,7 @@ function mousePressed() {
       createGame();
       //createMultiplayerMissions();
       loop();
+      soundMMissionsBkg.loop();
     }
   }
 
@@ -199,6 +203,7 @@ function mousePressed() {
         mmissionEnable = false;
         openMissionEnable = false;
         loop();
+        soundMMissionsBkg.stop();
       }
     }
   }
@@ -443,9 +448,11 @@ function doLogin() {
           };
           messages.push(message);
           soundMessageReceived.play();
+          soundWelcom.play();
         }
       });
       //loop();
+      soundBkgMusic.loop();
     } else {
       soundError.play();
       alert("Please fill out the required fields");
@@ -528,8 +535,9 @@ function acceptSoloMission(missionIndex) {
     messages.push(message2);
 
     let message3 = { message: "Resources were Deducted from the Storage." };
-    messages.push(message2);
+    messages.push(message3);
 
+    soundAcceptedSMission.play();
     soundMessageReceived.play();
     drawMessages();
   } else {
@@ -567,7 +575,7 @@ function solomissionShipVerified(acceptedMission) {
 //build war ships
 function buildwarship() {
   if (buildWarshipBtn.isClicked(mouseX, mouseY)) {
-    if (people > 20 && ore > 50) {
+    if (people > shipscosts[0].Input_Cre && ore > shipscosts[0].Input_Ore) {
       let inputcrew = shipscosts[0].Input_Crew;
       let inputore = shipscosts[0].Input_Ore;
       ore = ore - inputore;
@@ -580,6 +588,14 @@ function buildwarship() {
       httpPost("/buildwarship", "json", dataSend, (dataReceived) => {
         console.log(dataReceived.message);
       });
+
+      let message = {
+        message: `Commander, You have build a ship`,
+      };
+      messages.push(message);
+
+      soundMessageReceived.play();
+      drawMessages();
     } else {
       soundError.play();
       alert("You dont have the resources to build this ship");
@@ -590,7 +606,7 @@ function buildwarship() {
 //build mining ships
 function buildminingship() {
   if (buildMiningtshipBtn.isClicked(mouseX, mouseY)) {
-    if (ore > 50 && people > 20) {
+    if (ore > shipscosts[1].Input_Ore && people > shipscosts[1].Input_Crew) {
       let inputcrew = shipscosts[1].Input_Crew;
       let inputore = shipscosts[1].Input_Ore;
       ore = ore - inputore;
@@ -603,6 +619,14 @@ function buildminingship() {
       httpPost("/buildminingship", "json", dataSend, (dataReceived) => {
         console.log(dataReceived.message);
       });
+
+      let message = {
+        message: `Commander, You have build a ship`,
+      };
+      messages.push(message);
+
+      soundMessageReceived.play();
+      drawMessages();
     } else {
       soundError.play();
       alert("You dont have the resources to build this ship");
@@ -613,8 +637,8 @@ function buildminingship() {
 //build transport ships
 function buildtransportship() {
   if (buildTransportshipBtn.isClicked(mouseX, mouseY)) {
-    if (ore > 50 && people > 20) {
-      let inputcrew = shipscosts[0].Input_Crew;
+    if (ore > shipscosts[2].Input_Ore && people > shipscosts[2].Input_Crew) {
+      let inputcrew = shipscosts[2].Input_Crew;
       let inputore = shipscosts[2].Input_Ore;
       ore = ore - inputore;
       people = people - inputcrew;
@@ -626,6 +650,14 @@ function buildtransportship() {
       httpPost("/buildtransportship", "json", dataSend, (dataReceived) => {
         console.log(dataReceived.message);
       });
+
+      let message = {
+        message: `Commander, You have build a ship`,
+      };
+      messages.push(message);
+
+      soundMessageReceived.play();
+      drawMessages();
     } else {
       soundError.play();
       alert("You dont have the resources to build this ship");
@@ -636,8 +668,8 @@ function buildtransportship() {
 //build exploration ships
 function buildexplorationship() {
   if (buildExplorationshipBtn.isClicked(mouseX, mouseY)) {
-    if (ore > 50 && people > 20) {
-      let inputcrew = shipscosts[0].Input_Crew;
+    if (ore > shipscosts[3].Input_Ore && people > shipscosts[3].Input_Crew) {
+      let inputcrew = shipscosts[3].Input_Crew;
       let inputore = shipscosts[3].Input_Ore;
       ore = ore - inputore;
       people = people - inputcrew;
@@ -649,6 +681,14 @@ function buildexplorationship() {
       httpPost("/buildexplorationship", "json", dataSend, (dataReceived) => {
         console.log(dataReceived.message);
       });
+
+      let message = {
+        message: `Commander, You have build a ship`,
+      };
+      messages.push(message);
+
+      soundMessageReceived.play();
+      drawMessages();
     } else {
       soundError.play();
       alert("You dont have the resources to build this ship");
@@ -661,7 +701,7 @@ function buildexplorationship() {
 //build station upgrade dome 1
 function buildupgradedome1() {
   if (buildDome1Btn.isClicked(mouseX, mouseY)) {
-    if (money > 100) {
+    if (money >= stationupgrades[0].Price) {
       if (max_people === 100) {
         let price = stationupgrades[0].Price;
         money = money - price;
@@ -683,6 +723,15 @@ function buildupgradedome1() {
         httpPost("/builddome1", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
         });
+
+        let message = {
+          message: `Commander, You did a upgrade`,
+        };
+        messages.push(message);
+  
+        soundMessageReceived.play();
+        drawMessages();
+
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -697,8 +746,8 @@ function buildupgradedome1() {
 //build station upgrade dome 2
 function buildupgradedome2() {
   if (buildDome2Btn.isClicked(mouseX, mouseY)) {
-    if (money > 200) {
-      if (max_people === 150) {
+    if (money >= stationupgrades[1].Price) {
+      if (max_people === max_people + stationupgrades[0].Increase_People) {
         let price = stationupgrades[1].Price;
         money = money - price;
         if (rank === stationupgrades[1].Upgrade_Level) {
@@ -719,6 +768,15 @@ function buildupgradedome2() {
         httpPost("/builddome2", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
         });
+
+        let message = {
+          message: `Commander, You did a upgrade`,
+        };
+        messages.push(message);
+  
+        soundMessageReceived.play();
+        drawMessages();
+
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -733,8 +791,8 @@ function buildupgradedome2() {
 //build station upgrade dome 3
 function buildupgradedome3() {
   if (buildDome3Btn.isClicked(mouseX, mouseY)) {
-    if (money > 300) {
-      if (max_people === 250) {
+    if (money >= stationupgrades[2].Price) {
+      if (max_people === max_people + stationupgrades[1].Increase_People) {
         let price = stationupgrades[2].Price;
         money = money - price;
         if (rank === stationupgrades[2].Upgrade_Level) {
@@ -755,6 +813,15 @@ function buildupgradedome3() {
         httpPost("/builddome3", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
         });
+
+        let message = {
+          message: `Commander, You did a upgrade`,
+        };
+        messages.push(message);
+  
+        soundMessageReceived.play();
+        drawMessages();
+
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -769,8 +836,8 @@ function buildupgradedome3() {
 //build station upgrade storage 1
 function buildupgradestorage1() {
   if (buildStorage1Btn.isClicked(mouseX, mouseY)) {
-    if (money > 100) {
-      if (max_water === 1000 && max_ore === 1000) {
+    if (money >= stationupgrades[3].Price) {
+      if (max_water === 300 && max_ore === 300) {
         let price = stationupgrades[3].Price;
         money = money - price;
         if (rank === stationupgrades[3].Upgrade_Level) {
@@ -793,6 +860,15 @@ function buildupgradestorage1() {
         httpPost("/buildstorage1", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
         });
+
+        let message = {
+          message: `Commander, You did a upgrade`,
+        };
+        messages.push(message);
+  
+        soundMessageReceived.play();
+        drawMessages();
+
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -807,8 +883,8 @@ function buildupgradestorage1() {
 //build station upgrade storage 2
 function buildupgradestorage2() {
   if (buildStorage2Btn.isClicked(mouseX, mouseY)) {
-    if (money > 200) {
-      if (max_water === 1050 && max_ore === 1050) {
+    if (money >= stationupgrades[4].Price) {
+      if (max_water === max_water + stationupgrades[3].Increase_Water && max_ore === max_ore + stationupgrades[3].Increase_Ore) {
         let price = stationupgrades[4].Price;
         money = money - price;
         if (rank === stationupgrades[4].Upgrade_Level) {
@@ -831,6 +907,15 @@ function buildupgradestorage2() {
         httpPost("/buildstorage2", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
         });
+
+        let message = {
+          message: `Commander, You did a upgrade`,
+        };
+        messages.push(message);
+  
+        soundMessageReceived.play();
+        drawMessages();
+
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -845,8 +930,8 @@ function buildupgradestorage2() {
 //build station upgrade storage 3
 function buildupgradestorage3() {
   if (buildStorage3Btn.isClicked(mouseX, mouseY)) {
-    if (money > 300) {
-      if (max_water === 1150 && max_ore === 1150) {
+    if (money >= stationupgrades[5].Price) {
+      if (max_water === max_water + stationupgrades[4].Increase_Water && max_ore === max_ore + stationupgrades[4].Increase_Ore) {
         let price = stationupgrades[5].Price;
         money = money - price;
         if (rank === stationupgrades[5].Upgrade_Level) {
@@ -869,6 +954,15 @@ function buildupgradestorage3() {
         httpPost("/buildstorage3", "json", dataSend, (dataReceived) => {
           console.log(dataReceived.message);
         });
+
+        let message = {
+          message: `Commander, You did a upgrade`,
+        };
+        messages.push(message);
+  
+        soundMessageReceived.play();
+        drawMessages();
+
       } else {
         soundError.play();
         alert("You already did this upgrade");
@@ -935,6 +1029,7 @@ function acceptMultiplayerMission(acceptedMission) {
         message: `Commander, You are joining others on the glorious mission: ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune to a successful completion. `,
       };
       messages.push(message);
+      soundJoinMMission.play();
     } else {
       multiplayerMissions[index].acceptMission(2);
 
@@ -943,6 +1038,7 @@ function acceptMultiplayerMission(acceptedMission) {
         message: `Commander, You are joining others on the glorious mission ${acceptedMission.name}! The Martian Federal Republic wishes  you good fortune and hopes to find other brave commanders to join.`,
       };
       messages.push(message);
+      soundJoinMMission.play();
     }
 
     //DATABASE IMPLICATIONS
