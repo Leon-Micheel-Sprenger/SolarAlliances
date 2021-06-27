@@ -690,7 +690,7 @@ class DrawInfoStorage {
 
     image(this.rankIconpath, this.posX - 40, this.posY - 8, 20, 35);
 
-    text(this.inputmoney, this.posX + 30, this.posY + 10);
+    text("-" + this.inputmoney, this.posX + 30, this.posY + 10);
 
     image(this.moneyIconpath, this.posX + 70, this.posY - 8, 20, 35);
 
