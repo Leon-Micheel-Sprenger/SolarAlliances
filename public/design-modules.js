@@ -90,6 +90,7 @@ let ImageEmptyIcon;
 
 function loadImages() {
   bg = loadImage("assets/background.png");
+  bgLoginRegister = loadImage("assets/login-register-bkg.png");
 
   //Resources;
   ImageMoneyIcon = loadImage(moneyIconPath);
@@ -179,19 +180,21 @@ function loginScreen() {
   //Login Screen Frame, Title and Description
 
   if (cur_status === "status_login") {
-    loginFrame = new OnScreenFrame(rx, ry, rw, rh);
+    background(bgLoginRegister);
+    loginFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary);
     loginFrame.drawScreen();
     textAlign(CENTER, CENTER);
     push();
     textFont(ftRetroGaming);
     textSize(30);
-    text("Login or Register", rx, ry - rh / 2.2);
+    fill(255);
+    text("Login", rx, ry - rh / 2.2);
     textAlign(CENTER);
-    textSize(15);
+    textSize(13);
     text(
       "Welcome to Solar Alliances. Please login into your existing account.",
       rx,
-      ry - rh / 3
+      ry - rh / 3,
     );
     text(
       "Or register as a new User, if you don't have an account.",
@@ -216,7 +219,7 @@ function loginScreen() {
     registerBtn = new Button(
       rx,
       ry + 130,
-      130,
+      160,
       30,
       "Register as new Player",
       255,
@@ -249,10 +252,28 @@ let submitRegisterBtn;
 
 function registerScreen() {
   if (cur_status === "status_register") {
+    background(bgLoginRegister);
     rx = width * 0.5;
     ry = height * 0.5;
     rw = 600;
     rh = 500;
+
+    registerFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary);
+    registerFrame.drawScreen();
+
+    push();
+    textFont(ftRetroGaming);
+    textSize(30);
+    fill(255);
+    text("Register", rx, ry - rh / 2.2);
+    textAlign(CENTER);
+    textSize(15);
+    text(
+      "Welcome to Solar Alliances. Please register.",
+      rx,
+      ry - rh / 3.6,
+    );
+    pop();
 
     InputPassTwo = createInput("", "password").position(rx - 100, ry + 30);
     InputEmail = createInput("").position(rx - 100, ry - 30);
@@ -265,6 +286,7 @@ function registerScreen() {
     registerBtn.disable();
     fill(255);
     noStroke();
+    fill(Secondary);
     rect(rx, ry + 100, 310, 100);
 
     submitRegisterBtn = new Button(
