@@ -189,7 +189,7 @@ function loginScreen() {
     textSize(30);
     fill(255);
     text("Login", rx, ry - rh / 2.2);
-    textAlign(CENTER);
+    //textAlign(CENTER, CENTER);
     textSize(13);
     text(
       "Welcome to Solar Alliances. Please login into your existing account.",
@@ -201,8 +201,8 @@ function loginScreen() {
       rx,
       ry - rh / 4
     );
-
     pop();
+    
     //Create Buttons
     loginBtn = new Button(
       rx,
@@ -224,7 +224,7 @@ function loginScreen() {
       "Register as new Player",
       255,
       0,
-      10,
+      8,
       20,
       ftRetroGaming
     );
