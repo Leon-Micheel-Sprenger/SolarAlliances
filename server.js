@@ -16,10 +16,10 @@ app.use(bodyParser.json());
 
 // connect to database
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "solaralliances",
+  host: "eu-cdbr-west-01.cleardb.com",
+  user: "b57144c7c825a5",
+  password: "6593088a",
+  database: "heroku_84d85e12925ab9e",
   port: "3306",
 });
 
