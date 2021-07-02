@@ -934,6 +934,6 @@ app.post("/buildstorage3", (req, res) => {
 });
 
 //Server listening is always on the bottom!
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
