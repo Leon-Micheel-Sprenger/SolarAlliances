@@ -800,7 +800,12 @@ function buildupgradedome2() {
 function buildupgradedome3() {
   if (buildDome3Btn.isClicked(mouseX, mouseY)) {
     if (money >= stationupgrades[2].Price) {
-      if (max_people === 100 + stationupgrades[0].Increase_People + stationupgrades[1].Increase_People) {
+      if (
+        max_people ===
+        100 +
+          stationupgrades[0].Increase_People +
+          stationupgrades[1].Increase_People
+      ) {
         let price = stationupgrades[2].Price;
         money = money - price;
         if (rank === stationupgrades[2].Upgrade_Level) {
@@ -861,7 +866,7 @@ function buildupgradestorage1() {
           Player_Id: playerId,
           Money: money,
           Rank: rank,
-          Increase_Water: maxWate,
+          Increase_Water: maxWater,
           Increase_Ore: maxOre,
         };
         httpPost("/buildstorage1", "json", dataSend, (dataReceived) => {
@@ -910,7 +915,7 @@ function buildupgradestorage2() {
           Player_Id: playerId,
           Money: money,
           Rank: rank,
-          Increase_Water: maxWate,
+          Increase_Water: maxWater,
           Increase_Ore: maxOre,
         };
         httpPost("/buildstorage2", "json", dataSend, (dataReceived) => {
@@ -940,8 +945,14 @@ function buildupgradestorage3() {
   if (buildStorage3Btn.isClicked(mouseX, mouseY)) {
     if (money >= stationupgrades[5].Price) {
       if (
-        max_water === 300 + stationupgrades[3].Increase_Water + stationupgrades[4].Increase_Water &&
-        max_ore === 300 + stationupgrades[3].Increase_Ore + stationupgrades[4].Increase_Ore
+        max_water ===
+          300 +
+            stationupgrades[3].Increase_Water +
+            stationupgrades[4].Increase_Water &&
+        max_ore ===
+          300 +
+            stationupgrades[3].Increase_Ore +
+            stationupgrades[4].Increase_Ore
       ) {
         let price = stationupgrades[5].Price;
         money = money - price;
@@ -959,7 +970,7 @@ function buildupgradestorage3() {
           Player_Id: playerId,
           Money: money,
           Rank: rank,
-          Increase_Water: maxWate,
+          Increase_Water: maxWater,
           Increase_Ore: maxOre,
         };
         httpPost("/buildstorage3", "json", dataSend, (dataReceived) => {
@@ -1194,3 +1205,13 @@ setInterval(function () {
     // loadMultiplayerMissions();
   }
 }, 10000);
+
+const createUpdate = () => {
+  for (i = 0; i < runningMissions.length; i++) {
+    if (runningMIssions[i] == 0) {
+      loadRunningMissions();
+    } else {
+      loop();
+    }
+  }
+};

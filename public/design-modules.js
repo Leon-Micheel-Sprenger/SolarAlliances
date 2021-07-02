@@ -194,7 +194,7 @@ function loginScreen() {
     text(
       "Welcome to Solar Alliances. Please login into your existing account.",
       rx,
-      ry - rh / 3,
+      ry - rh / 3
     );
     text(
       "Or register as a new User, if you don't have an account.",
@@ -202,7 +202,7 @@ function loginScreen() {
       ry - rh / 4
     );
     pop();
-    
+
     //Create Buttons
     loginBtn = new Button(
       rx,
@@ -258,7 +258,14 @@ function registerScreen() {
     rw = 600;
     rh = 500;
 
-    registerFrame = new OnScreenFrame(rx, ry, rw, rh, ImageTabletFrame, Secondary);
+    registerFrame = new OnScreenFrame(
+      rx,
+      ry,
+      rw,
+      rh,
+      ImageTabletFrame,
+      Secondary
+    );
     registerFrame.drawScreen();
 
     push();
@@ -268,11 +275,7 @@ function registerScreen() {
     text("Register", rx, ry - rh / 2.2);
     textAlign(CENTER);
     textSize(15);
-    text(
-      "Welcome to Solar Alliances. Please register.",
-      rx,
-      ry - rh / 3.6,
-    );
+    text("Welcome to Solar Alliances. Please register.", rx, ry - rh / 3.6);
     pop();
 
     InputPassTwo = createInput("", "password").position(rx - 100, ry + 30);
