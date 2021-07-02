@@ -3,6 +3,8 @@
 ### Watch Trailer: [here](https://www.youtube.com/watch?v=lsHzanmT6J4)
 ### Play the Game: [here](https://solaralliancesfinal.herokuapp.com/)
 
+![Screenshot 2021-07-02 181157](https://user-images.githubusercontent.com/75182187/124302234-36a49b00-db61-11eb-86e5-a1a377da1eaa.png)
+
 It is the year of 2350. Humankind has evolved and expanded its habitat across the solar system. The formation of new political systems in the system creates a call for new leaders, who must carry the responsibility of an entire civilization on their shoulders. Will you be one of those leaders?
 
 **Solar Alliances** is an Online Multiplayer Resource Management Game. 
