@@ -229,8 +229,8 @@ function loginScreen() {
       ftRetroGaming
     );
 
-    InputName = createInput("Leon1").position(rx - 100, ry - 60);
-    InputPass = createInput("Password", "Password").position(rx - 100, ry);
+    InputName = createInput("", "Username").position(rx - 100, ry - 60);
+    InputPass = createInput("", "Password").position(rx - 100, ry);
 
     InputPass.attribute("placeholder", "Password");
     InputName.attribute("placeholder", "Username");
